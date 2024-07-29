@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 19:02:37 by nkanaan           #+#    #+#             */
+/*   Updated: 2024/07/29 19:02:38 by nkanaan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	process_input(const char *input)
@@ -6,18 +18,24 @@ void	process_input(const char *input)
 		return;
 	if (ft_strcmp(input, "exit") == 0)
 		exit(1);
-	else if (strncmp(input, "cd ", 3) == 0)
+	else if (ft_strncmp(input, "cd ", 3) == 0)
 	{
 		const char *path = input + 3;
 		change_dir(path);
 	}
-	else if (strcmp(input, "pwd") == 0)
+	else if (ft_strcmp(input, "env") == 0)
+	{
+		char env[1024];
+		if (getenv(env) == NULL)
+			perror("getenv");
+		else
+			printf("%s\n", env);
+	}
+	else if (ft_strcmp(input, "pwd") == 0)
 	{
 		char cwd[1024];
 		if (getcwd(cwd, sizeof(cwd)) == NULL)
-		{
 			perror("getcwd");
-		}
 		else
 			printf("%s\n", cwd);
         }
@@ -33,10 +51,8 @@ int	main()
 	{
 		char	*dir = get_dir();
 		char	*test = ft_strjoin(dir, "> ");
-		printf("\033[0;36m");
 		input = readline(test);
-		printf("\033[0m");
-        
+       
 		if (input == NULL) 
 		{
 			printf("\nExiting...\n");
@@ -45,7 +61,6 @@ int	main()
 
 		add_history(input);
 		process_input(input);
-		printf("You entered: %s\n", input);
 
 		free(input);
     }

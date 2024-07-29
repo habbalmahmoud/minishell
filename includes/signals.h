@@ -2,5 +2,4 @@
 # define SIGNALS_H
 # include <signal.h>
 
-
 #endif
