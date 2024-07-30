@@ -12,56 +12,11 @@
 
 #include "../includes/minishell.h"
 
-void	process_input(const char *input)
-{ 
-	if (input == NULL)
-		return;
-	if (ft_strcmp(input, "exit") == 0)
-		exit(1);
-	else if (ft_strncmp(input, "cd ", 3) == 0)
-	{
-		const char *path = input + 3;
-		change_dir(path);
-	}
-	else if (ft_strcmp(input, "env") == 0)
-	{
-		char env[1024];
-		if (getenv(env) == NULL)
-			perror("getenv");
-		else
-			printf("%s\n", env);
-	}
-	else if (ft_strcmp(input, "pwd") == 0)
-	{
-		char cwd[1024];
-		if (getcwd(cwd, sizeof(cwd)) == NULL)
-			perror("getcwd");
-		else
-			printf("%s\n", cwd);
-        }
-	else
-		printf("Unknown command: %s\n", input);
-    }
 
-int	main()
+int	main(int ac, char **av, char **env)
 {
-	char	*input;
-
-	while (1)
-	{
-		char	*dir = get_dir();
-		char	*test = ft_strjoin(dir, "> ");
-		input = readline(test);
-       
-		if (input == NULL) 
-		{
-			printf("\nExiting...\n");
-			break;
-		}
-
-		add_history(input);
-		process_input(input);
-
-		free(input);
-    }
+	if (ac != 1)
+		exit(printf("Invalid args\n"));
+	else
+		init_shell(env);
 }
