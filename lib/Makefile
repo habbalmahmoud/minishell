@@ -11,7 +11,7 @@ CNT = 1
 
 STRING_SRC	= ft_memset ft_bzero ft_memchr ft_memcpy ft_strdup ft_strlcpy ft_strncmp ft_strchr ft_strrchr ft_strlen ft_memmove ft_strlen ft_strnstr ft_strlcat
 
-CTYPE_SRC	= ft_isalpha ft_isalnum ft_isdigit ft_isprint ft_tolower ft_toupper ft_isascii
+CTYPE_SRC	= ft_isalpha ft_isalnum ft_isdigit ft_isprint ft_isspace ft_tolower ft_toupper ft_isascii
 
 LIST_SRC	= ft_lstadd_back ft_lstclear ft_lstiter ft_lstmap ft_lstsize ft_lstadd_front ft_lstdelone ft_lstlast ft_lstnew
 

@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:59 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 12:41:00 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/07/30 16:30:42 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 # include <stdio.h> 
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <string.h>
-# include <stddef.h>
-# include <signal.h>
 # include "../lib/includes/libft.h"
 # include "./lexer.h"
+
+# define MAX(a, b) a > b ? a : b
+
 
 void	init_shell(char **env);
 
