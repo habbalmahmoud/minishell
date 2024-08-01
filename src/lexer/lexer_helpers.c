@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_helpers.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/01 15:42:45 by nkanaan           #+#    #+#             */
+/*   Updated: 2024/08/01 15:42:47 by nkanaan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../../includes/lexer.h"
 #include "../../includes/token.h"
@@ -5,43 +17,43 @@
 static int	return_whitespace(char c)
 {
 	if (c == ' ')
-		return (SPACE);
+		return (TYPE_SPACE);
 	if (c == '\t')
-		return (TAB);
+		return (TYPE_TAB);
 	if (c == '\\')
-		return (ESC);
+		return (TYPE_ESC);
 	if (c == '\n')
-		return (NEWLINE);
+		return (TYPE_NEWLINE);
 	if (c == '\0')
-		return (FT_EOF);
+		return (TYPE_EOF);
 }
 
 static int	return_operators(char c)
 {
 	if (c == '|')
-		return (PIPE);
+		return (TYPE_PIPE);
 	if (c == '<')
-		return (LSHIFT);
+		return (TYPE_LSHIFT);
 	if (c == '>')
-		return (RSHIFT);
+		return (TYPE_RSHIFT);
 	if (c == '&')
-		return (AMPERSAND);
+		return (TYPE_AMPERSAND);
 	if (c == ';')
-		return (SEMI);
+		return (TYPE_SEMI);
 }
 
 static int	return_literals(char c)
 {
 	if (c == 34)
-		return (DOUBLE_QUOTE);
+		return (TYPE_DOUBLE_QUOTE);
 	if (c == 39)
-		return (QUOTE);
+		return (TYPE_QUOTE);
 	if (c == '(')
-		return (LPAREN);
+		return (TYPE_LPAREN);
 	if (c == ')')
-		return (RPAREN);
+		return (TYPE_RPAREN);
 	if (c == '=')
-		return (EQUAL);
+		return (TYPE_EQUAL);
 }
 
 int	assign_type(char c)
@@ -53,18 +65,18 @@ int	assign_type(char c)
 	if (c == 34 || c == 39 || c == '(' || c == ')' || c == '=')
 		return (return_literals(c));
 	if (c == 0)
-		return (FT_NULL);
+		return (TYPE_NULL);
 	else
-		return (WORD);
+		return (TYPE_WORD);
 }
 
 void	clean_input(char *input, char *res)
 {
 	char	end_literal;
 	size_t	len;
-	int	i;
-	int	j;
-	char c;
+	int		i;
+	int		j;
+	char		c;
 
 	len = ft_strlen(input);
 	end_literal = 0;

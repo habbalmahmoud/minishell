@@ -25,7 +25,7 @@ void	init_shell(char **env)
 	gethostname(host, sizeof(host));
 	while (1)
 	{
-		printf("~%s@%s", host, user);
+		printf("~%s@%s ", host, user);
 		prompt = fun_prompt();
 		input = readline(prompt);
 		add_history(input);
@@ -51,7 +51,7 @@ void	init_shell(char **env)
 					{
 						printf("%s", lex.token_list->next->next->value);
 					}
-					else if (lex.token_list->next->type == WORD)
+					else if (lex.token_list->next->type == TYPE_WORD)
 						printf("%s\n", lex.token_list->next->value);
 			}
 			lex.token_list = lex.token_list->next;
