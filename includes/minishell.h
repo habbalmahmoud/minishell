@@ -15,12 +15,23 @@
 # include <stdio.h> 
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <string.h>
 # include "../lib/includes/libft.h"
 # include "./lexer.h"
 
 # define MAX(a, b) a > b ? a : b
-
+extern char user[1024];
 
 void	init_shell(char **env);
+char    *fun_prompt(void);
+void	clear_prompts(void);
+
+
+
+/*////////////////////////////////////////
+//////          BUILTINS            //////
+///////////////////////////////////////*/
+char    *get_dir(void);
+
 
 #endif

@@ -13,15 +13,29 @@
 #ifndef LEXER_H
 # define LEXER_H
 # include "./minishell.h"
+# include "./token.h"
 
 typedef struct s_lexer
 {
-	int	i;
-	char	c;
+	t_token	*token_list;
+	int	count;
 } t_lexer;
 
-void	init_lexer(char	*input);
-t_lexer	*lexer_next();
-t_lexer	*lexer_get_id();
+/*////////////////////////////////////////
+*		GLOB(3) ALT		//
+*////////////////////////////////////////		
+char **ft_glob(const char *pattern, int *num_matches);
+
+/*////////////////////////////////////
+///		LEX LUTHER	   //
+//////////////////////////////////*/		
+int lexer_build(char* input, int size, t_lexer *lexerbuf);
+//void	init_lexer(char	*input);
+
+/*////////////////////////////////////
+///		LEX HELP	   //
+//////////////////////////////////*/
+int	assign_type(char c);
+void	clean_input(char *input, char *res);
 
 #endif

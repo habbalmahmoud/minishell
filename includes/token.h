@@ -15,48 +15,61 @@
 # include "./minishell.h"
 
 
-/*
-                 __ PIPE__
-                     ___/              \____
-                    /                       \
-            COMMAND                    __ PIPE _
-          /        \                  /         \
-    ARGUMENTS   REDIRECTIONS	    CMD        _ CMD__
-        |          |     |           |           /    \
-       cat        <<     >       ARGUMENTS    ARGUMENTS	    REDIR
-                   |     |         |   |      |   |   |        |
-                 "..."  file      wc  -c      tr  -d " "       >
-                                                               |
-                                                             file2
-*/
+// /*
+//                  __ PIPE__
+//                      ___/              \____
+//                     /                       \
+//             COMMAND                    __ PIPE _
+//           /        \                  /         \
+//     ARGUMENTS   REDIRECTIONS	    CMD        _ CMD__
+//         |          |     |           |           /    \
+//        cat        <<     >       ARGUMENTS    ARGUMENTS	    REDIR
+//                    |     |         |   |      |   |   |        |
+//                  "..."  file      wc  -c      tr  -d " "       >
+//                                                                |
+//                                                              file2
+// */
 
 typedef enum
 {
-	STRING;
-	SEMI;
-	LSHIFT;
-	RSHIFT;
-	DOUBLE_LSHIFT;
-	DOUBLE_RSHIFT;
-	PIPE;
-	DOUBLE_QUOTE;
-	QUOTE;
-	LPAREN;
-	RPAREN;
-	AMPERSAND;
-	DOLLAR;
-	CURLY;
-	EQUAL;
-	LIMITER;
-	EOF;
+	WORD = -42,
+	SEMI = ';',
+	LSHIFT = '<',
+	RSHIFT = '>',
+	PIPE = '|',
+	DOUBLE_QUOTE = 34,
+	QUOTE = 39,
+	LPAREN = '(',
+	RPAREN = ')',
+	AMPERSAND = '&',
+	DOLLAR = '$',
+	EQUAL = '=',
+	SPACE = ' ',
+	TAB = '\t',
+	NEWLINE = '\n',
+	ESC = '\\',
+	FT_EOF = '\0',
+	FT_NULL = 0,
+	FT_TOKENIZED = -42,
 } token_type;
+
+typedef enum
+{
+	INSIDE_QUOTES,
+	INSIDE_DQUOTES,
+	INSIDE_ESC,
+	ANY,
+	
+} token_state;
 
 typedef struct s_token
 {
 	char	*value;
-	enum token_type;
+	int	type;
+	struct s_token *next;
 } t_token;
 
-void	assign_token();
-void	init_token();
+void	free_token(t_token *token);
+void	init_token(t_token *token, int n);
+
 #endif
