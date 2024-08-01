@@ -10,64 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
-#include "../../includes/lexer.h"
-#include "../../includes/token.h"
-
-static int	return_whitespace(char c)
+char	*remove_quotes(t_token *token)
 {
-	if (c == ' ')
-		return (TYPE_SPACE);
-	if (c == '\t')
-		return (TYPE_TAB);
-	if (c == '\\')
-		return (TYPE_ESC);
-	if (c == '\n')
-		return (TYPE_NEWLINE);
-	if (c == '\0')
-		return (TYPE_EOF);
+	char*	clean;
+
+	clean = ft_calloc(1, ft_strlen(token->value) + 1);
+	clean_input(token->value, clean);
+	free(token->value);
+	return(clean);
 }
 
-static int	return_operators(char c)
+void	handle_wildcards(t_token *token, int count, char **hits)
 {
-	if (c == '|')
-		return (TYPE_PIPE);
-	if (c == '<')
-		return (TYPE_LSHIFT);
-	if (c == '>')
-		return (TYPE_RSHIFT);
-	if (c == '&')
-		return (TYPE_AMPERSAND);
-	if (c == ';')
-		return (TYPE_SEMI);
-}
+	t_token	*store;
+	int		i;
 
-static int	return_literals(char c)
-{
-	if (c == 34)
-		return (TYPE_DOUBLE_QUOTE);
-	if (c == 39)
-		return (TYPE_QUOTE);
-	if (c == '(')
-		return (TYPE_LPAREN);
-	if (c == ')')
-		return (TYPE_RPAREN);
-	if (c == '=')
-		return (TYPE_EQUAL);
-}
-
-int	assign_type(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\\' || c == '\n')
-		return (return_whitespace(c));
-	if (c == '|' || c == '<' || c == '>' || c == '&' || c == ';')
-		return (return_operators(c));
-	if (c == 34 || c == 39 || c == '(' || c == ')' || c == '=')
-		return (return_literals(c));
-	if (c == 0)
-		return (TYPE_NULL);
-	else
-		return (TYPE_WORD);
+	store = token->next;
+        free(token->value);
+        token->value = ft_calloc(1, ft_strlen(hits[0]) + 1);
+        ft_strcpy(token->value, hits[0]);
+	i = 1;
+	while (i < count)
+	{
+		token->next = malloc(sizeof(t_token));
+		init_token(token->next, ft_strlen(hits[i]));
+		token = token->next;
+		token->type = TOKEN;
+		ft_strcpy(token->value, hits[i]);
+		i++;
+	}
+	token->next = store;
+	i = -1;
+	while (++i < count) 
+		free(hits[i]);
+    	free(hits);
 }
 
 void	clean_input(char *input, char *res)
@@ -100,5 +78,4 @@ void	clean_input(char *input, char *res)
 	}
 	res[j] = '\0';
 }
-
 

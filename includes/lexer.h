@@ -15,10 +15,20 @@
 # include "./minishell.h"
 # include "./token.h"
 
+typedef struct	s_lex_utils
+{
+	char	c;
+	int	i;
+	int	j;
+	int	token_type;
+	char	*str;
+}	t_lex_utils;
+
 typedef struct s_lexer
 {
 	t_token	*token_list;
-	int	count;
+	t_lex_utils	*util;
+	int		count;
 } t_lexer;
 
 /*////////////////////////////////////////
@@ -28,14 +38,15 @@ char **ft_glob(const char *pattern, int *num_matches);
 
 /*////////////////////////////////////
 ///		LEX LUTHER	   //
-//////////////////////////////////*/		
-int lexer_build(char* input, int size, t_lexer *lexerbuf);
-//void	init_lexer(char	*input);
+//////////////////////////////////*/
+int	init_lexer(char *input, int len, t_lexer *lex);
 
 /*////////////////////////////////////
 ///		LEX HELP	   //
 //////////////////////////////////*/
-int	assign_type(char c);
 void	clean_input(char *input, char *res);
+void	handle_wildcards(t_token *token, int count, char **hits);
+char	*remove_quotes(t_token *token);
+int		assign_type(char c);
 
 #endif

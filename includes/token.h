@@ -14,7 +14,6 @@
 # define TOKEN_H
 # include "./minishell.h"
 
-
 // /*
 //                  __ PIPE__
 //                      ___/              \____
@@ -29,8 +28,8 @@
 //                                                                |
 //                                                              file2
 // */
-
-typedef enum
+/* SOME TOKEN TYPE SHOULD BE REMOVED */
+typedef enum e_token_type
 {
 	TYPE_SPACE = 32,
 	TYPE_WORD = -42,
@@ -38,7 +37,7 @@ typedef enum
 	TYPE_LSHIFT = '<',
 	TYPE_RSHIFT = '>',
 	TYPE_PIPE = '|',
-	TYPE_DOUBLE_QUOTE = 34,
+	TYPE_DQUOTE = 34,
 	TYPE_QUOTE = 39,
 	TYPE_LPAREN = '(',
 	TYPE_RPAREN = ')',
@@ -51,16 +50,11 @@ typedef enum
 	TYPE_EOF = '\0',
 	TYPE_NULL = 0,
 	TOKEN = -42,
-} token_type;
-
-typedef enum
-{
-	INSIDE_QUOTES,
-	INSIDE_DQUOTES,
-	INSIDE_ESC,
-	ANY,
-	
-} token_state;
+	IN_QUOTES,
+	IN_DQUOTES,
+	IN_ESC,
+	STATE_ANY,
+}	t_token_type;
 
 typedef struct s_token
 {
@@ -69,6 +63,9 @@ typedef struct s_token
 	struct s_token *next;
 } t_token;
 
+int	return_whitespaces(char c);
+int	return_operators(char c);
+int	return_literals(char c);
 void	free_token(t_token *token);
 void	init_token(t_token *token, int n);
 
