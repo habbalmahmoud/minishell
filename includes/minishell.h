@@ -20,7 +20,9 @@
 # include <signal.h>
 # include "../lib/includes/libft.h"
 # include "./lexer.h"
+# include "./builtins.h"
 
 void	init_shell(char **env);
+char    **copy_2d_array(char **str);
 
 #endif

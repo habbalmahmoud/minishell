@@ -10,7 +10,7 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -I $(HEADER) #-fsanitize=address
 
-SRCS = main lexer/lexer init/init builtins/pwd builtins/cd builtins/env
+SRCS = main lexer/lexer init/init builtins/pwd builtins/cd builtins/env builtins/handle_builtins utils/prompt_utils
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 

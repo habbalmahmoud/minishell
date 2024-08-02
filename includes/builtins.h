@@ -17,7 +17,8 @@
 
 char	*get_dir(void);
 char	*get_env(void);
-void	change_dir(const char *path);
+void	change_dir(const char *path, char *home);
+void    handle_builtins(char *input, char **env);
 
 #endif
 

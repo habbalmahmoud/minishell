@@ -10,7 +10,8 @@ void	init_shell(char **env)
 		if (!input)
 			break ;	
 		add_history(input);
-		init_lexer(input);
+		// init_lexer(input);
+		handle_builtins(input, env);
 		free(input);
 	}
 }
