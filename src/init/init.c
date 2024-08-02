@@ -26,31 +26,21 @@ void	init_shell(char **env)
 		printf("~%s@%s ", user, host);
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
+
+		// init_lexer(input);
+		handle_builtins(input, env);
 		init_lexer(input, ft_strlen(input), &lex);
 
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
 			clear_prompts();
-		if (ft_strcmp(input, "pwd") == 0)
-		{
-			char *cwd = get_dir();
-			printf("\033[1;32m%s\033[0;0m\n", cwd);
-		}
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
 		
 		while (lex.token_list)
 		{
-			if (ft_strcmp(lex.token_list->value, "echo") == 0)
-			{
-					if (ft_strcmp(lex.token_list->next->value, "-n") == 0)
-					{
-						printf("%s", lex.token_list->next->next->value);
-					}
-					else if (lex.token_list->next->type == TYPE_WORD)
-						printf("%s\n", lex.token_list->next->value);
-			}
+			printf("%s\n", lex.token_list->next->value);
 			lex.token_list = lex.token_list->next;
 		}
 		free(input);
