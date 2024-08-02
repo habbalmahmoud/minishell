@@ -67,7 +67,7 @@ char	**ft_glob(const char *pattern, int *hits)
 	{
 		if (match(pattern, entry->d_name))
 		{
-			matches = ft_calloc((count + 1), sizeof(char *));
+			matches = realloc(matches, (count + 1) * sizeof(char *));
 			if (matches == NULL)
 			{
 				perror("realloc");

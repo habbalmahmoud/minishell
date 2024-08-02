@@ -20,8 +20,7 @@ typedef struct	s_lex_utils
 	char	c;
 	int	i;
 	int	j;
-	int	token_type;
-	char	*str;
+	char	*input;
 }	t_lex_utils;
 
 typedef struct s_lexer

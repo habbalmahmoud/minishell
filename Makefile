@@ -10,7 +10,7 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -g -I $(HEADER) #-fsanitize=address
 
-SRCS = main lexer/token/token lexer/token/token_helpers lexer/lexer lexer/lexer_helpers lexer/ft_glob init/init builtins/pwd builtins/cd builtins/env utils/prompt_utils
+SRCS = main lexer/token/token lexer/token/token_helpers lexer/lexer lexer/lexer_helpers lexer/ft_glob init/init builtins/pwd builtins/cd builtins/env builtins/handle_builtins utils/prompt_utils
 
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))

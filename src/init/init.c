@@ -27,7 +27,6 @@ void	init_shell(char **env)
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
 
-		// init_lexer(input);
 		handle_builtins(input, env);
 		init_lexer(input, ft_strlen(input), &lex);
 
@@ -40,33 +39,9 @@ void	init_shell(char **env)
 		
 		while (lex.token_list)
 		{
-			printf("%s\n", lex.token_list->next->value);
+			printf("%s\n", lex.token_list->value);
 			lex.token_list = lex.token_list->next;
 		}
 		free(input);
 	}
 }
-
-/*
-void	init_shell(char **env)
-{
-	char	*input;
-	t_lexer	lex;
-	char	*prompt;
-	char 	user[1024];
-	char 	host[1024];
-
-	while (1)
-	{
-		input = readline("minishell >");
-		add_history(input);
-		init_lexer(input, ft_strlen(input), &lex);
-		while (lex.token_list)
-		{
-			printf("VALUE: %s\n", lex.token_list->value);
-			lex.token_list = lex.token_list->next;
-		}
-		free(input);
-	}
-} */
-
