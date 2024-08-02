@@ -16,10 +16,14 @@ char    *get_home_dir(char **env)
 void    handle_builtins(char *input, char **env)
 {
     char    *home;
+    char    *path;
 
+    path = ft_substr(input, 3, ft_strlen(input) - 3);
     home = get_home_dir(env);
     if (ft_strncmp(input, "cd", 2) == 0)
-        change_dir(ft_substr(input, 3, ft_strlen(input) - 3), home);
+        change_dir(path, home);
     if ((ft_strcmp(input, "pwd") == 0))
         printf("%s\n", get_dir());
+    free(path);
+    free(home);
 }

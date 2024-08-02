@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_glob.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:56 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/01 15:42:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/02 15:51:48 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/lexer.h"
+# include "../../includes/minishell.h"
 # include <dirent.h>
 
 static int	match(const char *pattern, const char *string)
@@ -67,7 +68,7 @@ char	**ft_glob(const char *pattern, int *hits)
 	{
 		if (match(pattern, entry->d_name))
 		{
-			matches = ft_calloc((count + 1), sizeof(char *));
+			matches = realloc(matches, (count + 1) * sizeof(char *));
 			if (matches == NULL)
 			{
 				perror("realloc");

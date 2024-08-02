@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:29:58 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/02 14:22:23 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ void	init_shell(char **env)
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
 
-		// init_lexer(input);
-		handle_builtins(input, env);
 		init_lexer(input, ft_strlen(input), &lex);
+		handle_builtins(input, env);
 
 		if (!input)
 			break ;
@@ -40,7 +39,7 @@ void	init_shell(char **env)
 		
 		while (lex.token_list)
 		{
-			printf("%s\n", lex.token_list->next->value);
+			printf("%s\n", lex.token_list->value);
 			lex.token_list = lex.token_list->next;
 		}
 		free(input);

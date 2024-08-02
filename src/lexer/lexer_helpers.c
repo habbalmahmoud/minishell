@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:45 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/01 15:42:47 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/02 15:55:30 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void	clean_input(char *input, char *res)
 	{
 		c = input[i];
 		if ((c == 34 || c == 39) && end_literal == 0)
-			end_literal = c;
-		else if (end_literal == c)
+			end_literal = 1;
+		else if (end_literal == 1)
 			end_literal = 0;
 		else
 			res[j++] = c;

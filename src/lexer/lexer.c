@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/02 13:01:33 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/02 16:00:07 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,122 +18,7 @@ static void	handle_state_out(t_lexer *lex, t_token *token, int type, int *state)
 static void	lexer_skip(int size, int type, t_token *token, t_lexer *lex);
 static void	lexer_next(int size, int type, t_token *token, int i);
 
-// int	init_lexer(char *input, int len, t_lexer *lex)
-// {
-//  	int	state;
-//  	t_token	*token;
-// 	int i = 0;
-// 	int j = 0;
-// 	char c;
 
-//  	state = STATE_ANY;
-// 	lex->token_list = malloc(sizeof(t_token));
-// 	lex->util = malloc(sizeof(t_lex_utils));
-// 	token = lex->token_list;
-// 	init_token(token, len);
-// 	do
-// 	{
-// 		c = input[i];
-// 		int type = assign_type(c);
-// 		if (state == STATE_ANY)
-// 		{
-// 			if (type == TYPE_QUOTE)
-// 			{
-// 				state = IN_QUOTES;
-// 				token->value[j++] = TYPE_QUOTE;
-// 				token->type = TOKEN;
-// 			}
-// 			if (type == TYPE_DQUOTE)
-// 			{
-// 				state = IN_DQUOTES;
-// 				token->value[j++] = TYPE_DQUOTE;
-// 				token->type = TOKEN;
-// 			}
-// 			if (type == TYPE_ESC)
-// 			{
-// 				token->value[j++] = input[++i];
-// 				token->type = TOKEN;
-// 			}
-		
-// 			if (type == TYPE_WORD)
-// 			{
-// 				token->value[j++] = c;
-// 				token->type = TOKEN;
-// 			}
-// 			if (type == TYPE_SPACE)
-// 			{
-// 				if (j > 0)
-// 				{
-// 					token->value[j] = 0;
-// 					token->next = ft_calloc(1, sizeof(t_token));
-// 					token = token->next;
-// 					init_token(token, len - i);
-// 					j = 0;
-// 				}
-// 			}
-// 			if (type == TYPE_SEMI || TYPE_PIPE || TYPE_LSHIFT || TYPE_LSHIFT)
-// 			{
-// 				if (j > 0)
-// 				{
-// 					token->value[j] = 0;
-// 					token->next = ft_calloc(1, sizeof(t_token));
-// 					token = token->next;
-// 					init_token(token, len - i);
-// 					j = 0;
-// 				}
-// 				token->value[0] = type;
-// 				token->value[1] = 0;
-// 				token->type = type;
-// 				token->next = ft_calloc(1, sizeof(t_token));
-// 				token = token->next;
-// 				init_token(token, len - i);
-// 			}
-// 		}
-// 			else if (state == IN_DQUOTES)
-// 			{
-// 				token->value[j++] = c;
-// 				if (type = TYPE_DQUOTE)
-// 					state = STATE_ANY;
-// 			}
-// 			else if (state == IN_QUOTES)
-// 			{
-// 				token->value[j++] = c;
-// 				if (type = TYPE_QUOTE)
-// 					state = STATE_ANY;
-// 			}
-// 			if (type == TYPE_NULL)
-// 			{
-// 				if (j > 0)
-// 				{
-// 					token->value[j] = TYPE_NULL;
-// 					j = 0;
-// 				}
-// 			}
-// 		i++;
-// 	} while(c != '\0');
-// 	token = lex->token_list;
-// 	int k = 0;
-// 	while (token)
-// 	{
-// 		if (token->type == TOKEN)
-// 		{
-// 			int hits;
-// 			char **matches = ft_glob(token->value, &hits);
-// 			if (hits > 0)
-// 			{
-// 				k += hits;
-// 				handle_wildcards(token, hits, matches);
-// 			}
-// 			else {
-// 				token->value = remove_quotes(token);
-// 				k++;
-// 			}
-// 		}
-// 		token = token->next;
-// 	}
-// 	lex->count = k;
-// 	return (k);
-// }
 int init_lexer(char *input, int len, t_lexer *lex) {
     int state = STATE_ANY;
     t_token *token;

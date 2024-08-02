@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:59 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:30:42 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/02 14:52:40 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 
 void	init_shell(char **env);
 char    **copy_2d_array(char **str);
+int     twoD_array_length(char **str);
 char    *fun_prompt(void);
 void	clear_prompts(void);
-
+char    **ft_realloc(char **str, int count, int size);
 
 
 /*////////////////////////////////////////
