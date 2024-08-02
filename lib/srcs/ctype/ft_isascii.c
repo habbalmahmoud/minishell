@@ -24,8 +24,6 @@ int	test_for_ascii(int c)
 int	ft_isascii(int c)
 {
 	if (!(test_for_ascii(c)))
-	{
 		return (0);
-	}
 	return (1);
 }
