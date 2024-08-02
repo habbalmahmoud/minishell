@@ -19,10 +19,12 @@
 # include "../lib/includes/libft.h"
 # include "./token.h"
 # include "./lexer.h"
+# include "./builtins.h"
 
 # define MAX(a, b) a > b ? a : b
 
 void	init_shell(char **env);
+char    **copy_2d_array(char **str);
 char    *fun_prompt(void);
 void	clear_prompts(void);
 
