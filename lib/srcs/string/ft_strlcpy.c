@@ -31,3 +31,17 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	dst[i] = '\0';
 	return (src_len);
 }
+
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+	
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i + 1] =  src[i];
+	return (dest);
+}
