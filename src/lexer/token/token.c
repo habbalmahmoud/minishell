@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:56:47 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/03 11:56:50 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/03 21:25:07 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ int	assign_type(char c)
 void	init_token(t_token *token, int n)
 {
 	token->value = ft_calloc(1, n + 1);
-	token->value[0] = 0;
+	token->value[0] = '\0';
 	token->type = TYPE_NULL;
 	token->next = NULL;
 }
-
 
 void	free_token_ll(t_token *token)
 {

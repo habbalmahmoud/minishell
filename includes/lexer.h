@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 12:40:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/03 23:12:22 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ typedef struct s_lexer
 /*////////////////////////////////////////
 *		GLOB(3) ALT		//
 *////////////////////////////////////////		
-char **ft_glob(const char *pattern, int *num_matches);
+int	ft_glob(const char *pattern, t_list **glob_list);
 
 /*////////////////////////////////////
 ///		LEX LUTHER	   //
 //////////////////////////////////*/
 int	init_lexer(char *input, int len, t_lexer *lex);
-int	count_tokenized(t_lexer *lex, t_token **token, int type);
+int	count_tokenized(t_lexer *lex, t_token *token, int type);
 t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token);
 void	tokenize(t_lexer *lex, t_token **token, int type, int *state);
 
@@ -47,7 +47,8 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state);
 ///		LEX HELP	   //
 //////////////////////////////////*/
 void	clean_input(char *input, char *res);
-void	handle_wildcards(t_token *token, int count, char **hits);
+void	handle_wildcards(t_token *token, int count, char **matches);
+void	handle_wildcards_2(t_token *token, char *match);
 char	*remove_quotes(t_token *token);
 int		assign_type(char c);
 

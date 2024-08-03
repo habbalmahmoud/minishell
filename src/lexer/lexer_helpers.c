@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:45 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/01 15:42:47 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/03 23:35:47 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,40 @@ char	*remove_quotes(t_token *token)
 	return(clean);
 }
 
-void	handle_wildcards(t_token *token, int count, char **hits)
+void	handle_wildcards(t_token *token, int count, char **glob_list)
 {
 	t_token	*store;
-	int		i;
+	int	i = 0;
 
 	store = token->next;
-        free(token->value);
-        token->value = ft_calloc(1, ft_strlen(hits[0]) + 1);
-        ft_strcpy(token->value, hits[0]);
-	i = 1;
-	while (i < count)
+	free(token->value);
+	token->value = ft_calloc(1, ft_strlen(glob_list[0]) + 1);
+	ft_strcpy(token->value, glob_list[0]);
+	while (++i < count)
 	{
-		token->next = malloc(sizeof(t_token));
-		init_token(token->next, ft_strlen(hits[i]));
+		token->next = ft_calloc(1, sizeof(t_token));
+		init_token(token->next, ft_strlen(glob_list[i]));
 		token = token->next;
 		token->type = TOKEN;
-		ft_strcpy(token->value, hits[i]);
-		i++;
+		ft_strcpy(token->value, glob_list[i]);
 	}
 	token->next = store;
-	i = -1;
-	while (++i < count) 
-		free(hits[i]);
-    	free(hits);
+	// ft_lstclear(c_glob_list);
+}
+
+void	handle_wildcards_2(t_token *token, char *match)
+{
+	t_token *store;
+	
+	// printf("%s\n", match);
+	store = token->next;
+	free(token->value);
+	token->next = ft_calloc(1, sizeof(t_token));
+		init_token(token->next, ft_strlen(match));
+		token = token->next;
+		token->type = TOKEN;
+		ft_strcpy(token->value, match);
+		token->next = store;
 }
 
 void	clean_input(char *input, char *res)
@@ -65,7 +75,6 @@ void	clean_input(char *input, char *res)
 		ft_strcpy(res, input);
 		return ;
 	}
-	printf("%s\n", input);
 	while (i < len)
 	{
 		c = input[i];
@@ -82,7 +91,7 @@ void	clean_input(char *input, char *res)
 
 t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token)
 {
-	lex->token_list = malloc(sizeof(t_token));
+	lex->token_list = malloc(sizeof(t_token)); 
 	token = lex->token_list;
 	lex->util = malloc(sizeof(t_lex_utils));
 	lex->util->i = 0;
@@ -91,30 +100,52 @@ t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token)
 	return (token);
 }
 
-int	count_tokenized(t_lexer *lex, t_token **token, int type)
+int	count_tokenized(t_lexer *lex, t_token *token, int type)
 {
 	int	count;
-	char	**matches;
 	int	hits;
+	t_list	*glob_list;
 	
 	count = 0;
-	while ((*token))
+	glob_list = NULL;
+	token = lex->token_list;
+	while (token)
 	{
-		if ((*token)->type == TOKEN)
+		if (token->type == TOKEN)
 		{
-			matches = ft_glob((*token)->value, &hits);
+			hits = ft_glob(token->value, &glob_list);
 			if (hits > 0)
 			{
 				count += hits;
-				handle_wildcards((*token), hits, matches);
+				// int	i = 0;
+				// char **matches = ft_calloc(hits, sizeof(char *));
+				// while (i < hits && glob_list)
+				// {
+				// 	matches[i] = ft_strdup(glob_list->content);
+				// 	printf("%s\n", matches[i]);
+				// 	glob_list = glob_list->next;
+				// 	i++;
+				// }
+				// i = 0;
+				// while (matches[i])
+				// {
+				// 	printf("%s\n", matches[i]);
+				// 	i++;
+				// }
+				while (glob_list)
+				{
+					handle_wildcards_2(token, glob_list->content);
+					glob_list = glob_list->next;
+				}
+				// handle_wildcards(token, count, matches);
 			}
 			else
 			{
-				(*token)->value = remove_quotes((*token));
+				token->value = remove_quotes(token);
 				count++;
 			}
 		}
-		(*token) = (*token)->next;
+		token = token->next;
 	}
 	lex->count = count;
 	return (count);

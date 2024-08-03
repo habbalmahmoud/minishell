@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:29:58 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/03 22:59:01 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ void	init_shell(char **env)
 			clear_prompts();
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		
+		while (lex.token_list)
+		{
+			printf("%s\n", lex.token_list->value);
+			lex.token_list = lex.token_list->next;
+		}
 		free(input);
 	}
 }
@@ -52,12 +56,11 @@ int init_lexer(char *input, int len, t_lexer *lex)
 	{
 		lex->util->c = input[lex->util->i];
 		type = assign_type(lex->util->c);
-		printf("%d\n", state);
 		tokenize(lex, &token, type, &state);
 		lex->util->i++;
 	}
 	if (lex->util->j > 0)
 		token->value[lex->util->j] = '\0';
 	token = lex->token_list;
-	return (count_tokenized(lex, &token, type));
+	return (count_tokenized(lex, token, type));
 }
