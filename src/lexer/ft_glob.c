@@ -30,14 +30,6 @@ static int	match(const char *pattern, const char *string)
 			}
 			return (0);
 		}
-		else if (*pattern == '?')
-		{
-			if (!*string)
-				return (0);
-			pattern++;
-			string++;
-		}
-		else
 		{
 			if (*pattern != *string)
 				return (0);

@@ -39,6 +39,9 @@ char **ft_glob(const char *pattern, int *num_matches);
 ///		LEX LUTHER	   //
 //////////////////////////////////*/
 int	init_lexer(char *input, int len, t_lexer *lex);
+int	count_tokenized(t_lexer *lex, t_token **token, int type);
+t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token);
+void	tokenize(t_lexer *lex, t_token **token, int type, int *state);
 
 /*////////////////////////////////////
 ///		LEX HELP	   //

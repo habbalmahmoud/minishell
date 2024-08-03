@@ -65,6 +65,7 @@ void	clean_input(char *input, char *res)
 		ft_strcpy(res, input);
 		return ;
 	}
+	printf("%s\n", input);
 	while (i < len)
 	{
 		c = input[i];
@@ -79,3 +80,42 @@ void	clean_input(char *input, char *res)
 	res[j] = '\0';
 }
 
+t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token)
+{
+	lex->token_list = malloc(sizeof(t_token));
+	token = lex->token_list;
+	lex->util = malloc(sizeof(t_lex_utils));
+	lex->util->i = 0;
+	lex->util->j = 0;
+	lex->util->input = input;
+	return (token);
+}
+
+int	count_tokenized(t_lexer *lex, t_token **token, int type)
+{
+	int	count;
+	char	**matches;
+	int	hits;
+	
+	count = 0;
+	while ((*token))
+	{
+		if ((*token)->type == TOKEN)
+		{
+			matches = ft_glob((*token)->value, &hits);
+			if (hits > 0)
+			{
+				count += hits;
+				handle_wildcards((*token), hits, matches);
+			}
+			else
+			{
+				(*token)->value = remove_quotes((*token));
+				count++;
+			}
+		}
+		(*token) = (*token)->next;
+	}
+	lex->count = count;
+	return (count);
+}
