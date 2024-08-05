@@ -37,8 +37,6 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 			lex_and(lex, token, state, type);
 		else if (type == TYPE_PIPE)
 			lex_or(lex, token, state, type);
-		else if (type == TYPE_LPAREN || type == TYPE_RPAREN)
-			handle_paran(lex, token, state, type);
 	}
 	else if ((*state) == IN_QUOTES || (*state) == IN_DQUOTES)
 		handle_quote_state(lex, token, type, state);

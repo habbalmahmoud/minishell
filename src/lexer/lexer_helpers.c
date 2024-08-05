@@ -111,6 +111,8 @@ int	count_tokenized(t_lexer *lex, t_token *token, int type)
 		}
 		token = token->next;
 	}
+	count /= 2;
+	printf("%d\n", count);
 	lex->count = count;
 	return (count);
 }

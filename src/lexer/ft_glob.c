@@ -76,23 +76,24 @@ char	**ft_glob(const char *pattern, int *hits)
 	struct dirent	*entry;
 	DIR	*dir;
 	size_t	i;
+	size_t	j;
 	char	**matches;
 
 	i = ft_glob_init(pattern);
+	matches = (char **)malloc(sizeof(char *) * i);
 	dir = opendir(".");
 	if (!dir)
 	{
 		perror("opendir");
 		return (0);
 	}
-	matches = (char **)malloc(sizeof(char *) * i);
-	i = 0;
+	j = 0;
 	while ((entry = readdir(dir)))
 	{
 		if (match(pattern, entry->d_name))
 		{
-			matches[i] = ft_strdup(entry->d_name);
-			i++;
+			matches[j] = ft_strdup(entry->d_name);
+			j++;
 		}
 	}
 	*hits = i;
