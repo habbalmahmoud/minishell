@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/03 21:01:09 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/04 09:50:41 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,26 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 			lex_words(lex, (*token), type);
 		else if (type == TYPE_SPACE)
 			lex_next(lex, token, type, len);
-		else if (type == TYPE_SEMI || type == TYPE_PIPE 
-				|| type == TYPE_LSHIFT || type == TYPE_RSHIFT 
-				|| type == TYPE_AMPERSAND)
+		else if (type == TYPE_SEMI || type == TYPE_LSHIFT
+			|| type == TYPE_RSHIFT)
 			lex_next(lex, token, type, len);
+		else if (type == TYPE_AMPERSAND)
+			lex_and(lex, token, state, type, len);
+		else if (type == TYPE_PIPE)
+			lex_or(lex, token, state, type, len);
 	}
 	else if ((*state) == IN_QUOTES || (*state) == IN_DQUOTES)
 		handle_quote_state(lex, token, type, state);
+	else if ((*state) == IN_AND)
+	{
+		handle_and_state(lex, token, type, len);
+		(*state) = STATE_ANY;
+	}
+	else if ((*state) == IN_OR)
+	{
+		handle_or_state(lex, token, type, len);
+		(*state) = STATE_ANY;
+	}
 	if (type == TYPE_NULL)
 		terminate_token(lex, token, type);
 }
