@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:38:24 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:29:51 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	lex_next(t_lexer *lex, t_token **token, int type, int len);
 static void	handle_quote_state(t_lexer *lex, t_token **token, int type, int *state);
 static void	terminate_token(t_lexer *lex, t_token **token, int type);
 
-void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
+int	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 {
 	int	len;
 
@@ -38,7 +38,7 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 		else if (type == TYPE_PIPE)
 			lex_or(lex, token, state, type);
 		else if (type == TYPE_LPAREN || type == TYPE_RPAREN)
-			handle_paran(lex, token, state, type);
+			return (handle_paran(lex, token, state, type));
 	}
 	else if ((*state) == IN_QUOTES || (*state) == IN_DQUOTES)
 		handle_quote_state(lex, token, type, state);
@@ -54,6 +54,7 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	}
 	if (type == TYPE_NULL)
 		terminate_token(lex, token, type);
+	return (0);
 }
 
 static void	lex_next(t_lexer *lex, t_token **token, int type, int len)
@@ -123,7 +124,7 @@ static void	lex_words(t_lexer *lex, t_token *token, int type)
 {
 	if (type == TYPE_ESC)
 	{
-		token->value[lex->util->j++] = lex->util->input[++(lex->util->i)];
+		token->value[lex->util->j++] = ++(*lex->util->c_input);
 		token->type = TOKEN;
 	}
 	else if (type == TYPE_WORD)

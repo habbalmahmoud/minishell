@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:38:38 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:56:15 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ typedef struct	s_lex_utils
 	int	i;
 	int	j;
 	char	*input;
+	char	*c_input;
+	int		glob_c;
+	int		rec_count;
 }	t_lex_utils;
 
 typedef struct s_lexer
@@ -38,10 +41,10 @@ char	**ft_glob(const char *pattern, int *hits);
 /*////////////////////////////////////
 ///		LEX LUTHER	   //
 //////////////////////////////////*/
-int	init_lexer(char *input, int len, t_lexer *lex);
+int	init_lexer(char *input, int len, t_lexer *lex, t_token **token);
 int	count_tokenized(t_lexer *lex, t_token *token, int type);
 t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token);
-void	tokenize(t_lexer *lex, t_token **token, int type, int *state);
+int		tokenize(t_lexer *lex, t_token **token, int type, int *state);
 void	handle_and_state(t_lexer *lex, t_token **token, int type, int len);
 void	handle_or_state(t_lexer *lex, t_token **token, int type, int len);
 void	lex_and(t_lexer *lex, t_token **token, int *state, int type);
@@ -55,6 +58,6 @@ void	handle_wildcards(t_token *token, int count, char **matches);
 void	handle_wildcards_2(t_token *token, char *match, int *clock);
 char	*remove_quotes(t_token *token);
 int		assign_type(char c);
-void	handle_paran(t_lexer *lex, t_token *token, int *state, int type);
+int		handle_paran(t_lexer *lex, t_token **token, int *state, int type);
 
 #endif
