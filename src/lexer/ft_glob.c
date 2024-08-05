@@ -48,12 +48,11 @@ static int	match(const char *pattern, const char *string)
 	return (*string == '\0');
 }
 
-int	ft_glob(const char *pattern, t_list **glob_list)
+static size_t	ft_glob_init(const char *pattern)
 {
-	struct dirent *entry;
+	struct dirent	*entry;
 	DIR	*dir;
-	int		count;
-	t_list	*new;
+	int	count;
 
 	count = 0;
 	dir = opendir(".");
@@ -65,14 +64,39 @@ int	ft_glob(const char *pattern, t_list **glob_list)
 	while ((entry = readdir(dir)))
 	{
 		if (match(pattern, entry->d_name))
-		{
-			new = ft_lstnew(entry->d_name);
-			ft_lstadd_back(glob_list, new);
 			count++;
-		}
 	}
 	closedir(dir);
 	return (count);
+
 }
 
+char	**ft_glob(const char *pattern, int *hits)
+{
+	struct dirent	*entry;
+	DIR	*dir;
+	size_t	i;
+	char	**matches;
+
+	i = ft_glob_init(pattern);
+	dir = opendir(".");
+	if (!dir)
+	{
+		perror("opendir");
+		return (0);
+	}
+	matches = (char **)malloc(sizeof(char *) * i);
+	i = 0;
+	while ((entry = readdir(dir)))
+	{
+		if (match(pattern, entry->d_name))
+		{
+			matches[i] = ft_strdup(entry->d_name);
+			i++;
+		}
+	}
+	*hits = i;
+	closedir(dir);
+	return (matches);
+}
 

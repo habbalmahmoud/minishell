@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 09:02:56 by mhabbal           #+#    #+#             */
-/*   Updated: 2024/08/04 09:52:42 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/05 11:03:23 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ void	handle_and_state(t_lexer *lex, t_token **token, int type, int len)
 	}
 }
 
-void	lex_and(t_lexer *lex, t_token **token, int *state, int type, int len)
+void	lex_and(t_lexer *lex, t_token **token, int *state, int type)
 {
+	int	len;
+
+	len = ft_strlen(lex->util->input);
 	if (lex->util->j > 0)
 	{
 		(*token)->value[lex->util->j] = '\0';
@@ -83,8 +86,11 @@ void	handle_or_state(t_lexer *lex, t_token **token, int type, int len)
 	}
 }
 
-void	lex_or(t_lexer *lex, t_token **token, int *state, int type, int len)
+void	lex_or(t_lexer *lex, t_token **token, int *state, int type)
 {
+	int	len;
+
+	len = ft_strlen(lex->util->input);
 	if (lex->util->j > 0)
 	{
 		(*token)->value[lex->util->j] = '\0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:28:07 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/04 08:55:42 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/05 11:42:05 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,14 @@ typedef enum e_token_type
 	STATE_ANY,
 	IN_AND,
 	IN_OR,
+	IN_PARAN,
 }	t_token_type;
 
 typedef struct s_token
 {
 	char	*value;
 	int	type;
+	struct s_token *sub_token;
 	struct s_token *next;
 } t_token;
 

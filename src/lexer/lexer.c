@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/04 09:50:41 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/05 11:38:24 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ void	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 			|| type == TYPE_RSHIFT)
 			lex_next(lex, token, type, len);
 		else if (type == TYPE_AMPERSAND)
-			lex_and(lex, token, state, type, len);
+			lex_and(lex, token, state, type);
 		else if (type == TYPE_PIPE)
-			lex_or(lex, token, state, type, len);
+			lex_or(lex, token, state, type);
+		else if (type == TYPE_LPAREN || type == TYPE_RPAREN)
+			handle_paran(lex, token, state, type);
 	}
 	else if ((*state) == IN_QUOTES || (*state) == IN_DQUOTES)
 		handle_quote_state(lex, token, type, state);
