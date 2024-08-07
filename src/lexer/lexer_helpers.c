@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:45 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 15:48:35 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/07 11:01:38 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	clean_input(char *input, char *res)
 
 t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token)
 {
-	lex->token_list = malloc(sizeof(t_token)); 
+	lex->token_list = malloc(sizeof(t_token));
 	token = lex->token_list;
 	lex->util->i = 0;
 	lex->util->j = 0;

@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 16:29:51 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/07 11:15:00 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	lex_words(t_lexer *lex, t_token *token, int type);
 static void	lex_next(t_lexer *lex, t_token **token, int type, int len);
 static void	handle_quote_state(t_lexer *lex, t_token **token, int type, int *state);
 static void	terminate_token(t_lexer *lex, t_token **token, int type);
+void	lex_quote(t_lexer *lex, t_token **token, int type, int *state);
 
 int	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 {
@@ -25,7 +26,7 @@ int	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	if ((*state) == STATE_ANY)
 	{
 		if (type == TYPE_QUOTE || TYPE_DQUOTE)
-			handle_quote_state(lex, token, type, state);
+			lex_quote(lex, token, type, state);
 		if (type == TYPE_ESC || type == TYPE_WORD)
 			lex_words(lex, (*token), type);
 		else if (type == TYPE_SPACE)
@@ -38,7 +39,7 @@ int	tokenize(t_lexer *lex, t_token **token, int type, int *state)
 		else if (type == TYPE_PIPE)
 			lex_or(lex, token, state, type);
 		else if (type == TYPE_LPAREN || type == TYPE_RPAREN)
-			return (handle_paran(lex, token, state, type));
+			return (handle_paran(&lex, token, state, type));
 	}
 	else if ((*state) == IN_QUOTES || (*state) == IN_DQUOTES)
 		handle_quote_state(lex, token, type, state);
@@ -82,7 +83,7 @@ static void	lex_next(t_lexer *lex, t_token **token, int type, int len)
 	}
 }
 
-static void	handle_quote_state(t_lexer *lex, t_token **token, int type, int *state)
+void	lex_quote(t_lexer *lex, t_token **token, int type, int *state)
 {
 	if (type == TYPE_QUOTE)
 	{
@@ -96,13 +97,18 @@ static void	handle_quote_state(t_lexer *lex, t_token **token, int type, int *sta
 		(*token)->value[lex->util->j++] = TYPE_DQUOTE;
 		(*token)->type = TOKEN;
 	}
-	else if ((*state) == IN_DQUOTES)
+}
+
+static void	handle_quote_state(t_lexer *lex, t_token **token, int type, int *state)
+{
+	
+	if ((*state) == IN_DQUOTES)
 	{
 		(*token)->value[lex->util->j++] = lex->util->c;
 		if (type == TYPE_DQUOTE)
 			(*state) = STATE_ANY;
 	}
-	else if ((*state) == IN_QUOTES)
+	 else if ((*state) == IN_QUOTES)
 	{
 		(*token)->value[lex->util->j++] = lex->util->c;
 		if (type == TYPE_QUOTE)

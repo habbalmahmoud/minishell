@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:08 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:30:09 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/07 13:12:48 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/lexer.h"
+
 /* CREATE PROMPT TITLE -- display exit code, hostname and username + current working directory 
  * MISC FUNCTIONS --
  *
  * */
 
 #include "../../includes/minishell.h"
+
+
+
 
 int twoD_array_length(char **str)
 {

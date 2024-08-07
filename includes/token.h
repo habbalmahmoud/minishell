@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:28:07 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:42:05 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/07 16:02:11 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 //                                                              file2
 // */
 /* SOME TOKEN TYPE SHOULD BE REMOVED */
+struct	t_lex_utils;
+struct t_lexer;
+struct t_token;
+
+
 typedef enum e_token_type
 {
 	TYPE_SPACE = 32,
@@ -65,7 +70,30 @@ typedef struct s_token
 	int	type;
 	struct s_token *sub_token;
 	struct s_token *next;
+	struct	s_lexer	*sub_lex;
 } t_token;
+
+typedef struct	s_lex_utils
+{
+	char	c;
+	int	i;
+	int	j;
+	char	*input;
+	char	*c_input;
+	int		glob_c;
+	int		rec_count;
+	int		clock;
+}	t_lex_utils;
+
+typedef struct s_lexer
+{
+	t_token	*token_list;
+	t_lex_utils	*util;
+	struct s_lexer	*sub_lex;
+	int		count;
+	struct s_lexer *next;
+} t_lexer;
+
 
 int	return_whitespaces(char c);
 int	return_operators(char c);
