@@ -2,6 +2,14 @@
     "files.associations": {
         "minishell.h": "c",
         "lexer.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "token.h": "c",
+        "list.h": "c",
+        "builtins.h": "c",
+        "custom.h": "c",
+        "ft_stdlib.h": "c",
+        "ft_string.h": "c",
+        "ft_ctype.h": "c",
+        "stdio.h": "c"
     }
 }

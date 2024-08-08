@@ -13,7 +13,7 @@ STRING_SRC	= ft_memset ft_bzero ft_memchr ft_memcpy ft_strdup ft_strlcpy ft_strn
 
 CTYPE_SRC	= ft_isalpha ft_isalnum ft_isdigit ft_isprint ft_isspace ft_tolower ft_toupper ft_isascii
 
-LIST_SRC	= ft_lstadd_back ft_lstclear ft_lstiter ft_lstmap ft_lstsize ft_lstadd_front ft_lstdelone ft_lstlast ft_lstnew
+LIST_SRC	= ft_lstadd_back ft_lstclear ft_lstiter ft_lstsize ft_lstadd_front ft_lstdelone ft_lstlast ft_lstnew
 
 STDLIB_SRC	= ft_atoi ft_calloc ft_malloc
 
@@ -63,13 +63,11 @@ objs/%.o:	srcs/%.c
 	@printf "\033[?25l"
 	@printf "$(_ERASE)\r"
 	@printf "$<$(_END)\n"
-	@sleep 0.02
 	@for i in $$(seq 1 $(CNT)); \
 	do \
 		printf "$(OK_COLOR)*"; \
 	done
 	$(eval CNT=$(shell echo $$(($(CNT) + 1))))
-	@sleep 0.02
 	@printf "\r$(_MUP)"
 
 

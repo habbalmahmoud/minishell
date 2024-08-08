@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 19:02:37 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:30:11 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/08 14:37:19 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "./sig_guard/sig_guard.h"
+
 
 int	main(int ac, char **av, char **env)
 {

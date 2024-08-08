@@ -6,11 +6,13 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:45 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/07 11:01:38 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/08 15:09:37 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/token.h"
+#include "../../includes/lexer.h"
 
 char	*remove_quotes(t_token *token)
 {
@@ -34,7 +36,7 @@ void	handle_wildcards(t_token *token, int count, char **glob_list)
 	while (++i < count)
 	{
 		token->next = ft_calloc(1, sizeof(t_token));
-		init_token(token->next, ft_strlen(glob_list[i]));
+		init_token(token->next, ft_strlen(glob_list[i]), token->id);
 		token = token->next;
 		token->type = TOKEN;
 		ft_strcpy(token->value, glob_list[i]);
@@ -81,6 +83,7 @@ t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->c_input = input;
+	lex->child = ft_calloc(1, sizeof(t_list));
 	return (token);
 }
 

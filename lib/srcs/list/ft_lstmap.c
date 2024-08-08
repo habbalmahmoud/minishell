@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 11:25:33 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/03 17:59:46 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/08 13:38:00 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
+#include "../../includes/list.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *))
+
+t_list	*ft_lstmap(t_list *lst, void *(*f)(int))
 {
 	t_list	*new;
 	t_list	*res;
@@ -20,7 +22,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *))
 	res = NULL;
 	while (lst)
 	{
-		new = ft_lstnew(f(lst->content));
+		new = ft_lstnew(f(lst->id));
 		if (!new)
 			ft_lstdelone(new);
 		else

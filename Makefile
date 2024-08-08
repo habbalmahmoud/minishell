@@ -1,6 +1,6 @@
 NAME = minishell
 
-HEADER = ./includes/minishell.h
+HEADER = ./includes/
 
 AUTHOR = nkanaan && mhabbal
 
@@ -8,9 +8,9 @@ LIBFT = lib/libft.a
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -I $(HEADER) -g #-fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror #-fsanitize=address
 
-SRCS = main lexer/token/token lexer/token/token_helpers lexer/lexer lexer/lexer_paran_utils lexer/lexer_helpers lexer/lexer_utils lexer/ft_glob init/init builtins/pwd builtins/cd builtins/env builtins/handle_builtins utils/prompt_utils
+SRCS = main lexer/token/token lexer/token/token_helpers lexer/lexer lexer/lexer_paran_utils lexer/lexer_helpers lexer/lexer_utils lexer/ft_glob init/init builtins/pwd builtins/cd builtins/env builtins/handle_builtins utils/prompt_utils 
 
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
@@ -53,7 +53,7 @@ objs/%.o:	src/%.c
 			@${CC} ${FLAGS} -c $< -o $@
 
 $(NAME):	$(OBJS) $(LIBFT) $(HEADER)
-			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
 			@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 $(LIBFT):

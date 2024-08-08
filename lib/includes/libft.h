@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:32:10 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/06/17 10:17:03 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/08 13:18:25 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@
 # include "./ft_string.h"
 # include "./ft_stdlib.h"
 # include "./custom.h"
-# include "./list.h"
+// # include "./list.h"
 #endif

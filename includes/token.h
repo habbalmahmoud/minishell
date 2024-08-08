@@ -6,32 +6,21 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:28:07 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/07 16:02:11 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/08 13:25:10 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_H
 # define TOKEN_H
 # include "./minishell.h"
+// # include "../lib/includes/list.h"
 
-// /*
-//                  __ PIPE__
-//                      ___/              \____
-//                     /                       \
-//             COMMAND                    __ PIPE _
-//           /        \                  /         \
-//     ARGUMENTS   REDIRECTIONS	    CMD        _ CMD__
-//         |          |     |           |           /    \
-//        cat        <<     >       ARGUMENTS    ARGUMENTS	    REDIR
-//                    |     |         |   |      |   |   |        |
-//                  "..."  file      wc  -c      tr  -d " "       >
-//                                                                |
-//                                                              file2
-// */
-/* SOME TOKEN TYPE SHOULD BE REMOVED */
-struct	t_lex_utils;
-struct t_lexer;
-struct t_token;
+
+struct	s_lex_utils;
+struct s_lexer;
+struct s_list;
+struct s_token;
+
 
 
 typedef enum e_token_type
@@ -64,13 +53,13 @@ typedef enum e_token_type
 	IN_PARAN,
 }	t_token_type;
 
+
 typedef struct s_token
 {
 	char	*value;
-	int	type;
-	struct s_token *sub_token;
+	int		type;
 	struct s_token *next;
-	struct	s_lexer	*sub_lex;
+	int		id;
 } t_token;
 
 typedef struct	s_lex_utils
@@ -85,20 +74,27 @@ typedef struct	s_lex_utils
 	int		clock;
 }	t_lex_utils;
 
+typedef struct s_list
+{
+	int				id;
+	struct s_list		*next;
+	struct s_lexer				*lexer;
+}	t_list;
+
 typedef struct s_lexer
 {
 	t_token	*token_list;
 	t_lex_utils	*util;
-	struct s_lexer	*sub_lex;
+	t_list		**child;
 	int		count;
-	struct s_lexer *next;
 } t_lexer;
+
 
 
 int	return_whitespaces(char c);
 int	return_operators(char c);
 int	return_literals(char c);
 void	free_token(t_token *token);
-void	init_token(t_token *token, int n);
+void	init_token(t_token *token, int n, int id);
 
 #endif

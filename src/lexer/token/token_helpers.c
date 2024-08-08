@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:57:01 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:34:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/08 14:03:21 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../../includes/minishell.h"
+#include "../../../includes/token.h"
+#include "../../../includes/lexer.h"
 
 int	return_whitespaces(char c)
 {

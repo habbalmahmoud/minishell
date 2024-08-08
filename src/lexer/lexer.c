@@ -6,11 +6,13 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/07 11:15:00 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/08 14:03:32 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/token.h"
+#include "../../includes/lexer.h"
 
 static void	lex_words(t_lexer *lex, t_token *token, int type);
 static void	lex_next(t_lexer *lex, t_token **token, int type, int len);
@@ -66,8 +68,8 @@ static void	lex_next(t_lexer *lex, t_token **token, int type, int len)
 		(*token)->next = ft_calloc(1, sizeof(t_token));
 		if ((*token)->next == NULL)
 			return ;
+		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
-		init_token((*token), len - lex->util->i);
 		lex->util->j = 0;
 	}
 	if (type != TYPE_SPACE)
@@ -78,8 +80,8 @@ static void	lex_next(t_lexer *lex, t_token **token, int type, int len)
 		(*token)->next = ft_calloc(1, sizeof(t_token));
 		if ((*token)->next == NULL)
 			return;
+		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
-		init_token(*token, len - lex->util->i);
 	}
 }
 

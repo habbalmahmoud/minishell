@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:36:11 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/08 13:19:34 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/08 15:05:33 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	t_list	*end;
 
 	if (lst == NULL)
+	{
 		return ;
+	}
 	while (*lst == NULL)
 	{
 		*lst = new;
