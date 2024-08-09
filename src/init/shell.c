@@ -15,28 +15,21 @@
 #include "../../includes/lexer.h"
 
 
+static t_token	*init_shell_vars(t_lexer *lex);
 
 void	init_shell(char **env)
 {
 	char	*input;
 	t_lexer	*lex;
 	t_token	*token;
-	char 	user[1024];
-	char 	host[1024];
 
-	(void)env;
-	getlogin_r(user, sizeof(user));
-	gethostname(host, sizeof(host));
-	lex = malloc(sizeof(t_lexer));
-	lex->util = malloc(sizeof(t_lex_utils));
-	lex->util->rec_count = 0;
-	token = malloc(sizeof(t_token));
+	lex = NULL;
+	token = init_shell_vars(lex);
 	while (1)
 	{
-		printf("~%s@%s ", user, host);
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
-		//handle_builtins(input, env);
+		handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		if (!input)
 			break ;
@@ -45,9 +38,19 @@ void	init_shell(char **env)
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
 		l_recursive_print(lex, 0);
-		// printf("MAIN: %s\n", (*lex->child)->lexer->token_list->value);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;
 	}
+}
+
+static t_token	*init_shell_vars(t_lexer *lex)
+{
+	t_token *token;
+
+	lex = malloc(sizeof(t_lexer));
+	lex->util = malloc(sizeof(t_lex_utils));
+	lex->util->rec_count = 0;
+	token = malloc(sizeof(t_token));
+	return (token);
 }

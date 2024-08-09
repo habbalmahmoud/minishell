@@ -21,7 +21,6 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 	{
 		if ((*lex)->util->clock == 0 && *(*lex)->util->input_ptr == ')')
 		{
-			//printf("FIRST\n");
 			(*state) = STATE_ANY;
 			(*token)->value[(*lex)->util->j++] = TYPE_RPAREN;
 			(*token)->value[(*lex)->util->j] = TYPE_NULL;
