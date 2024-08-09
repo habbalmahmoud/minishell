@@ -1,6 +1,6 @@
 NAME = minishell
 
-HEADER = ./includes/minishell.h
+HEADER = ./includes/
 
 AUTHOR = nkanaan && mhabbal
 
@@ -8,12 +8,25 @@ LIBFT = lib/libft.a
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -I $(HEADER) -g #-fsanitize=address
+CFLAGS = -Werror -Wall -Wextra #-fsanitize=address
 
-SRCS = main lexer/token/token lexer/token/token_helpers lexer/lexer lexer/lexer_helpers lexer/lexer_utils lexer/ft_glob init/init builtins/pwd builtins/cd builtins/env builtins/handle_builtins utils/prompt_utils
+SRCS = main init/lexer init/shell misc/prompt_utils misc/printing
 
+BUILTIN_SRCS = cd echo pwd env handle_builtins
+
+LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
+utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
+utils/operators/l_ampersand utils/operators/l_pipes utils/parens/l_parens
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
+
+BUILTIN_SRC = $(addprefix src/builtins/, $(addsuffix .c, $(BUILTIN_SRCS)))
+
+LEXER_SRC = $(addprefix src/lexer/, $(addsuffix .c, $(LEXER_SRCS)))
+
+OBJS = $(addprefix objs/, $(addsuffix .o, $(SRCS)))
+BUILTIN_OBJS = $(addprefix objs/builtins/, $(addsuffix .o, $(BUILTIN_SRCS)))
+LEXER_OBJS = $(addprefix objs/lexer/, $(addsuffix .o, $(LEXER_SRCS)))
 
 SHELL := /bin/bash
 
@@ -30,7 +43,6 @@ _WHITE		=	\e[37m
 _MUP		=	\e[1A
 _ERASE		=	\e[K
 
-OBJS = $(addprefix objs/, $(addsuffix .o, $(SRCS)))
 
 all: header $(NAME)
 
@@ -49,12 +61,24 @@ header:
 	@echo
 
 objs/%.o:	src/%.c
-			@mkdir -p $(dir $@)
-			@${CC} ${FLAGS} -c $< -o $@
+	@mkdir -p $(dir $@)
+	@${CC} ${CFLAGS} -c $< -o $@
+	@printf "\033[?25l"
+	@printf "$(_ERASE)\r"
+	@printf "$<$(_END)\n"
+	@sleep 0.02
+	@for i in $$(seq 1 $(CNT)); \
+	do \
+		printf "$(OK_COLOR)*"; \
+	done
+	$(eval CNT=$(shell echo $$(($(CNT) + 1))))
+	@sleep 0.02
+	@printf "\r$(_MUP)"
 
-$(NAME):	$(OBJS) $(LIBFT) $(HEADER)
-			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
-			@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+
+$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(OBJS) $(LIBFT) $(HEADER)
+	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(LEXER_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+	@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 $(LIBFT):
 			@make -C ./lib

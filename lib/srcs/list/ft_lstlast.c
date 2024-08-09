@@ -25,3 +25,17 @@ t_list	*ft_lstlast(t_list *lst)
 	}
 	return (temp);
 }
+
+t_lex_ll	*l_lstlast(t_lex_ll *lst)
+{
+	t_lex_ll	*temp;
+	
+	temp = lst;
+	if (!temp)
+		return (NULL);
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+	}
+	return (temp);
+}

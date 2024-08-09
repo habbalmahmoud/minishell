@@ -1,66 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/04 01:06:26 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/09 09:31:57 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/builtins.h"
+#include "../../includes/lexer.h"
+
+
 
 void	init_shell(char **env)
 {
 	char	*input;
-	t_lexer	lex;
+	t_lexer	*lex;
+	t_token	*token;
 	char 	user[1024];
 	char 	host[1024];
 
+	(void)env;
 	getlogin_r(user, sizeof(user));
 	gethostname(host, sizeof(host));
+	lex = malloc(sizeof(t_lexer));
+	lex->util = malloc(sizeof(t_lex_utils));
+	lex->util->rec_count = 0;
+	token = malloc(sizeof(t_token));
 	while (1)
 	{
 		printf("~%s@%s ", user, host);
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
-		handle_builtins(input, env);
-		init_lexer(input, ft_strlen(input), &lex);
+		//handle_builtins(input, env);
+		init_lexer(input, 0, &lex, &token);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
 			clear_prompts();
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		while (lex.token_list)
-		{
-			printf("%s\n", lex.token_list->value);
-			lex.token_list = lex.token_list->next;
-		}
+		l_recursive_print(lex, 0);
+		// printf("MAIN: %s\n", (*lex->child)->lexer->token_list->value);
 		free(input);
+		lex->util->clock = 0;
+		lex->util->rec_count = 0;
 	}
-}
-
-int init_lexer(char *input, int len, t_lexer *lex)
-{
-	int	state;
-	int	type;
-	t_token	*token;
-
-	state = STATE_ANY;
-	token = init_vars(input, len, lex, token);
-	init_token(token, len);
-	while (input[lex->util->i] != '\0') 
-	{
-		lex->util->c = input[lex->util->i];
-		type = assign_type(lex->util->c);
-		tokenize(lex, &token, type, &state);
-		lex->util->i++;
-	}
-	if (lex->util->j > 0)
-		token->value[lex->util->j] = '\0';
-	token = lex->token_list;
-	return (count_tokenized(lex, token, type));
 }

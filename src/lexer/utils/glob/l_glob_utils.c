@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_glob.c                                          :+:      :+:    :+:   */
+/*   l_glob_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 15:42:56 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/03 22:05:40 by nkanaan          ###   ########.fr       */
+/*   Created: 2024/08/07 09:07:20 by nkanaan           #+#    #+#             */
+/*   Updated: 2024/08/07 09:07:21 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/lexer.h"
-# include <dirent.h>
+#include "../../../../includes/minishell.h"
+#include "../../../../includes/lexer.h"
+#include <dirent.h>
 
-static int	match(const char *pattern, const char *string)
+int	l_glob_match(const char *pattern, const char *string)
 {
 	while (*pattern)
 	{
@@ -24,7 +25,7 @@ static int	match(const char *pattern, const char *string)
 				return 1;
 			while (*string)
 			{
-				if (match(pattern, string))
+				if (l_glob_match(pattern, string))
 					return (1);
 				string++;
 			}
@@ -48,7 +49,27 @@ static int	match(const char *pattern, const char *string)
 	return (*string == '\0');
 }
 
-static size_t	ft_glob_init(const char *pattern)
+void	l_handler_wildcards(t_token *token, int count, char **glob_list)
+{
+	t_token	*store;
+	int	i = 0;
+
+	store = token->next;
+	free(token->value);
+	token->value = ft_calloc(1, ft_strlen(glob_list[0]) + 1);
+	ft_strcpy(token->value, glob_list[0]);
+	while (++i < count)
+	{
+		token->next = ft_calloc(1, sizeof(t_token));
+		init_token(token->next, ft_strlen(glob_list[i]), token->id);
+		token = token->next;
+		token->type = TOKEN;
+		ft_strcpy(token->value, glob_list[i]);
+	}
+	token->next = store;
+}
+
+size_t	l_glob_count(const char *pattern)
 {
 	struct dirent	*entry;
 	DIR	*dir;
@@ -63,41 +84,10 @@ static size_t	ft_glob_init(const char *pattern)
 	}
 	while ((entry = readdir(dir)))
 	{
-		if (match(pattern, entry->d_name))
+		if (l_glob_match(pattern, entry->d_name))
 			count++;
 	}
 	closedir(dir);
 	return (count);
 
 }
-
-char	**ft_glob(const char *pattern, int *hits)
-{
-	struct dirent	*entry;
-	DIR	*dir;
-	size_t	i;
-	size_t	j;
-	char	**matches;
-
-	i = ft_glob_init(pattern);
-	matches = (char **)malloc(sizeof(char *) * i);
-	dir = opendir(".");
-	if (!dir)
-	{
-		perror("opendir");
-		return (0);
-	}
-	j = 0;
-	while ((entry = readdir(dir)))
-	{
-		if (match(pattern, entry->d_name))
-		{
-			matches[j] = ft_strdup(entry->d_name);
-			j++;
-		}
-	}
-	*hits = i;
-	closedir(dir);
-	return (matches);
-}
-

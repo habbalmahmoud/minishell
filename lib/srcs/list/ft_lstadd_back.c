@@ -26,3 +26,18 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	end = ft_lstlast(*lst);
 	end->next = new;
 }
+
+void	l_lstadd_back(t_lex_ll **lst, t_lex_ll *new)
+{
+	t_lex_ll	*end;
+
+	if (lst == NULL)
+		return ;
+	while (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	end = l_lstlast(*lst);
+	end->next = new;
+}

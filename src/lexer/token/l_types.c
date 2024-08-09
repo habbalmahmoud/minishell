@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_helpers.c                                    :+:      :+:    :+:   */
+/*   l_types.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 11:57:01 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:34:57 by nkanaan          ###   ########.fr       */
+/*   Created: 2024/08/07 09:07:16 by nkanaan           #+#    #+#             */
+/*   Updated: 2024/08/07 09:07:17 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../../../includes/minishell.h"
+#include "../../../includes/lexer.h"
 
 int	return_whitespaces(char c)
 {
@@ -25,6 +24,7 @@ int	return_whitespaces(char c)
 		return (TYPE_NEWLINE);
 	if (c == '\0')
 		return (TYPE_EOF);
+	return (0);
 }
 
 int	return_operators(char c)
@@ -39,6 +39,7 @@ int	return_operators(char c)
 		return (TYPE_AMPERSAND);
 	if (c == ';')
 		return (TYPE_SEMI);
+	return (0);
 }
 
 int	return_literals(char c)
@@ -53,4 +54,5 @@ int	return_literals(char c)
 		return (TYPE_RPAREN);
 	if (c == '=')
 		return (TYPE_EQUAL);
+	return (0);
 }

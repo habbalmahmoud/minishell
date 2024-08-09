@@ -16,6 +16,7 @@ int	main(int ac, char **av, char **env)
 {
 	char	**c_env;
 
+	(void)av;
 	c_env = copy_2d_array(env);
 	if (ac != 1)
 		exit(printf("Invalid args\n"));

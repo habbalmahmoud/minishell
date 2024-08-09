@@ -15,46 +15,39 @@
 # include "./minishell.h"
 # include "./token.h"
 
-typedef struct	s_lex_utils
-{
-	char	c;
-	int	i;
-	int	j;
-	char	*input;
-}	t_lex_utils;
+/*/////////////////////////////////////////////////////////////
+////////////		TYPES			    //////////
+////////////////////////////////////////////////////////////*/
+int	init_lexer(char *input, int id, t_lexer **lex, t_token **token);
+int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state);
+/*/////////////////////////////////////////////////////////////
+////////////		QUOTES			    //////////
+////////////////////////////////////////////////////////////*/
+void	l_state_handler_quote_in(t_lexer *lex, t_token **token, int type, int *state);
+void	l_state_handler_quote_exit(t_lexer *lex, t_token **token, int type, int *state);
+char	*l_remove_quotes(t_token *token);
 
-typedef struct s_lexer
-{
-	t_token	*token_list;
-	t_lex_utils	*util;
-	int		count;
-} t_lexer;
+/*/////////////////////////////////////////////////////////////
+////////////		OPERATORS		    //////////
+////////////////////////////////////////////////////////////*/
+void	l_tokenize_ampersand(t_lexer *lex, t_token **token, int *state, int type);
+void	l_handler_ampersand(t_lexer *lex, t_token **token, int type, int len);
+void	l_tokenize_pipe(t_lexer *lex, t_token **token, int *state, int type);
+void	l_handler_pipe(t_lexer *lex, t_token **token, int type, int len);
+void	l_tokenize_next(t_lexer *lex, t_token **token, int type, int len);
+void	l_tokenize_words(t_lexer *lex, t_token *token, int type);
+int	handle_paren(t_lexer **lex, t_token **token, int *state, int type);
 
-/*////////////////////////////////////////
-*		GLOB(3) ALT		//
-*////////////////////////////////////////		
-char	**ft_glob(const char *pattern, int *hits);
+/*/////////////////////////////////////////////////////////////
+////////////		GLOBBING		    //////////
+////////////////////////////////////////////////////////////*/
+char	**l_glob(const char *pattern, int *hits);
+int	l_glob_match(const char *pattern, const char *string);
+void	l_handler_wildcards(t_token *token, int count, char **glob_list);
+size_t	l_glob_count(const char *pattern);
 
-/*////////////////////////////////////
-///		LEX LUTHER	   //
-//////////////////////////////////*/
-int	init_lexer(char *input, int len, t_lexer *lex);
-int	count_tokenized(t_lexer *lex, t_token *token, int type);
-t_token	*init_vars(char *input, int len, t_lexer *lex, t_token *token);
-void	tokenize(t_lexer *lex, t_token **token, int type, int *state);
-void	handle_and_state(t_lexer *lex, t_token **token, int type, int len);
-void	handle_or_state(t_lexer *lex, t_token **token, int type, int len);
-void	lex_and(t_lexer *lex, t_token **token, int *state, int type);
-void	lex_or(t_lexer *lex, t_token **token, int *state, int type);
-
-/*////////////////////////////////////
-///		LEX HELP	   //
-//////////////////////////////////*/
-void	clean_input(char *input, char *res);
-void	handle_wildcards(t_token *token, int count, char **matches);
-void	handle_wildcards_2(t_token *token, char *match, int *clock);
-char	*remove_quotes(t_token *token);
-int		assign_type(char c);
-void	handle_paran(t_lexer *lex, t_token *token, int *state, int type);
+/*/////////////////////////////////////////////////////////////
+////////////		LEXER_UTILS		    //////////
+////////////////////////////////////////////////////////////*/
 
 #endif

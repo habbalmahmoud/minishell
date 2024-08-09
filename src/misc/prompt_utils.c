@@ -10,12 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/lexer.h"
 /* CREATE PROMPT TITLE -- display exit code, hostname and username + current working directory 
  * MISC FUNCTIONS --
  *
  * */
-
 #include "../../includes/minishell.h"
 
 int twoD_array_length(char **str)

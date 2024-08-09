@@ -23,3 +23,16 @@ t_list	*ft_lstnew(char *content)
 	node->next = NULL;
 	return (node);
 }
+
+t_lex_ll	*l_lstnew(int id)
+{
+	t_lex_ll	*node;
+
+	node = malloc(sizeof(t_lex_ll));
+	if (!node)
+		return (NULL);
+	node->id = id;
+	node->next = NULL;
+	node->lexer = NULL;
+	return (node);
+}

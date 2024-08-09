@@ -17,23 +17,18 @@
 # include <readline/history.h>
 # include <string.h>
 # include "../lib/includes/libft.h"
-# include "./token.h"
-# include "./lexer.h"
-# include "./builtins.h"
+# include "./structs.h"
 
 # define MAX(a, b) a > b ? a : b
 
+/*/////////////////////////////////////////////////////////////
+////////////		INITS			    //////////
+////////////////////////////////////////////////////////////*/
 void	init_shell(char **env);
 char    **copy_2d_array(char **str);
 char    *fun_prompt(void);
 void	clear_prompts(void);
-
-
-
-/*////////////////////////////////////////
-//////          BUILTINS            //////
-///////////////////////////////////////*/
-char    *get_dir(void);
+void	l_recursive_print(t_lexer *lex, int id);
 
 
 #endif

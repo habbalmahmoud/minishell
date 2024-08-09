@@ -1,34 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 12:28:07 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:42:05 by nkanaan          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TOKEN_H
 # define TOKEN_H
 # include "./minishell.h"
 
-// /*
-//                  __ PIPE__
-//                      ___/              \____
-//                     /                       \
-//             COMMAND                    __ PIPE _
-//           /        \                  /         \
-//     ARGUMENTS   REDIRECTIONS	    CMD        _ CMD__
-//         |          |     |           |           /    \
-//        cat        <<     >       ARGUMENTS    ARGUMENTS	    REDIR
-//                    |     |         |   |      |   |   |        |
-//                  "..."  file      wc  -c      tr  -d " "       >
-//                                                                |
-//                                                              file2
-// */
-/* SOME TOKEN TYPE SHOULD BE REMOVED */
+
 typedef enum e_token_type
 {
 	TYPE_SPACE = 32,
@@ -59,18 +33,13 @@ typedef enum e_token_type
 	IN_PARAN,
 }	t_token_type;
 
-typedef struct s_token
-{
-	char	*value;
-	int	type;
-	struct s_token *sub_token;
-	struct s_token *next;
-} t_token;
-
+int	l_token_count(t_lexer *lex, t_token *token, int type);
+void	free_token_ll(t_token *token);
+int	l_assign_type(char c);
 int	return_whitespaces(char c);
 int	return_operators(char c);
 int	return_literals(char c);
-void	free_token(t_token *token);
-void	init_token(t_token *token, int n);
+void	l_terminate_token(t_lexer *lex, t_token **token);
+void	init_token(t_token *token, int n, int id);
 
 #endif
