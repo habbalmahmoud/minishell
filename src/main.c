@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "./sig_guard/sig_guard.h"
+// #include "./sig_guard/sig_guard.h"
 
 
 int	main(int ac, char **av, char **env)

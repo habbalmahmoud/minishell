@@ -96,5 +96,6 @@ int	return_operators(char c);
 int	return_literals(char c);
 void	free_token(t_token *token);
 void	init_token(t_token *token, int n, int id);
+void close_values(char *input, t_lexer **lexer);
 
 #endif

@@ -13,6 +13,53 @@
 #include "../../includes/minishell.h"
 #include "../../includes/token.h"
 #include "../../includes/lexer.h"
+
+static void	print_tokens(t_token *token_list, int id)
+{
+	while (token_list) 
+	{
+		if (token_list->value)
+		{
+			if (id == 0) 
+			{
+				printf("MAIN LEVEL: %s\n", token_list->value);
+			}
+			else
+			{
+				printf("CHILD LEVEL %d: %s\n", id, token_list->value);
+			}
+		}
+		token_list = token_list->next;
+        }
+}
+
+void	l_recursive_print(t_lexer *lex, int id)
+{
+	int	 i;
+	t_list	**child;
+
+	i = 0;
+	if (!lex)
+		return ;
+	if (lex->token_list)
+		print_tokens(lex->token_list, id);
+	if ((*lex->child))
+	{
+		while ((*lex->child))
+		{
+			child = lex->child;
+			while ((*child))
+			{
+				if ((*child)->lexer)
+					l_recursive_print((*child)->lexer, id + 1);
+				(*child) = (*child)->next;
+			}
+			i++;
+		}
+	}
+}
+
+
 void	init_shell(char **env)
 {
 	char	*input;
@@ -29,11 +76,13 @@ void	init_shell(char **env)
 	token = malloc(sizeof(t_token));
 	while (1)
 	{
+		lex->util->clock = 0;
 		printf("~%s@%s ", user, host);
 		input = readline("\033[1;31m=> \033[0;0m");
 		add_history(input);
 		handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
+		close_values(input, &lex);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
@@ -56,7 +105,7 @@ void	init_shell(char **env)
 		// 					(*(*lex->child)->lexer->child) = (*(*lex->child)->lexer->child)->next;
 		// 				while ((*lex->child)->lexer->token_list)
 		// 				{
-		// 					printf("SUB SUB: %s\n", (*lex->child)->next->lexer->token_list->value);
+		// 					printf("SUB SUB: hits%s\n", (*lex->child)->next->lexer->token_list->value);
 		// 					(*(*lex->child)->lexer->child) = (*(*lex->child)->lexer->child)->next;
 		// 				}
 		// 			}
@@ -65,12 +114,13 @@ void	init_shell(char **env)
 		// 	}
 		// 	lex->token_list = lex->token_list->next;
 		// }
-		printf("MAIN: %s\n", (*lex->child)->lexer->token_list->value);
+		l_recursive_print(lex, 0);
+		// printf("%s\n", lex->token_list->next->next->next->value);
 		// // if ((*(*(*lex->child)->lexer->child)->lexer->child))
 		// printf("%s\n", (*(*lex->child)->lexer->child)->lexer->token_list->next->value);
 		free(input);
 		lex->util->rec_count = 0;
-		lex->util->clock = 0;
+		
 	}
 }
 
@@ -94,6 +144,7 @@ int init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 		{
 			if ((*lex)->util->j > 0)
 				(*token)->value[(*lex)->util->j] = '\0';
+			(*token) = (*lex)->token_list;
 			return (count_tokenized((*lex), (*token), type));
 		}
 		(*lex)->util->i++;

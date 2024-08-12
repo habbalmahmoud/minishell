@@ -17,8 +17,7 @@
  * */
 
 #include "../../includes/minishell.h"
-
-
+#include "../../includes/token.h"
 
 
 int twoD_array_length(char **str)
@@ -66,3 +65,4 @@ void	clear_prompts(void)
 	 printf("\033[H\033[J");
 }
 
+// (hello(wrold(dwa)
