@@ -21,22 +21,22 @@
 typedef enum e_ast_type
 {
 	GENERAL,
-	SIMPLE,
-	IDK,
+	SIMPLECOMMAND,
+	REDIRECTIN,
 }	t_ast_type;
 
 typedef struct s_leaf
 {
-	char *value;
+	char	**value;
 	t_ast_type type;
 }	t_leaf;
 
 typedef struct s_tree
 {
-	t_leaf *left;
-	t_leaf *right;
+	t_leaf	*root;
+	t_leaf	*left;
+	t_leaf	*right;
 }	t_tree;
-
 
 void	init_parser(t_lexer **lexer);
 

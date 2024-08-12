@@ -31,20 +31,19 @@ void	init_shell(char **env)
 	token = malloc(sizeof(t_token));
 	while (1)
 	{
-		input = readline("\033[1;31m nkanaan@minishell=> \033[0;0m");
+		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		// close_values(input, &lex);
-		//init_parser(&lex);
+		init_parser(&lex);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
 			clear_prompts();
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		l_recursive_print(lex, 0);
-		// printf("%s\n", lex->token_list->next->next->next->next->next->next->next->next->next->next->value);
+		//l_recursive_print(lex, 0);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;
