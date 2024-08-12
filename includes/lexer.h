@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/05 11:38:38 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/12 11:49:04 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	l_tokenize_pipe(t_lexer *lex, t_token **token, int *state, int type);
 void	l_handler_pipe(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_next(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_words(t_lexer *lex, t_token *token, int type);
-int	handle_paren(t_lexer **lex, t_token **token, int *state, int type);
+int     handle_paren(t_lexer **lex, t_token **token, int *state, int type);
 
 /*/////////////////////////////////////////////////////////////
 ////////////		GLOBBING		    //////////
@@ -46,8 +46,10 @@ int	l_glob_match(const char *pattern, const char *string);
 void	l_handler_wildcards(t_token *token, int count, char **glob_list);
 size_t	l_glob_count(const char *pattern);
 
+
 /*/////////////////////////////////////////////////////////////
 ////////////		LEXER_UTILS		    //////////
 ////////////////////////////////////////////////////////////*/
+void    close_values(char *input, t_lexer **lexer);
 
 #endif

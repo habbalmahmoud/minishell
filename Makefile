@@ -16,7 +16,7 @@ BUILTIN_SRCS = cd echo pwd env handle_builtins
 
 LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
 utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
-utils/operators/l_ampersand utils/operators/l_pipes utils/parens/l_parens
+utils/operators/l_ampersand utils/operators/l_pipes utils/parens/l_parens utils/parens/l_paren_utils
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 

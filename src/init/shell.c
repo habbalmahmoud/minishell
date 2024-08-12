@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/09 09:31:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/12 11:44:53 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../includes/lexer.h"
 
 
-static t_token	*init_shell_vars(t_lexer *lex);
+//static t_token	*init_shell_vars(t_lexer *lex);
 
 void	init_shell(char **env)
 {
@@ -23,14 +23,19 @@ void	init_shell(char **env)
 	t_lexer	*lex;
 	t_token	*token;
 
-	lex = NULL;
-	token = init_shell_vars(lex);
+	(void)env;
+	lex = malloc(sizeof(t_lexer));
+	lex->util = malloc(sizeof(t_lex_utils));
+	lex->util->rec_count = 0;
+	token = malloc(sizeof(t_token));
+	//token = init_shell_vars(lex);
 	while (1)
 	{
-		input = readline("\033[1;31m=> \033[0;0m");
+		input = readline("\033[1;31m nkanaan@minishell=> \033[0;0m");
 		add_history(input);
-		handle_builtins(input, env);
+		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
+		close_values(input, &lex);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
@@ -44,6 +49,7 @@ void	init_shell(char **env)
 	}
 }
 
+/*
 static t_token	*init_shell_vars(t_lexer *lex)
 {
 	t_token *token;
@@ -53,4 +59,4 @@ static t_token	*init_shell_vars(t_lexer *lex)
 	lex->util->rec_count = 0;
 	token = malloc(sizeof(t_token));
 	return (token);
-}
+} */
