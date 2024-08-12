@@ -14,10 +14,6 @@
 #include "../../includes/lexer.h"
 #include "../../includes/ast.h"
 
-
-
-//static t_token	*init_shell_vars(t_lexer *lex);
-
 void	init_shell(char **env)
 {
 	char	*input;
@@ -36,7 +32,7 @@ void	init_shell(char **env)
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		// close_values(input, &lex);
-		init_parser(&lex);
+		//init_parser(&lex);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
@@ -44,6 +40,7 @@ void	init_shell(char **env)
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
 		//l_recursive_print(lex, 0);
+		printf("%d\n", lex->token_list->type);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

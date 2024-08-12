@@ -16,7 +16,10 @@ BUILTIN_SRCS = cd echo pwd env handle_builtins
 
 LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
 utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
-utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect utils/parens/l_parens utils/parens/l_paren_utils
+utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect \
+utils/parens/l_parens utils/parens/l_paren_utils
+
+PARSER_SRCS = p_build
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 
@@ -24,9 +27,12 @@ BUILTIN_SRC = $(addprefix src/builtins/, $(addsuffix .c, $(BUILTIN_SRCS)))
 
 LEXER_SRC = $(addprefix src/lexer/, $(addsuffix .c, $(LEXER_SRCS)))
 
+PARSER_SRC = $(addprefix src/parser/, $(addsuffix .c, $(PARSER_SRCS)))
+
 OBJS = $(addprefix objs/, $(addsuffix .o, $(SRCS)))
 BUILTIN_OBJS = $(addprefix objs/builtins/, $(addsuffix .o, $(BUILTIN_SRCS)))
 LEXER_OBJS = $(addprefix objs/lexer/, $(addsuffix .o, $(LEXER_SRCS)))
+PARSER_OBJS = $(addprefix objs/parser/, $(addsuffix .o, $(PARSER_SRCS)))
 
 SHELL := /bin/bash
 
@@ -76,8 +82,8 @@ objs/%.o:	src/%.c
 	@printf "\r$(_MUP)"
 
 
-$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(OBJS) $(LIBFT) $(HEADER)
-	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(LEXER_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(OBJS) $(LIBFT) $(HEADER)
+	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(PARSER_OBJS) $(LEXER_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
 	@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 $(LIBFT):

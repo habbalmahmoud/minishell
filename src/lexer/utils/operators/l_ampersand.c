@@ -39,6 +39,7 @@ void	l_handler_ampersand(t_lexer *lex, t_token **token, int type, int len)
 	{
 		(*token)->value[lex->util->j++] = type;
 		(*token)->value[lex->util->j] = '\0';
+		(*token)->type = TYPE_AND;
 		(*token)->next = ft_calloc(1, sizeof(t_token));
 		if ((*token)->next == NULL)
 			return ;

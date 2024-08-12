@@ -16,6 +16,8 @@ typedef enum e_token_type
 	TYPE_LPAREN = '(',
 	TYPE_RPAREN = ')',
 	TYPE_AMPERSAND = '&',
+	TYPE_AND,
+	TYPE_OR,
 	TYPE_DOLLAR = '$',
 	TYPE_EQUAL = '=',
 	TYPE_TAB = '\t',

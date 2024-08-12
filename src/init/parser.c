@@ -8,8 +8,7 @@ void	init_parser(t_lexer **lex)
 	tree = ft_calloc(1, sizeof(t_tree));
 	while ((*lex)->token_list)
 	{
-		(void)tree;
-		printf("%s\n", (*lex)->token_list->value);
+		p_build_tree((*lex)->token_list, (*tree));
 		(*lex)->token_list = (*lex)->token_list->next;
 	}
 }
