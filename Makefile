@@ -10,13 +10,13 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra #-fsanitize=address
 
-SRCS = main init/lexer init/shell misc/prompt_utils misc/printing
+SRCS = main init/lexer init/shell init/parser misc/prompt_utils misc/printing
 
 BUILTIN_SRCS = cd echo pwd env handle_builtins
 
 LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
 utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
-utils/operators/l_ampersand utils/operators/l_pipes utils/parens/l_parens utils/parens/l_paren_utils
+utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect utils/parens/l_parens utils/parens/l_paren_utils
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 

@@ -23,23 +23,23 @@ static void	print_tokens(t_token *token_list, int id)
 void	l_recursive_print(t_lexer *lex, int id)
 {
 	int	 i;
-	t_lex_ll	*child;
+	t_lex_ll	**child;
 
 	i = 0;
 	if (!lex)
 		return ;
 	if (lex->token_list)
 		print_tokens(lex->token_list, id);
-	if (lex->child)
+	if ((*lex->child))
 	{
-		while (lex->child[i])
+		while ((*lex->child))
 		{
-			child = lex->child[i];
-			while (child)
+			child = lex->child;
+			while ((*child))
 			{
-				if (child->lexer)
-					l_recursive_print(child->lexer, id + 1);
-				child = child->next;
+				if ((*child)->lexer)
+					l_recursive_print((*child)->lexer, id + 1);
+				(*child) = (*child)->next;
 			}
 			i++;
 		}

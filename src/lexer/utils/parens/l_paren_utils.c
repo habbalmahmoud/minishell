@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:42:25 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/12 11:48:24 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/12 14:16:03 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,10 @@ void close_values(char *input, t_lexer **lexer)
 
     l_paran_num = count_paran(input, '(');
     r_paran_num = count_paran(input, ')');
-    if (l_paran_num == r_paran_num)
+    if (!(l_paran_num < r_paran_num))
     {
         l_recursive_fill((*lexer), 0);
     }
     else if (l_paran_num < r_paran_num)
         printf("Syntax Error\n");
-    else
-        special_fill(l_paran_num - r_paran_num, (*lexer));
 }

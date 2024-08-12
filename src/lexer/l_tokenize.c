@@ -24,11 +24,10 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 			l_state_handler_quote_in(lex, token, type, state);
 		if (type == TYPE_ESC || type == TYPE_WORD)
 			l_tokenize_words(lex, (*token), type);
-		else if (type == TYPE_SPACE)
+		else if (type == TYPE_SPACE || type == TYPE_SEMI)
 			l_tokenize_next(lex, token, type, len);
-		else if (type == TYPE_SEMI || type == TYPE_LSHIFT
-			|| type == TYPE_RSHIFT)
-			l_tokenize_next(lex, token, type, len);
+		else if (type == TYPE_LSHIFT || type == TYPE_RSHIFT)
+			l_tokenize_heredoc(lex, token, state, type);
 		else if (type == TYPE_AMPERSAND)
 			l_tokenize_ampersand(lex, token, state, type);
 		else if (type == TYPE_PIPE)
@@ -41,6 +40,16 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	else if ((*state) == IN_AND)
 	{
 		l_handler_ampersand(lex, token, type, len);
+		(*state) = STATE_ANY;
+	}
+	else if ((*state) == IN_HEREDOC)
+	{
+		l_handler_heredoc(lex, token, type);
+		(*state) = STATE_ANY;
+	}
+	else if ((*state) == IN_APPEND)
+	{
+		l_handler_append(lex, token, type);
 		(*state) = STATE_ANY;
 	}
 	else if ((*state) == IN_OR)
@@ -82,18 +91,3 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
  *			=> COMMAND + FILES SET AS STRING (WORD) TYPE TOK
  *
  * */
-//////////////////// AST TEMPLATE ///////////////////////
-/*
-                 __ PIPE__
-                     ___/              \____
-                    /                       \
-            COMMAND                    __ PIPE _
-          /        \                  /         \
-    ARGUMENTS   REDIRECTIONS	    CMD        _ CMD__
-        |          |     |           |           /    \
-       cat        <<     >       ARGUMENTS    ARGUMENTS	    REDIR
-                   |     |         |   |      |   |   |        |
-                 "..."  file      wc  -c      tr  -d " "       >
-                                                               |
-                                                             file2
-*/

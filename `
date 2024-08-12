@@ -30,8 +30,7 @@ typedef enum e_token_type
 	STATE_ANY,
 	IN_AND,
 	IN_OR,
-	IN_HEREDOC,
-	IN_APPEND,
+	IN_REDIR,
 	IN_PARAN,
 }	t_token_type;
 

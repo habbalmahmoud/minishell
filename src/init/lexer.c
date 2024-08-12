@@ -6,9 +6,11 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:00 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/07 09:07:02 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/12 15:08:55 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 #include "../../includes/lexer.h"
 
 t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
@@ -50,6 +52,7 @@ int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 		{
 			if ((*lex)->util->j > 0)
 				(*token)->value[(*lex)->util->j] = '\0';
+			(*lex)->util->rec_count -= 1;
 			return (l_token_count((*lex), (*token), type));
 		}
 		(*lex)->util->i++;
