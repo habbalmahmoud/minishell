@@ -8,21 +8,25 @@ struct s_synatx_tree;
 typedef enum node_type
 {
 	AST_PIPE,
-	AST_REDIRECT,
+	AST_REDIRECT_FROM,
+	AST_REDIRECT_TO,
 	AST_COMMAND,
 	AST_AND,
 	AST_OR,
+	AST_FILE,
 }	e_node_type;
 
 typedef struct s_ast_node
 {
 	char	**args;			// 2d array for exec?? maybe single ptr -- check again
+	char	*in;
+	char	*out;
 	struct s_ast_node	*left;  // Normal binary tree
 	struct s_ast_node	*right; // Normal binary tree node
-	struct s_syntax_tree	*tree_link;
-	t_lexer		**lexer;
+	//struct s_syntax_tree	*tree_link;
+	//t_lexer		**lexer;
 	e_node_type	type; // Type of node -> if pipe takes left and right 
-	int	priority; // ?????? to check for parens??
+	//int	priority; // ?????? to check for parens??
 }	t_ast_node;
 
 typedef struct s_syntax_tree
@@ -30,8 +34,9 @@ typedef struct s_syntax_tree
 	struct s_ast_node	*branch;
 }	t_syntax_tree;
 
-void		init_parser(t_lexer **lexer);
-void		p_build_tree(t_token *token, t_syntax_tree *ast);
+void	init_parser(t_lexer **lexer);
+t_ast_node	*p_build_tree(t_token *token);
+char	*p_create_cmd_args(char *value, char *args);
 /* 
  * Create function for all cases :::
  * -> REDIRECT IN
@@ -43,9 +48,11 @@ void		p_build_tree(t_token *token, t_syntax_tree *ast);
  *  -> AND - OR - PIPE ---- IN THIS ORDER
  *  AFER BUILDING SINGLE NODES APPEND INTO MAIN STRUCT TO EXECUTE BASED ON PRIORITY ??
  */
-t_ast_node	*p_build_simple_command(char *cmd);
+t_ast_node	*p_build_simple_command(char *cmd, char *in, char *out);
 t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right);
-t_ast_node	*p_build_redirect(t_ast_node *left, char *infile);
+t_ast_node	*p_build_redirect_to(t_ast_node *left, char *outfile);
+t_ast_node	*p_build_redirect_from(t_ast_node *left, char *infile);
+t_ast_node	*find_right(t_lexer **lex);
 // ITERATE THROUGH TOKEN LIST IF NO DELIMITER APPEND TO SIMPLE COMMAND
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////// AST TEMPLATE ///////////////////////

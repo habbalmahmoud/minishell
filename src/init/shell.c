@@ -29,18 +29,16 @@ void	init_shell(char **env)
 	{
 		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
 		add_history(input);
+		rl_replace_line("hello", 0);
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
-		// close_values(input, &lex);
-		//init_parser(&lex);
+		init_parser(&lex);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)
 			clear_prompts();
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		//l_recursive_print(lex, 0);
-		printf("%d\n", lex->token_list->type);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

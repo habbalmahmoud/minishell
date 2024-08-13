@@ -19,7 +19,7 @@ utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
 utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect \
 utils/parens/l_parens utils/parens/l_paren_utils
 
-PARSER_SRCS = p_build
+PARSER_SRCS = p_build utils/p_tree_helpers utils/nodes/p_nodes
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 
