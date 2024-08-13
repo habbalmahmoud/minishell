@@ -5,33 +5,33 @@
 struct s_synatx_tree;
 
 // Follow BNF Format
-
 typedef enum node_type
 {
 	AST_PIPE,
 	AST_REDIRECT,
+	AST_COMMAND,
+	AST_AND,
+	AST_OR,
 }	e_node_type;
 
 typedef struct s_ast_node
 {
 	char	**args;			// 2d array for exec?? maybe single ptr -- check again
-	struct s_ast_node	*left;  // Normal binary tree stuff
-	struct s_ast_node	*right; // Normal binary tree stuff
+	struct s_ast_node	*left;  // Normal binary tree
+	struct s_ast_node	*right; // Normal binary tree node
+	struct s_syntax_tree	*tree_link;
+	t_lexer		**lexer;
 	e_node_type	type; // Type of node -> if pipe takes left and right 
-						// IF Simplecmd takes in command char 
-						// and init 2d array for exec
-	int	priority // ?????? to check for parens??
+	int	priority; // ?????? to check for parens??
 }	t_ast_node;
 
 typedef struct s_syntax_tree
 {
 	struct s_ast_node	*branch;
-	struct s_syntax_tree	*next;
 }	t_syntax_tree;
 
 void		init_parser(t_lexer **lexer);
-void		p_build_tree(t_token *token, t_ast_node *ast);
-
+void		p_build_tree(t_token *token, t_syntax_tree *ast);
 /* 
  * Create function for all cases :::
  * -> REDIRECT IN
@@ -46,11 +46,8 @@ void		p_build_tree(t_token *token, t_ast_node *ast);
 t_ast_node	*p_build_simple_command(char *cmd);
 t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right);
 t_ast_node	*p_build_redirect(t_ast_node *left, char *infile);
-
 // ITERATE THROUGH TOKEN LIST IF NO DELIMITER APPEND TO SIMPLE COMMAND
-
-//  !!!!!!!!!!!!!!!!!!!DONT SCROLL FURTHER!!!!!!!!!!!!!!!!!!!!!!
-
+/////////////////////////////////////////////////////////////////////////////////////////
 //////////////////// AST TEMPLATE ///////////////////////
 /*
                  __ PIPE__
