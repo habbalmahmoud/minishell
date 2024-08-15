@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/12 15:58:35 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/14 17:07:26 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,26 @@ void	init_shell(char **env)
 	lex->util = malloc(sizeof(t_lex_utils));
 	lex->util->rec_count = 0;
 	token = malloc(sizeof(t_token));
-	while (1)
-	{
-		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
+	// while (1)
+	// {
+		// input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
+		input = "echo hello && grep word | cat nooo || last cmd";
 		add_history(input);
-		rl_replace_line("hello", 0);
+		// rl_replace_line("hello", 0);
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		init_parser(&lex);
-		if (!input)
-			break ;
+		// l_recursive_print(lex, 0);
+		// if (!input)
+		// 	break ;
 		if (ft_strcmp(input, "clear") == 0)
 			clear_prompts();
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		free(input);
+		// free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;
-	}
+	// }
 }
 
 /*

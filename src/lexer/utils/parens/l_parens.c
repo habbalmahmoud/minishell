@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_parens.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:10:31 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/12 15:56:55 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/14 16:25:58 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,13 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 			(*state) = STATE_ANY;
 			(*token)->value[(*lex)->util->j++] = TYPE_RPAREN;
 			(*token)->value[(*lex)->util->j] = '\0';
-			(*token)->next = ft_calloc(1, sizeof(t_token));
-			if ((*token)->next == NULL)
-				return (0);
-			init_token((*token)->next, len - (*lex)->util->i, (*token)->id);
-			*token = (*token)->next;
-			(*lex)->util->j = 0;
+			// (*token)->next = ft_calloc(1, sizeof(t_token));
+			// if ((*token)->next == NULL)
+			// 	return (0);
+			// init_token((*token)->next, len - (*lex)->util->i, (*token)->id);
+			// *token = (*token)->next;
+			// (*lex)->util->j = 0;
+			(*lex)->util->i++;
 		}
 	}
 	return (0);

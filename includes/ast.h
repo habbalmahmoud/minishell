@@ -1,8 +1,16 @@
 #ifndef AST_H
 # define AST_H
 # include "./minishell.h"
+# include "./token.h"
 
 struct s_synatx_tree;
+
+
+#define ASSIGN(x) ((x) == TYPE_PIPE ? "|"  : \
+                          (x) == TYPE_AND ? "&&"   : \
+                          (x) == TYPE_OR ? "||"   : \
+                                     "")
+#define ASSIGN_TYPE(type) (type == TYPE_PIPE) ? AST_PIPE: (type == TYPE_AND) ? AST_AND:  (type == TYPE_OR) ? AST_OR: 0
 
 // Follow BNF Format
 typedef enum node_type

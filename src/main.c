@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/ast.h"
 
 int	main(int ac, char **av, char **env)
 {
