@@ -7,6 +7,7 @@ t_ast_node	*p_build_pipeline(t_token *token)
 	t_ast_node	*right;
 	char		*args;
 	char		**files;
+	int	id;
 
 	args = NULL;
 	node = NULL;
@@ -29,7 +30,7 @@ t_ast_node	*p_build_pipeline(t_token *token)
 				token = token->next->next;
 			else
 			{
-				node = p_build_simple_command(args, files[1], files[0]);
+				node = p_build_simple_command(args, files[1], files[0], token->id);
 				break ;
 			}
 		}
@@ -41,47 +42,50 @@ t_ast_node	*p_build_pipeline(t_token *token)
 				token = token->next->next;
 			else
 			{
-				node = p_build_simple_command(args, files[1], files[0]);
+				node = p_build_simple_command(args, files[1], files[0], token->id);
 				break ;
 			}
 		}
 		if (token->type == TYPE_PIPE)
 		{
-			node = p_build_simple_command(args, files[1], files[0]);
+			node = p_build_simple_command(args, files[1], files[0], token->id);
 			free(args);
 			args = NULL;
+			id = token->id;
 			token = token->next;
 			right = p_build_pipeline(token);
-			node = p_build_pipe(node, right);
+			node = p_build_pipe(node, right, id);
 			break ;
 		}
-		if (!token->next)
-		{
-			node = p_build_simple_command(args, files[1], files[0]);
-			return (node);
-		}
+		id = token->id;
 		token = token->next; 
 		if (token && (token->type == TYPE_AND || token->type == TYPE_OR))
 		{
-			node = p_build_simple_command(args, files[1], files[0]);
+			node = p_build_simple_command(args, files[1], files[0], token->id);
 			return (node);
 		}
+	}
+	if (!node)
+	{
+		node = p_build_simple_command(args, files[1], files[0], id);
+		return (node);
 	}
 	return (node);
 }
 
-
-t_ast_node	*p_build_sep(t_ast_node *left, t_ast_node *right, int type)
+t_ast_node	*p_build_sep(t_ast_node *left, t_ast_node *right, int type, int id)
 {
 	t_ast_node *node;
-	char	*sep;
+	//char	*sep;
 
+	(void)type;
 	node = ft_calloc(1, sizeof(t_ast_node));
 	node->left = left;
 	node->right = right;
-	node->type = ASSIGN_TYPE(type);
-	sep = ASSIGN(type);
-	node->args = ft_split(sep, ' ');
+	node->type = AST_AND;
+	//sep = ASSIGN(type);
+	node->args = ft_split("&&", ' ');
+	node->id = id;
 	return (node);
 }
 
@@ -92,6 +96,7 @@ t_ast_node	*p_build_tree(t_token *token)
 	char		*args;
 	char		**files;
 	int flag = 0;
+	int	id;
 
 	// root = ft_calloc(1, sizeof(t_ast_node));
 	args = NULL;
@@ -116,7 +121,7 @@ t_ast_node	*p_build_tree(t_token *token)
 				token = token->next->next;
 			else
 			{
-				node = p_build_simple_command(args, files[1], files[0]);
+				node = p_build_simple_command(args, files[1], files[0], token->id);
 				break ;
 			}
 		}
@@ -128,34 +133,37 @@ t_ast_node	*p_build_tree(t_token *token)
 				token = token->next->next;
 			else
 			{
-				node = p_build_simple_command(args, files[1], files[0]);
+				node = p_build_simple_command(args, files[1], files[0], token->id);
 				break ;
 			}
 		}
 		if (token->type == TYPE_PIPE)
 		{
-			node = p_build_simple_command(args, files[1], files[0]);
+			node = p_build_simple_command(args, files[1], files[0], token->id);
 			free(args);
 			args = NULL;
+			id = token->id;
 			token = token->next;
 			right = p_build_pipeline(token);
-			node = p_build_pipe(node, right);
+			node = p_build_pipe(node, right, id);
 			flag = 1;
 		}
 		if (token->type == TYPE_AND || token->type == TYPE_OR)
 		{
 			if (!flag)
-				node = p_build_simple_command(args, files[1], files[0]);
+				node = p_build_simple_command(args, files[1], files[0], token->id);
 			free(args);
 			args = NULL;
-			right = p_build_tree(token->next);
-			node = p_build_sep(node, right, token->type);
+			token = token->next;
+			right = p_build_tree(token);
+			node = p_build_sep(node, right, token->type, id);
 			break ;
 		}
+		id = token->id;
 		token = token->next;
 	}
 	if (!node)
-		node = p_build_simple_command(args, files[1], files[0]);
+		node = p_build_simple_command(args, files[1], files[0], id);
 	return (node);
 }
 

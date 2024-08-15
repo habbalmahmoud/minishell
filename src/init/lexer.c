@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:00 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/14 16:03:36 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/15 16:48:22 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,35 @@ void	init_token(t_token *token, int n, int id)
 	token->next = NULL;
 }
 
-int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
+int	init_lexer(char *input, int id, t_lexer **lex, t_token **head)
 {
 	int	state;
 	int	type;
 	size_t	len;
+	t_token *token;
 
+	token = (*head);
 	len = ft_strlen(input);
 	state = STATE_ANY;
-	(*token) = l_vars_init(input, (*lex), (*token));
-	init_token((*token), len, id);
+	token = l_vars_init(input, (*lex), token);
+	init_token(token, len, id);
+	// printf("%s\n", input);
 	while (*(*lex)->util->input_ptr) 
 	{
 		(*lex)->util->c = *(*lex)->util->input_ptr;
 		type = l_assign_type((*lex)->util->c);
-		if (l_tokenize((*lex), token, type, &state) == 1)
+		if (l_tokenize((*lex), &token, type, &state) == 1)
 		{
 			if ((*lex)->util->j > 0)
-				(*token)->value[(*lex)->util->j] = '\0';
+				token->value[(*lex)->util->j] = '\0';
 			(*lex)->util->rec_count -= 1;
-			return (l_token_count((*lex), (*token), type));
+			return (l_token_count((*lex), token, type));
 		}
 		(*lex)->util->i++;
 		(*lex)->util->input_ptr++;
 	}
 	if ((*lex)->util->j > 0)
-		(*token)->value[(*lex)->util->j] = '\0';
-	(*token) = (*lex)->token_list;
-	return (l_token_count((*lex), (*token), type));
+		token->value[(*lex)->util->j] = '\0';
+	token = (*lex)->token_list;
+	return (l_token_count((*lex), token, type));
 }

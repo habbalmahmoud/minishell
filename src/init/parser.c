@@ -76,6 +76,7 @@ void print_tree_bfs(t_ast_node *root) {
 				printf("%s", node->args[i]);
 			}
 			printf(" ]");
+            // printf("%d\n", node->id);
             // Enqueue children with next level
             if (node->left || node->right) {
                 enqueue(&q, node->left, level + 1);
@@ -87,17 +88,37 @@ void print_tree_bfs(t_ast_node *root) {
             }
         }
     }
-
-    printf("\n");
+	printf("\n");
 }
 
-void	init_parser(t_lexer **lex)
+void	p_expand_tree(t_lexer **head, t_ast_node *node)
 {
-	t_ast_node	*node;
+	t_lexer *temp;
+
+	temp = (*head);
+	if (node)
+	{
+		if (!(ft_strcmp(node->args[0], "()")))
+		{
+			while ((*temp->child)->id != node->id)
+				(*temp->child) = (*temp->child)->next;
+			node->tree_link = malloc(sizeof(t_syntax_tree));
+			init_parser(&(*temp->child)->lexer, &node->tree_link);
+		}
+		if (node->left)
+			p_expand_tree(head, node->left);
+		if (node->right)
+			p_expand_tree(head, node->right);
+	}
+}
+
+void	init_parser(t_lexer **lex, t_syntax_tree **tree)
+{
 	t_lexer		*head;
 
 	head = (*lex);
-	(void)head;
-	node = p_build_tree((*lex)->token_list);
-	print_tree_bfs(node);
+	//(*tree)->branch = malloc(sizeof(t_ast_node));
+	(*tree)->branch = p_build_tree((*lex)->token_list);
+	p_expand_tree(&head, (*tree)->branch);
+	print_tree_bfs((*tree)->branch);
 }

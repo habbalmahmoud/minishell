@@ -2,7 +2,7 @@
 #include "../../../../includes/token.h"
 
 
-t_ast_node	*p_build_simple_command(char *cmd, char *in, char *out)
+t_ast_node	*p_build_simple_command(char *cmd, char *in, char *out, int id)
 {
 	t_ast_node *node;
 
@@ -16,11 +16,13 @@ t_ast_node	*p_build_simple_command(char *cmd, char *in, char *out)
 		node->out = out;
 		node->right = NULL;
 		node->left = NULL;
+		node->id = id;
+		
 	}
 	return (node);
 }
 
-t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right)
+t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right, int id)
 {
 	t_ast_node *node;
 
@@ -29,6 +31,7 @@ t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right)
 	node->right = right;
 	node->type = AST_PIPE;
 	node->args = ft_split("|", ' ');
+	node->id = id;
 	return (node);
 }
 

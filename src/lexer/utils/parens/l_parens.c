@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_parens.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:10:31 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/14 16:25:58 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:27:28 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,8 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 	}
 	if (type == TYPE_LPAREN)
 	{
-		
 		t_token	*c_token;
-
-		
+	
 		if ((*lex)->util->j > 0)
 		{
 			(*token)->value[(*lex)->util->j] = '\0';
@@ -104,7 +102,7 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 			if ((*token)->next == NULL)
 				return (0);
 			init_token((*token)->next, len - (*lex)->util->i, (*token)->id);
-			*token = (*token)->next;
+			(*token) = (*token)->next;
 			(*lex)->util->j = 0;
 		}
 		(*token)->value[(*lex)->util->j++] = TYPE_LPAREN;
