@@ -17,7 +17,7 @@ typedef struct s_token
 {
 	char	*value;
 	int	type;
-	struct s_token *sub;
+	struct s_lexer *sub_lexer;
 	struct s_token *next;
 	int  id;
 }	t_token;

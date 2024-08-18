@@ -32,9 +32,8 @@ typedef struct s_ast_node
 	struct s_ast_node	*left;  // Normal binary tree
 	struct s_ast_node	*right; // Normal binary tree node
 	struct s_syntax_tree	*tree_link;
-	//t_lexer		**lexer;
+	t_lexer		**lexer;
 	e_node_type	type; // Type of node -> if pipe takes left and right 
-	int	id; // ?????? to check for parens??
 	t_token	*sub;
 }	t_ast_node;
 
@@ -43,9 +42,23 @@ typedef struct s_syntax_tree
 	struct s_ast_node	*branch;
 }	t_syntax_tree;
 
+typedef struct s_ast_utils
+{
+	char	**files;
+	char	*args;
+	int	in_pipe;
+	t_ast_node	*node;
+	t_ast_node	*right;
+	t_lexer		**sub;
+}	t_ast_utils;
+
 void	init_parser(t_lexer **lexer, t_syntax_tree **tree);
+void	p_expand_tree(t_ast_node *node);
 t_ast_node	*p_build_tree(t_token *token);
+t_ast_node	*p_build_pipeline(t_token *token);
+t_ast_utils	*p_init_vars(t_ast_utils **util);
 char	*p_create_cmd_args(char *value, char *args);
+int	p_parse_simple_command(t_ast_utils **util, t_token *token);
 /* 
  * Create function for all cases :::
  * -> REDIRECT IN
@@ -57,11 +70,8 @@ char	*p_create_cmd_args(char *value, char *args);
  *  -> AND - OR - PIPE ---- IN THIS ORDER
  *  AFER BUILDING SINGLE NODES APPEND INTO MAIN STRUCT TO EXECUTE BASED ON PRIORITY ??
  */
-t_ast_node	*p_build_simple_command(char *cmd, char *in, char *out, int id);
-t_ast_node	*p_build_pipe(t_ast_node *left, t_ast_node *right, int id);
-t_ast_node	*p_build_redirect_to(t_ast_node *left, char *outfile);
-t_ast_node	*p_build_redirect_from(t_ast_node *left, char *infile);
-t_ast_node	*find_right(t_lexer **lex);
+t_ast_node	*p_build_simple_command(t_ast_utils *util);
+t_ast_node	*p_build_separator(t_ast_node *left, t_ast_node *right, int type);
 // ITERATE THROUGH TOKEN LIST IF NO DELIMITER APPEND TO SIMPLE COMMAND
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////// AST TEMPLATE ///////////////////////

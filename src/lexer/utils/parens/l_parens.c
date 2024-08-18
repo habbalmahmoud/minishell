@@ -83,6 +83,7 @@
 int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 {
 	int len;
+	t_token *c_token;
 
 	len = ft_strlen((*lex)->util->input);
 	if (type == TYPE_RPAREN && (*lex)->util->rec_count > 0)
@@ -93,8 +94,6 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 	}
 	if (type == TYPE_LPAREN)
 	{
-		t_token	*c_token;
-	
 		if ((*lex)->util->j > 0)
 		{
 			(*token)->value[(*lex)->util->j] = '\0';
@@ -109,15 +108,14 @@ int	handle_paren(t_lexer **lex, t_token **token, int *state, int type)
 		(*token)->type = type;
 		(*state) = IN_PARAN;
 		(*lex)->util->input_ptr++;
-		l_lstadd_back((*lex)->child, l_lstnew((*token)->id));
-		l_lstlast((*(*lex)->child))->lexer = malloc(sizeof(t_lexer));
-		l_lstlast((*(*lex)->child))->lexer->util = malloc(sizeof(t_lex_utils));
-		l_lstlast((*(*lex)->child))->lexer->util->clock = 1;
-		l_lstlast((*(*lex)->child))->lexer->util->rec_count = (*lex)->util->rec_count + 1;
+		(*token)->sub_lexer = malloc(sizeof(t_lexer));
+		(*token)->sub_lexer->util = malloc(sizeof(t_lex_utils));
+		(*token)->sub_lexer->util->rec_count = (*lex)->util->rec_count + 1;
+		c_token = malloc(sizeof(t_token));
 		init_lexer((*lex)->util->input_ptr, ft_strlen((*lex)->util->input_ptr),
-				&l_lstlast((*(*lex)->child))->lexer, &c_token);
-		(*lex)->util->i += l_lstlast((*(*lex)->child))->lexer->util->i;
-		(*lex)->util->input_ptr += l_lstlast((*(*lex)->child))->lexer->util->i;
+				   &(*token)->sub_lexer, &c_token);
+		(*lex)->util->i += (*token)->sub_lexer->util->i;
+		(*lex)->util->input_ptr += (*token)->sub_lexer->util->i;
 		if (*(*lex)->util->input_ptr == ')' && (*state) == IN_PARAN)	
 		{
 			(*state) = STATE_ANY;

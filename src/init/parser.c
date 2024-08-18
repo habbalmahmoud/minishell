@@ -69,6 +69,10 @@ void print_tree_bfs(t_ast_node *root) {
         // Print node type
         if (node) {
 			printf("[ ");
+			if (node->out)
+				printf("OUT: %s --  ", node->out);
+			if (node->in)
+				printf("IN: %s --  ", node->in);
 			for (int i = 0; node->args[i]; i++)
 			{
 				if (i != 0)
@@ -91,34 +95,11 @@ void print_tree_bfs(t_ast_node *root) {
 	printf("\n");
 }
 
-void	p_expand_tree(t_lexer **head, t_ast_node *node)
-{
-	t_lexer *temp;
 
-	temp = (*head);
-	if (node)
-	{
-		if (!(ft_strcmp(node->args[0], "()")))
-		{
-			while ((*temp->child)->id != node->id)
-				(*temp->child) = (*temp->child)->next;
-			node->tree_link = malloc(sizeof(t_syntax_tree));
-			init_parser(&(*temp->child)->lexer, &node->tree_link);
-		}
-		if (node->left)
-			p_expand_tree(head, node->left);
-		if (node->right)
-			p_expand_tree(head, node->right);
-	}
-}
 
 void	init_parser(t_lexer **lex, t_syntax_tree **tree)
 {
-	t_lexer		*head;
-
-	head = (*lex);
-	//(*tree)->branch = malloc(sizeof(t_ast_node));
 	(*tree)->branch = p_build_tree((*lex)->token_list);
-	p_expand_tree(&head, (*tree)->branch);
+	p_expand_tree((*tree)->branch);
 	print_tree_bfs((*tree)->branch);
 }

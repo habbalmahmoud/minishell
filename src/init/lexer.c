@@ -16,7 +16,7 @@
 t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
 {
 	lex->token_list = malloc(sizeof(t_token));
-	token = lex->token_list;
+	lex->token_list = token;
 	lex->util->i = 0;
 	lex->util->j = 0;
 	lex->util->input = input;
@@ -34,35 +34,33 @@ void	init_token(t_token *token, int n, int id)
 	token->next = NULL;
 }
 
-int	init_lexer(char *input, int id, t_lexer **lex, t_token **head)
+int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 {
 	int	state;
 	int	type;
 	size_t	len;
-	t_token *token;
 
-	token = (*head);
 	len = ft_strlen(input);
 	state = STATE_ANY;
-	token = l_vars_init(input, (*lex), token);
-	init_token(token, len, id);
+	(*token) = l_vars_init(input, (*lex), (*token));
+	init_token((*token), len, id);
 	// printf("%s\n", input);
 	while (*(*lex)->util->input_ptr) 
 	{
 		(*lex)->util->c = *(*lex)->util->input_ptr;
 		type = l_assign_type((*lex)->util->c);
-		if (l_tokenize((*lex), &token, type, &state) == 1)
+		if (l_tokenize((*lex), token, type, &state) == 1)
 		{
 			if ((*lex)->util->j > 0)
-				token->value[(*lex)->util->j] = '\0';
+				(*token)->value[(*lex)->util->j] = '\0';
 			(*lex)->util->rec_count -= 1;
-			return (l_token_count((*lex), token, type));
+			return (l_token_count((*lex), (*token), type));
 		}
 		(*lex)->util->i++;
 		(*lex)->util->input_ptr++;
 	}
 	if ((*lex)->util->j > 0)
-		token->value[(*lex)->util->j] = '\0';
-	token = (*lex)->token_list;
-	return (l_token_count((*lex), token, type));
+		(*token)->value[(*lex)->util->j] = '\0';
+	(*token) = (*lex)->token_list;
+	return (l_token_count((*lex), (*token), type));
 }
