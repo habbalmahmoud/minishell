@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:00 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/12 15:08:55 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/15 16:48:22 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
 {
 	lex->token_list = malloc(sizeof(t_token));
-	token = lex->token_list;
+	lex->token_list = token;
 	lex->util->i = 0;
 	lex->util->j = 0;
 	lex->util->input = input;

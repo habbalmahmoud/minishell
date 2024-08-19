@@ -63,13 +63,11 @@ objs/%.o:	srcs/%.c
 	@printf "\033[?25l"
 	@printf "$(_ERASE)\r"
 	@printf "$<$(_END)\n"
-	@sleep 0.02
 	@for i in $$(seq 1 $(CNT)); \
 	do \
 		printf "$(OK_COLOR)*"; \
 	done
 	$(eval CNT=$(shell echo $$(($(CNT) + 1))))
-	@sleep 0.02
 	@printf "\r$(_MUP)"
 
 

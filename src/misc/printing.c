@@ -17,7 +17,7 @@ static void	print_tokens(t_token *token_list, int id)
 			}
 		}
 		token_list = token_list->next;
-        }
+	}
 }
 
 void	l_recursive_print(t_lexer *lex, int id)
