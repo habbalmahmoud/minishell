@@ -16,8 +16,6 @@ struct s_synatx_tree;
 typedef enum node_type
 {
 	AST_PIPE,
-	AST_REDIRECT_FROM,
-	AST_REDIRECT_TO,
 	AST_COMMAND,
 	AST_AND,
 	AST_OR,
@@ -26,15 +24,15 @@ typedef enum node_type
 
 typedef struct s_ast_node
 {
-	char	**args;			// 2d array for exec?? maybe single ptr -- check again
-	char	*in;
-	char	*out;
+	char			**args;
+	char			*in;
+	char			*out;
 	struct s_ast_node	*left;  // Normal binary tree
 	struct s_ast_node	*right; // Normal binary tree node
 	struct s_syntax_tree	*tree_link;
-	t_lexer		**lexer;
-	e_node_type	type; // Type of node -> if pipe takes left and right 
-	t_token	*sub;
+	t_lexer			**lexer;
+	e_node_type		type;
+	t_token			*sub;
 }	t_ast_node;
 
 typedef struct s_syntax_tree
@@ -47,6 +45,7 @@ typedef struct s_ast_utils
 	char	**files;
 	char	*args;
 	int	in_pipe;
+	int	flag;
 	t_ast_node	*node;
 	t_ast_node	*right;
 	t_lexer		**sub;
@@ -55,10 +54,12 @@ typedef struct s_ast_utils
 void	init_parser(t_lexer **lexer, t_syntax_tree **tree);
 void	p_expand_tree(t_ast_node *node);
 t_ast_node	*p_build_tree(t_token *token);
-t_ast_node	*p_build_pipeline(t_token *token);
+t_ast_node	*p_build_pipeline(t_token **token);
 t_ast_utils	*p_init_vars(t_ast_utils **util);
 char	*p_create_cmd_args(char *value, char *args);
-int	p_parse_simple_command(t_ast_utils **util, t_token *token);
+int	p_parse_simple_command(t_ast_utils **util, t_token **token);
+int	p_parse_pipeline(t_ast_utils **util, t_token **token);
+int	p_parse_operators(t_ast_utils **util, t_token **token);
 /* 
  * Create function for all cases :::
  * -> REDIRECT IN

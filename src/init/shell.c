@@ -13,6 +13,7 @@
 #include "../../includes/builtins.h"
 #include "../../includes/lexer.h"
 #include "../../includes/ast.h"
+#include "../../includes/execute.h"
 
 void	init_shell(char **env)
 {
@@ -21,12 +22,12 @@ void	init_shell(char **env)
 	t_token	*token;
 	t_syntax_tree *tree;
 
-	(void)env;
 	tree = malloc(sizeof(t_syntax_tree));
 	lex = malloc(sizeof(t_lexer));
 	lex->util = malloc(sizeof(t_lex_utils));
 	lex->util->rec_count = 0;
 	token = malloc(sizeof(t_token));
+	(void)env;
 	while (1)
 	{
 		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
@@ -34,6 +35,8 @@ void	init_shell(char **env)
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		init_parser(&lex, &tree);
+		//init_execute(tree, env);
+		free_token_ll(token);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)

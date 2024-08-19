@@ -44,7 +44,6 @@ int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 	state = STATE_ANY;
 	(*token) = l_vars_init(input, (*lex), (*token));
 	init_token((*token), len, id);
-	// printf("%s\n", input);
 	while (*(*lex)->util->input_ptr) 
 	{
 		(*lex)->util->c = *(*lex)->util->input_ptr;
