@@ -36,7 +36,6 @@ void	init_shell(char **env)
 		init_lexer(input, 0, &lex, &token);
 		init_parser(&lex, &tree);
 		//init_execute(tree, env);
-		free_token_ll(token);
 		if (!input)
 			break ;
 		if (ft_strcmp(input, "clear") == 0)

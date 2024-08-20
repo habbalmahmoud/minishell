@@ -1,7 +1,7 @@
 #include "../../../../includes/ast.h"
 #include "../../../../includes/token.h"
 
-static int	p_parse_redirect(t_ast_utils **util, t_token **token)
+int	p_parse_redirect(t_ast_utils **util, t_token **token)
 {
 	if ((*token)->type == TYPE_RSHIFT)
 	{
@@ -28,22 +28,18 @@ static int	p_parse_redirect(t_ast_utils **util, t_token **token)
 		}
 	}
 	return (0);
-
 }
 
-int	p_parse_simple_command(t_ast_utils **util, t_token **token)
+int	p_parse_simple_command(t_ast_utils **util, t_token *token)
 {
 
-	if ((*token)->type == TYPE_LPAREN)
+	if (token->type == TYPE_LPAREN)
 	{
-		(*util)->sub = &(*token)->sub_lexer;
-		(*util)->args = p_create_cmd_args((*token)->value, (*util)->args);
+		(*util)->sub = &token->sub_lexer;
+		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
 	}
-	if ((*token)->type == TOKEN)
-		(*util)->args = p_create_cmd_args((*token)->value, (*util)->args);
-	else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT)
-		if (p_parse_redirect(util, token))
-			return (1);
+	if (token->type == TOKEN)
+		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
 	return (0);
 }
 

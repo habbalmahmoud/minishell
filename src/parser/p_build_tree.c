@@ -17,23 +17,32 @@
 t_ast_node	*p_build_tree(t_token *token)
 {
 	t_ast_utils	*util;
+	int	flag2 = 0;
 
 	p_init_vars(&util);
 	while (token)
 	{
-		if (token->type == TOKEN || token->type == TYPE_LPAREN
-			|| token->type == TYPE_RSHIFT || token->type == TYPE_RSHIFT)
+		flag2 = 0;
+		if (token->type == TOKEN || token->type == TYPE_LPAREN)
+			p_parse_simple_command(&util, token);
+		else if (token->type == TYPE_RSHIFT || token->type == TYPE_LSHIFT)
 		{
-			if (p_parse_simple_command(&util, &token) == 1)
-				break ;
+			if (p_parse_redirect(&util, &token) == 0)
+				flag2 = 1;
+			else
+				flag2 = 2;
+
 		}
-		if (token->type == TYPE_PIPE)
+		else if (token->type == TYPE_PIPE)
 			if (p_parse_pipeline(&util, &token))
 				util->in_pipe = 1;
 		if (token->type == TYPE_AND || token->type == TYPE_OR)
 			if (p_parse_operators(&util, &token))
 				break ;
-		token = token->next;
+		if (flag2 == 0)
+			token = token->next; 
+		else if (flag2 == 2)
+			token = token->next;
 	}
 	if (!(util->node))
 		util->node = p_build_simple_command(util);
