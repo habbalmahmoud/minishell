@@ -21,6 +21,8 @@ utils/parens/l_parens utils/parens/l_paren_utils
 
 PARSER_SRCS = p_build_tree p_build_pipeline utils/p_utils utils/nodes/p_build_nodes utils/nodes/p_parse_nodes
 
+EXEC_SRCS = e_execution utils/e_utils utils/pipeline/e_pipeline
+
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 
 BUILTIN_SRC = $(addprefix src/builtins/, $(addsuffix .c, $(BUILTIN_SRCS)))
@@ -29,10 +31,13 @@ LEXER_SRC = $(addprefix src/lexer/, $(addsuffix .c, $(LEXER_SRCS)))
 
 PARSER_SRC = $(addprefix src/parser/, $(addsuffix .c, $(PARSER_SRCS)))
 
+EXEC_SRC = $(addprefix src/exec/, $(addsuffix .c, $(EXEC_SRCS)))
+
 OBJS = $(addprefix objs/, $(addsuffix .o, $(SRCS)))
 BUILTIN_OBJS = $(addprefix objs/builtins/, $(addsuffix .o, $(BUILTIN_SRCS)))
 LEXER_OBJS = $(addprefix objs/lexer/, $(addsuffix .o, $(LEXER_SRCS)))
 PARSER_OBJS = $(addprefix objs/parser/, $(addsuffix .o, $(PARSER_SRCS)))
+EXEC_OBJS = $(addprefix objs/exec/, $(addsuffix .o, $(EXEC_SRCS)))
 
 SHELL := /bin/bash
 
@@ -80,8 +85,8 @@ objs/%.o:	src/%.c
 	@printf "\r$(_MUP)"
 
 
-$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(OBJS) $(LIBFT) $(HEADER)
-	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(PARSER_OBJS) $(LEXER_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(EXEC_OBJS) $(OBJS) $(LIBFT) $(HEADER)
+	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(PARSER_OBJS) $(LEXER_OBJS) $(EXEC_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
 	@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 $(LIBFT):

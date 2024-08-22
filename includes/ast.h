@@ -19,7 +19,6 @@ typedef enum node_type
 	AST_COMMAND,
 	AST_AND,
 	AST_OR,
-	AST_FILE,
 }	e_node_type;
 
 typedef struct s_ast_node
