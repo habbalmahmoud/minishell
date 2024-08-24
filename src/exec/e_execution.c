@@ -33,20 +33,36 @@ void	e_traverse_tree(t_ast_node *node, t_exec_utils *util)
 
 void	e_operator_and(t_ast_node *node, t_exec_utils *util)
 {
-	e_traverse_tree(node->left, util);
+	if (!ft_strcmp(node->left->args[0], "()"))
+		e_traverse_tree(node->left->tree_link->branch, util);
+	else
+		e_traverse_tree(node->left, util);
 	if (util->code == EXIT_SUCCESS)
-		e_traverse_tree(node->right, util);
+	{
+		if (!ft_strcmp(node->right->args[0], "()"))
+			e_traverse_tree(node->right->tree_link->branch, util);
+		else
+			e_traverse_tree(node->right, util);
+	}
 	else if (util->code == EXIT_FAILURE)
 		return ;
 }
 
 void	e_operator_or(t_ast_node *node, t_exec_utils *util)
 {
-	e_traverse_tree(node->left, util);
+	if (!ft_strcmp(node->left->args[0], "()"))
+		e_traverse_tree(node->left->tree_link->branch, util);
+	else
+		e_traverse_tree(node->left, util);
 	if (util->code == EXIT_SUCCESS)
 		return ;
 	else if (util->code == EXIT_FAILURE)
-		e_traverse_tree(node->right, util);
+	{
+		if (!ft_strcmp(node->right->args[0], "()"))
+			e_traverse_tree(node->right->tree_link->branch, util);
+		else
+			e_traverse_tree(node->right, util);
+	}
 }	
 
 void e_pipeline(t_ast_node *node, t_exec_utils *util)
@@ -77,7 +93,10 @@ void	e_simple_command(t_ast_node *node, t_exec_utils *util)
 	pid_t	pid;
 	int	status;
 
-	path = get_path(node->args, util->env);
+	if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
+		path = ft_strdup(node->args[0]);
+	else
+		path = get_path(node->args, util->env);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -100,7 +119,6 @@ void	e_simple_command(t_ast_node *node, t_exec_utils *util)
 		exit(EXIT_FAILURE);
 	}
 }
-
 
 void	e_redirection(t_ast_node *node, t_exec_utils *util)
 {
