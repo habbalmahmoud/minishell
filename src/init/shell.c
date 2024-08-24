@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/15 18:24:05 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/22 12:15:26 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,15 @@ void	init_shell(char **env)
 	lex->util = malloc(sizeof(t_lex_utils));
 	lex->util->rec_count = 0;
 	token = malloc(sizeof(t_token));
-	(void)env;
 	while (1)
 	{
 		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
+		close_values(input, &lex);
 		init_parser(&lex, &tree);
-		//init_execute(tree, env);
-		if (!input)
-			break ;
-		if (ft_strcmp(input, "clear") == 0)
-			clear_prompts();
-		if (ft_strcmp(input, "exit") == 0)
-			exit(1);
+		init_execute(tree, env);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

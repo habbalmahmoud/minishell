@@ -98,6 +98,7 @@ void print_tree_bfs(t_ast_node *root) {
 void	init_parser(t_lexer **lex, t_syntax_tree **tree)
 {
 	(*tree)->branch = p_build_tree((*lex)->token_list);
-	p_expand_tree((*tree)->branch);
-	print_tree_bfs((*tree)->branch);
+    if ((*tree)->branch->args)
+        p_expand_tree((*tree)->branch);
+	// print_tree_bfs((*tree)->branch);
 }
