@@ -6,6 +6,15 @@ struct s_lexer;
 struct s_token;
 struct s_lex_util;
 
+typedef struct	s_env
+{
+	char	**og;
+	char	*key;
+	char	*value;
+	struct s_env	*next;
+}	t_env;
+
+
 typedef struct s_lex_ll
 {
 	int	id;

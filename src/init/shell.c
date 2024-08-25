@@ -15,7 +15,7 @@
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
 
-void	init_shell(char **env)
+void	init_shell(t_env *env)
 {
 	char	*input;
 	t_lexer	*lex;

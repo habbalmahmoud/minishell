@@ -15,12 +15,12 @@
 
 int	main(int ac, char **av, char **env)
 {
-	char	**c_env;
+	t_env	*env_ll;
 
+	copy_env(&env_ll, env);
 	(void)av;
-	c_env = copy_2d_array(env);
 	if (ac != 1)
 		exit(printf("Invalid args\n"));
 	else
-		init_shell(c_env);
+		init_shell(env_ll);
 }

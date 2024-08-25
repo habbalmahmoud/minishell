@@ -10,7 +10,7 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -g #-fsanitize=address
 
-SRCS = main init/lexer init/shell init/parser init/execute misc/prompt_utils misc/printing
+SRCS = main init/lexer init/shell init/parser init/execute misc/prompt_utils misc/printing misc/env/env_ll
 
 BUILTIN_SRCS = cd echo pwd env handle_builtins
 

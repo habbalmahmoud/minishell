@@ -11,11 +11,11 @@ typedef struct s_exec_utils
 	int	code;
 	int	*exit_codes;
 	int	code_count;
-	char	**env;
+	t_env	*env;
 }   t_exec_utils;
 
-int	init_execute(t_syntax_tree *tree, char **env);
-char	*get_path(char **s_cmd, char **env);
+int	init_execute(t_syntax_tree *tree, t_env *env);
+char	*get_path(char **s_cmd, t_env *env);
 
 
 

@@ -101,7 +101,7 @@ void	e_simple_command(t_ast_node *node, t_exec_utils *util)
 	if (pid == 0)
 	{
 		e_redirection(node, util);
-		execve(path, node->args, util->env);
+		execve(path, node->args, util->env->og);
 		printf("%s: command not found\n", node->args[0]);
 		exit(EXIT_FAILURE);
 	}
