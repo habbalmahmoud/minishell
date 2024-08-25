@@ -15,6 +15,22 @@
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
 
+void print_lex(t_lexer **lexer, int id)
+{
+	if (!(*lexer))
+		return;
+	while ((*lexer)->token_list)
+	{
+		if (id == 0)
+			printf("Main Level %d: %s\n", id, (*lexer)->token_list->value);
+		else
+			printf("Sub Level %d: %s\n", id, (*lexer)->token_list->value);
+		if ((*lexer)->token_list->sub_lexer)
+			print_lex(&(*lexer)->token_list->sub_lexer, id + 1);
+		(*lexer)->token_list = (*lexer)->token_list->next;
+	}
+}
+
 void	init_shell(char **env)
 {
 	char	*input;
@@ -27,13 +43,16 @@ void	init_shell(char **env)
 	lex->util = malloc(sizeof(t_lex_utils));
 	lex->util->rec_count = 0;
 	token = malloc(sizeof(t_token));
+	(void)tree;
+	(void)env;
 	while (1)
 	{
-		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
+		input = readline("\033[1;31mmhabbal&nkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		close_values(input, &lex);
+		// print_lex(&lex, 0);
 		//l_recursive_print(lex, 0);
 		init_parser(&lex, &tree);
 		init_execute(tree, env);

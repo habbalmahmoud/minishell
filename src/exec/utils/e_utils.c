@@ -57,3 +57,24 @@ char	*get_path(char **s_cmd, char **env)
 	}
 	return (NULL);
 }
+
+void handle_doc(char *lim, int pipefd[2])
+{
+	char *line;
+	int flag;
+
+	flag = 1;
+	while (flag)
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (ft_strncmp(line, lim, ft_strlen(lim)) == 0)
+		{
+			free(line);
+			flag -= flag;
+			close(pipefd[1]);
+			return;
+		}
+		write(pipefd[1], line, ft_strlen(line));
+		free(line);
+	}
+}

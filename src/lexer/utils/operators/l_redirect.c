@@ -32,6 +32,7 @@ void	l_handler_heredoc(t_lexer *lex, t_token **token, int type)
 	{
 		(*token)->value[lex->util->j++] = type;
 		(*token)->value[lex->util->j] = '\0';
+		(*token)->type = TYPE_HEREDOC;
 		(*token)->next = ft_calloc(1, sizeof(t_token));
 		if ((*token)->next == NULL)
 			return ;

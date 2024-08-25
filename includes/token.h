@@ -27,6 +27,7 @@ typedef enum e_token_type
 	TYPE_NULL = 0,
 	TOKEN = -42,
 	TYPE_APPEND,
+	TYPE_HEREDOC,
 	IN_QUOTES,
 	IN_DQUOTES,
 	IN_ESC,

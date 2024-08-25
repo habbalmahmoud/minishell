@@ -17,8 +17,10 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 			return (1);
 		}
 	}
-	else if ((*token)->type == TYPE_LSHIFT)
+	else if ((*token)->type == TYPE_LSHIFT || (*token)->type == TYPE_HEREDOC)
 	{
+		if ((*token)->type == TYPE_HEREDOC)
+			(*util)->here_doc = true;
 		if ((*token)->next && (*token)->next->type == TOKEN)
 			(*util)->files[1] = ft_strdup((*token)->next->value);
 		if ((*token)->next && (*token)->next->next)
