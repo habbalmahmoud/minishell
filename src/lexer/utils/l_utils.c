@@ -12,36 +12,31 @@
 
 #include "../../../includes/lexer.h"
 
-int	l_token_count(t_lexer *lex, t_token *token, int type)
+int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 {
-	int	count;
 	int	hits;
 	char	**matches;
+	char	*expanded;
 	
-	count = 0;
 	token = lex->token_list;
 	(void)type;
 	while (token)
 	{
 		if (token->type == TOKEN)
 		{
+			if (token->value[0] == '$')
+				expanded = l_expand(token->value + 1, env);
 			matches = l_glob(token->value, &hits);
+			if (expanded)
+				l_handler_expand(token, expanded);
 			if (hits > 0)
-			{
-				count += hits;
 				l_handler_wildcards(token, hits, matches);
-			}
 			else
-			{
-				// DOUBLE CHECK THIS - WE MIGHT HAVE TO REMOVE IT AND DO IT POST PARSE
 				token->value = l_remove_quotes(token);
-				count++;
-			}
 		}
 		token = token->next;
 	}
-	lex->count = count;
-	return (count);
+	return (0);
 }
 
 void	l_tokenize_words(t_lexer *lex, t_token *token, int type)

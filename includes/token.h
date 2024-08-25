@@ -38,7 +38,7 @@ typedef enum e_token_type
 	IN_PARAN,
 }	t_token_type;
 
-int	l_token_count(t_lexer *lex, t_token *token, int type);
+int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env);
 void	free_token_ll(t_token *token);
 int	l_assign_type(char c);
 int	return_whitespaces(char c);

@@ -32,11 +32,13 @@ void	init_shell(t_env *env)
 		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
-		init_lexer(input, 0, &lex, &token);
+		init_lexer(input, &lex, &token, env);
 		close_values(input, &lex);
-		//l_recursive_print(lex, 0);
-		init_parser(&lex, &tree);
-		init_execute(tree, env);
+		l_recursive_print(lex, 0);
+		(void)env;
+		(void)tree;
+		//init_parser(&lex, &tree);
+		//init_execute(tree, env);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

@@ -15,10 +15,12 @@
 # include "./minishell.h"
 # include "./token.h"
 
+char	*l_expand(char *str, t_env *env);
+void	l_handler_expand(t_token *token, char *expanded);
 /*/////////////////////////////////////////////////////////////
 ////////////		TYPES			    //////////
 ////////////////////////////////////////////////////////////*/
-int	init_lexer(char *input, int id, t_lexer **lex, t_token **token);
+int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env);
 int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state);
 /*/////////////////////////////////////////////////////////////
 ////////////		QUOTES			    //////////
