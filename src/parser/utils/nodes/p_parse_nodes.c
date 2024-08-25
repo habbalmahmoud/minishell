@@ -3,8 +3,10 @@
 
 int	p_parse_redirect(t_ast_utils **util, t_token **token)
 {
-	if ((*token)->type == TYPE_RSHIFT)
+	if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_APPEND)
 	{
+		if ((*token)->type == TYPE_APPEND)
+			(*util)->append = true;
 		if ((*token)->next && (*token)->next->type == TOKEN)
 			(*util)->files[0] = ft_strdup((*token)->next->value);
 		if ((*token)->next && (*token)->next->next)

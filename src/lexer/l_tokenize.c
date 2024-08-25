@@ -20,7 +20,7 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	len = ft_strlen(lex->util->input);
 	if ((*state) == STATE_ANY)
 	{
-		if (type == TYPE_QUOTE || TYPE_DQUOTE)
+		if (type == TYPE_QUOTE || type == TYPE_DQUOTE)
 			l_state_handler_quote_in(lex, token, type, state);
 		if (type == TYPE_ESC || type == TYPE_WORD)
 			l_tokenize_words(lex, (*token), type);

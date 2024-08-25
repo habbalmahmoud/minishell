@@ -17,7 +17,7 @@
 t_ast_node	*p_build_tree(t_token *token)
 {
 	t_ast_utils	*util;
-	int	flag2 = 0;
+	int		flag2 = 0;
 
 	p_init_vars(&util);
 	while (token)
@@ -25,7 +25,8 @@ t_ast_node	*p_build_tree(t_token *token)
 		flag2 = 0;
 		if (token->type == TOKEN || token->type == TYPE_LPAREN)
 			p_parse_simple_command(&util, token);
-		else if (token->type == TYPE_RSHIFT || token->type == TYPE_LSHIFT)
+		else if (token->type == TYPE_RSHIFT 
+				|| token->type == TYPE_LSHIFT || token->type == TYPE_APPEND)
 		{
 			if (p_parse_redirect(&util, &token) == 0)
 				flag2 = 1;

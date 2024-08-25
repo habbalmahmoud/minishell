@@ -2,6 +2,7 @@
 # define AST_H
 # include "./minishell.h"
 # include "./token.h"
+# include <stdbool.h>
 
 struct s_synatx_tree;
 
@@ -32,6 +33,7 @@ typedef struct s_ast_node
 	t_lexer			**lexer;
 	e_node_type		type;
 	t_token			*sub;
+	bool			append;
 }	t_ast_node;
 
 typedef struct s_syntax_tree
@@ -45,6 +47,7 @@ typedef struct s_ast_utils
 	char	*args;
 	int	in_pipe;
 	int	flag;
+	bool		append;
 	t_ast_node	*node;
 	t_ast_node	*right;
 	t_lexer		**sub;

@@ -34,6 +34,7 @@ void	init_shell(char **env)
 		//handle_builtins(input, env);
 		init_lexer(input, 0, &lex, &token);
 		close_values(input, &lex);
+		//l_recursive_print(lex, 0);
 		init_parser(&lex, &tree);
 		init_execute(tree, env);
 		free(input);

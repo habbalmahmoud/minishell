@@ -79,7 +79,7 @@ ${NAME}:	${STRING_OBJS} ${CTYPE_OBJS} ${LIST_OBJS} ${CUSTOM_OBJS} ${STDLIB_OBJS}
 all:		${NAME}
 
 clean:
-			@${RM} ${STRING_OBJS} ${CTYPE_OBJS} ${LIST_OBJS} ${CUSTOM_OBJS} ${STDLIB_OBJS} rm -rf objs/
+			@rm -rf ${STRING_OBJS} ${CTYPE_OBJS} ${LIST_OBJS} ${CUSTOM_OBJS} ${STDLIB_OBJS} rm -rf objs/
 
 fclean:		clean
 		@${RM} ${NAME}

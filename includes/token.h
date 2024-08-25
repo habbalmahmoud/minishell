@@ -26,6 +26,7 @@ typedef enum e_token_type
 	TYPE_EOF = '\0',
 	TYPE_NULL = 0,
 	TOKEN = -42,
+	TYPE_APPEND,
 	IN_QUOTES,
 	IN_DQUOTES,
 	IN_ESC,

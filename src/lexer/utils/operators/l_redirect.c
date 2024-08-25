@@ -60,8 +60,9 @@ void	l_handler_append(t_lexer *lex, t_token **token, int type)
 	len = ft_strlen(lex->util->input);
 	if (type == TYPE_RSHIFT)
 	{
-		(*token)->value[lex->util->j++] = type;
+		(*token)->value[lex->util->j++] = '>';
 		(*token)->value[lex->util->j] = '\0';
+		(*token)->type = TYPE_APPEND;
 		(*token)->next = ft_calloc(1, sizeof(t_token));
 		if ((*token)->next == NULL)
 			return ;
