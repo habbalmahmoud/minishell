@@ -19,20 +19,26 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 	char	*expanded;
 	
 	token = lex->token_list;
+	expanded = NULL;
 	(void)type;
 	while (token)
 	{
 		if (token->type == TOKEN)
 		{
-			if (token->value[0] == '$')
-				expanded = l_expand(token->value + 1, env);
 			matches = l_glob(token->value, &hits);
-			if (expanded)
-				l_handler_expand(token, expanded);
 			if (hits > 0)
-				l_handler_wildcards(token, hits, matches);
+				l_handler_wildcards(token, hits, matches);			
 			else
 				token->value = l_remove_quotes(token);
+			if (lex->util->expand)
+				expanded = l_expand(token->value, env);
+			if (expanded)
+				l_handler_expand(token, expanded);
+			else if (ft_strchr(token->value, '$') && lex->util->expand)
+			{
+				free(token->value);
+				token->value = ft_strdup("");
+			}
 		}
 		token = token->next;
 	}

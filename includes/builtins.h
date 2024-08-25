@@ -24,6 +24,9 @@ char	*get_dir(void);
 char	*get_env(void);
 void	change_dir(const char *path, char *home);
 void    handle_builtins(char *input, char **env);
+void	exec_env(t_env **env, char **args);
+void	exec_unset(t_env **env, char **args);
+void	exec_export(t_env **env, char *input);
 
 #endif
 

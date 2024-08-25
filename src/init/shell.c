@@ -15,6 +15,23 @@
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
 
+void	print_lex(t_lexer **lexer, int id)
+{
+	if (!(*lexer))
+		return ;
+	while ((*lexer)->token_list)
+	{
+		if (id == 0)
+			printf("Main level %d: %s\n", id, (*lexer)->token_list->value);
+		else
+			printf("Sub level %d: %s\n", id, (*lexer)->token_list->value);
+		if ((*lexer)->token_list->sub_lexer)
+			print_lex(&(*lexer)->token_list->sub_lexer, id + 1);
+		(*lexer)->token_list = (*lexer)->token_list->next;
+	}
+}
+
+
 void	init_shell(t_env *env)
 {
 	char	*input;
@@ -34,11 +51,9 @@ void	init_shell(t_env *env)
 		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);
 		close_values(input, &lex);
-		l_recursive_print(lex, 0);
-		(void)env;
-		(void)tree;
-		//init_parser(&lex, &tree);
-		//init_execute(tree, env);
+		//print_lex(&lex, 0);
+		init_parser(&lex, &tree);
+		init_execute(tree, env);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

@@ -13,7 +13,7 @@
 
 #include "../../includes/lexer.h"
 
-t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
+t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
 {
 	lex->token_list = malloc(sizeof(t_token));
 	lex->token_list = token;
@@ -21,6 +21,8 @@ t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->input_ptr = input;
+	lex->util->expand = true;
+	lex->util->env = env;
 	lex->child = ft_calloc(1, sizeof(t_lex_ll));
 	return (token);
 }
@@ -42,7 +44,7 @@ int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env)
 
 	len = ft_strlen(input);
 	state = STATE_ANY;
-	(*token) = l_vars_init(input, (*lex), (*token));
+	(*token) = l_vars_init(input, (*lex), (*token), env);
 	init_token((*token), len, 0);
 	while (*(*lex)->util->input_ptr) 
 	{
