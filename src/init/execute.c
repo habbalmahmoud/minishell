@@ -1,11 +1,8 @@
 #include "../../includes/execute.h"
 
-int	init_execute(t_syntax_tree *tree, t_env *env)
+int	init_execute(t_syntax_tree *tree, t_env *env, t_exec_utils **util)
 {
-	t_exec_utils *util;
-
-	util = ft_calloc(1, sizeof(t_exec_utils));
-	util->env = env;
+	(*util)->env = env;
 	if (!tree)
 		return (0);
 	if (!tree->branch)
@@ -13,9 +10,8 @@ int	init_execute(t_syntax_tree *tree, t_env *env)
 	if (!tree->branch->args)
 		return (0);
 	if (!ft_strcmp(tree->branch->args[0], "()"))
-		e_traverse_tree(tree->branch->tree_link->branch, util);
+		e_traverse_tree(tree->branch->tree_link->branch, (*util));
 	else
-		e_traverse_tree(tree->branch, util);
-	free(util);
+		e_traverse_tree(tree->branch, (*util));
 	return (0);
 }

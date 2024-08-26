@@ -25,11 +25,10 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 	{
 		if (token->type == TOKEN)
 		{
+			token->value = l_remove_quotes(token);
 			matches = l_glob(token->value, &hits);
 			if (hits > 0)
 				l_handler_wildcards(token, hits, matches);			
-			else
-				token->value = l_remove_quotes(token);
 			if (lex->util->expand)
 				expanded = l_expand(token->value, env);
 			if (expanded)

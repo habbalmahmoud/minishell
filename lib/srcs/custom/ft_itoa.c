@@ -51,27 +51,7 @@ char	*ft_itoa(int n)
 	}	
 	return (res);
 }
-// #include <stdio.h>
-// #include <limits.h>
-// int main()
-// {
-//   char *str = ft_itoa(-2134);
-//   printf("%s\n", str);
-//    free(str);
-//   str = ft_itoa(42);
-//   printf("%s\n", str);
-//    free(str);
-//   str = ft_itoa(707);
-//   printf("%s\n", str);
-//    free(str);
-//   str = ft_itoa(INT_MIN);
-//   printf("%s\n", str);
-//    free(str);
-//   str = ft_itoa(INT_MAX);
-//   printf("%s\n", str); 
-//    free(str);
-//   str = ft_itoa(0);
-//   printf("%s\n", str);
-//   free(str);
-//   return 0;
-// }
+
+
+}
+

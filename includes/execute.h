@@ -10,16 +10,13 @@
 typedef struct s_exec_utils
 {
 	int	code;
-	int	*exit_codes;
+	int	exit_code;
 	int	code_count;
 	t_env	*env;
 }   t_exec_utils;
 
-int	init_execute(t_syntax_tree *tree, t_env *env);
+int	init_execute(t_syntax_tree *tree, t_env *env, t_exec_utils **util);
 char	*get_path(char **s_cmd, t_env *env);
-
-
-
 void	e_traverse_tree(t_ast_node *node, t_exec_utils *util);
 
 void	e_pipeline(t_ast_node *node, t_exec_utils *util);
@@ -34,4 +31,5 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util);
 
 void	e_operator_and(t_ast_node *node, t_exec_utils *util);
 void	e_operator_or(t_ast_node *node, t_exec_utils *util);
+
 #endif

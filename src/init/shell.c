@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 12:50:22 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/26 15:23:02 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ void	init_shell(t_env *env)
 	t_lexer	*lex;
 	t_token	*token;
 	t_syntax_tree *tree;
+	t_exec_utils *util;
 
+	util = malloc(sizeof(t_exec_utils));
 	tree = malloc(sizeof(t_syntax_tree));
 	lex = malloc(sizeof(t_lexer));
 	lex->util = malloc(sizeof(t_lex_utils));
@@ -53,7 +55,22 @@ void	init_shell(t_env *env)
 		close_values(input, &lex);
 		//print_lex(&lex, 0);
 		init_parser(&lex, &tree);
-		init_execute(tree, env);
+		init_execute(tree, env, &util);
+		char *test = ft_itoa(util->code);
+		t_env	*temp;
+		temp = env;
+		while (temp)
+		{
+			if (!ft_strcmp(temp->key, "?"))
+			{
+				temp->value = ft_strdup(test);
+			}
+			else
+				env_lstadd_back(&env, "?", test);
+			temp = temp->next;
+		}
+		if (!ft_strcmp(input, "exit"))
+			exit(util->code);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

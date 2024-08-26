@@ -16,7 +16,8 @@
 int	main(int ac, char **av, char **env)
 {
 	t_env	*env_ll;
-
+	
+	env_ll = NULL;
 	copy_env(&env_ll, env);
 	(void)av;
 	if (ac != 1)
