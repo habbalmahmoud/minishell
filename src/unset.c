@@ -1,7 +1,8 @@
 #include "../includes/minishell.h"
+#include "../includes/execute.h"
 
 
-void exec_unset(t_env **env, char **name)
+void exec_unset(t_env **env, t_exec_utils *util, char **name)
 {
     t_env *head; 
     t_env *prev;
@@ -17,16 +18,14 @@ void exec_unset(t_env **env, char **name)
             else
                 prev->next = head->next;
 
-            // Free the current node
             free(head->key);
             free(head->value);
             free(head);
-            
-            // Return immediately after removing the item
+
+	    util->code = 0;
             return;
         }
         prev = head;
         head = head->next;
     }
-    printf("Environment variable '%s' not found.\n", name[1]);
 }

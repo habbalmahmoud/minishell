@@ -13,8 +13,10 @@ char	*l_expand(char *str, t_env *env)
 	while (head)
 	{
 		if (delim)
+		{
 			if (!(ft_strcmp(delim + 1, head->key)))
 				return (head->value);
+		}
 		head = head->next;
 	}
 	return (NULL);

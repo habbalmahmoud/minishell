@@ -85,6 +85,56 @@ void e_pipeline(t_ast_node *node, t_exec_utils *util)
 	e_pipeline_status(pid1, pid2, &status, util);
 }
 
+int	handle_exit(t_exec_utils *util, char **args)
+{
+	char	*delim;
+	int	nbr;
+
+	if (!args[1])
+		exit(util->code);
+	if (args[2])
+	{
+		ft_putendl_fd("too many arguments", 2);
+		exit(1);
+	}
+	else if (args[1])
+	{
+		delim = ft_strchr(args[1], '+');
+		if (delim)
+		{
+			nbr = ft_atoi(delim + 1);
+			util->code += nbr;
+			exit(util->code);
+		}
+		else if (!delim)
+		{
+			delim = ft_strchr(args[1], '-');
+			if (delim)
+			{
+				nbr = ft_atoi(delim + 1);
+				util->code = 256 - nbr;
+				exit(util->code);
+			}
+		}
+		int i = 0;
+		while (args[1][i])
+		{
+			if (ft_isdigit(args[1][i]))
+				i++;
+			else
+			{
+				ft_putendl_fd("numeric argument required", 2);
+				exit (2);
+			}
+		}
+		nbr = ft_atoi(args[1]);
+		if (nbr > 256)
+			nbr -= 256;
+		exit(nbr);
+	}
+	return (1);
+}
+
 
 void e_simple_command(t_ast_node *node, t_exec_utils *util)
 {
@@ -99,13 +149,18 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
-        exec_unset(&util->env, node->args);
+        exec_unset(&util->env, util, node->args);
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
     {
-        exec_export(&util->env, node->args[1]);
+        exec_export(&util->env, util, node->args);
         return;
+    }
+    if (!ft_strcmp(node->args[0], "exit"))
+    {
+		if (handle_exit(util, node->args))
+			return ;
     }
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
         path = ft_strdup(node->args[0]);

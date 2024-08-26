@@ -43,7 +43,10 @@ t_env	*env_lstnew(char *key, char *value)
 
 	new = (t_env *)ft_calloc(1, sizeof(t_env));
 	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
+	if (value)
+		new->value = ft_strdup(value);
+	else
+		new->value = ft_strdup(" ");
 	new->next = NULL;
 	return (new);
 }

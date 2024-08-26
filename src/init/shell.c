@@ -41,6 +41,7 @@ void	init_shell(t_env *env)
 	t_exec_utils *util;
 
 	util = malloc(sizeof(t_exec_utils));
+	util->code = 0;
 	tree = malloc(sizeof(t_syntax_tree));
 	lex = malloc(sizeof(t_lexer));
 	lex->util = malloc(sizeof(t_lex_utils));
@@ -59,18 +60,18 @@ void	init_shell(t_env *env)
 		char *test = ft_itoa(util->code);
 		t_env	*temp;
 		temp = env;
+		int	flag1 = 0;
 		while (temp)
 		{
 			if (!ft_strcmp(temp->key, "?"))
 			{
 				temp->value = ft_strdup(test);
+				flag1 = 1;
 			}
-			else
-				env_lstadd_back(&env, "?", test);
 			temp = temp->next;
 		}
-		if (!ft_strcmp(input, "exit"))
-			exit(util->code);
+		if (!flag1)
+			env_lstadd_back(&env, "?", test);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;
