@@ -3,43 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   p_build_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:52:20 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/19 11:52:21 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/26 12:47:24 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ast.h"
 #include "../../includes/token.h"
 
-int	p_parse_redirect_to(t_ast_utils **util, t_token **token)
-{
-		if ((*token)->next && (*token)->next->type == TOKEN)
-			(*util)->files[0] = ft_strdup((*token)->next->value);
-		if ((*token)->next && (*token)->next->next)
-			(*token) = (*token)->next->next;
-		else
-		{
-			(*util)->node = p_build_simple_command((*util));
-			return (1);
-		}
-	return (0);
-}
-
-int	p_parse_redirect_from(t_ast_utils **util, t_token **token)
-{
-		if ((*token)->next && (*token)->next->type == TOKEN)
-			(*util)->files[1] = ft_strdup((*token)->next->value);
-		if ((*token)->next && (*token)->next->next)
-			(*token) = (*token)->next->next;
-		else
-		{
-			(*util)->node = p_build_simple_command((*util));
-			return (1);
-		}
-	return (0);
-}
 
 t_ast_node	*p_build_pipeline(t_token **token)
 {
@@ -54,7 +27,8 @@ t_ast_node	*p_build_pipeline(t_token **token)
 		flag2 = 0;
 		if ((*token)->type == TOKEN || (*token)->type == TYPE_LPAREN)
 			p_parse_simple_command(&util, (*token));
-		else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT)
+		else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT
+				|| (*token)->type == TYPE_APPEND || (*token)->type == TYPE_HEREDOC)
 		{
 			if (p_parse_redirect(&util, token) == 0)
 				flag2 = 1;

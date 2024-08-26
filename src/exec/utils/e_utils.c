@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:27 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/22 20:16:27 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/26 12:21:34 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,25 @@ char	*get_path(char **s_cmd, char **env)
 		free(exec);
 	}
 	return (NULL);
+}
+
+void handle_doc(char *lim, int pipefd[2])
+{
+	char *line;
+	int flag;
+
+	flag = 1;
+	while (flag)
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (ft_strncmp(line, lim, ft_strlen(lim)) == 0)
+		{
+			free(line);
+			flag -= flag;
+			close(pipefd[1]);
+			return;
+		}
+		write(pipefd[1], line, ft_strlen(line));
+		free(line);
+	}
 }

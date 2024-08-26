@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/22 20:16:18 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/26 12:21:28 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,23 +124,36 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 {
 	int	fd_in;
 	int	fd_out;
+	int pipefd[2];
 
 	(void)util;
 	if (node->in)
 	{
-		fd_in = open(node->in, O_RDONLY);
-		if (fd_in < 0)
+		if (node->here_doc)
 		{
-			perror("open input");
-			exit(EXIT_FAILURE);
+			pipe(pipefd);
+			handle_doc(node->in, pipefd);
+			dup2(pipefd[0], STDIN_FILENO);
+			close(pipefd[0]);
 		}
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
+		else
+		{
+			fd_in = open(node->in, O_RDONLY);
+			if (fd_in < 0)
+			{
+				perror("open input");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd_in, STDIN_FILENO);
+			close(fd_in);
+		}
 	}
 	if (node->out)
 	{
 		if (node->append)
-			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		{
+			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT , 0644);
+		}
 		else
 			fd_out = open(node->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_out < 0)
