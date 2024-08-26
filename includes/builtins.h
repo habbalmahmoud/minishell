@@ -18,11 +18,15 @@
 // EXAMPLES: UNSET OLDPWD -> CD - SHOULD RETURN AN ERROR CHECK IF OLDPWD IS NULL WHEN CHDIRing INTO IT
 // EXAMPLES: UNSETTING HOME ENV AND CD INTO HOME SHOULD NOT RETURN AND ERROR BUT TAKE YOU BACK TO THE ROOT DIR (CHECK BASH FOR CONFIRMATION)
 // CHECK FOR OTHER ODD BEHAVOIRS IN BASH.
+// CAT | CAT | ls -> fully functional now.
 
 char	*get_dir(void);
 char	*get_env(void);
 void	change_dir(const char *path, char *home);
 void    handle_builtins(char *input, char **env);
+void	exec_env(t_env **env, char **args);
+void	exec_unset(t_env **env, char **args);
+void	exec_export(t_env **env, char *input);
 
 #endif
 

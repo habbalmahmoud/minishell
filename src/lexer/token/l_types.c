@@ -52,7 +52,5 @@ int	return_literals(char c)
 		return (TYPE_LPAREN);
 	if (c == ')')
 		return (TYPE_RPAREN);
-	if (c == '=')
-		return (TYPE_EQUAL);
 	return (0);
 }

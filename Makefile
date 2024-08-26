@@ -10,14 +10,14 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -g #-fsanitize=address
 
-SRCS = main init/lexer init/shell init/parser init/execute misc/prompt_utils misc/printing
+SRCS = main env unset export init/lexer init/shell init/parser init/execute misc/prompt_utils misc/printing misc/env/env_ll
 
-BUILTIN_SRCS = cd echo pwd env handle_builtins
+BUILTIN_SRCS = cd echo pwd handle_builtins
 
 LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
 utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
 utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect \
-utils/parens/l_parens utils/parens/l_paren_utils
+utils/parens/l_parens utils/parens/l_paren_utils utils/expand/l_expand
 
 PARSER_SRCS = p_build_tree p_build_pipeline utils/p_utils utils/nodes/p_build_nodes utils/nodes/p_parse_nodes
 

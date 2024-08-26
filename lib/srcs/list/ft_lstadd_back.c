@@ -41,3 +41,21 @@ void	l_lstadd_back(t_lex_ll **lst, t_lex_ll *new)
 	end = l_lstlast(*lst);
 	end->next = new;
 }
+
+void	env_lstadd_back(t_env **env, char *key, char *value)
+{
+	t_env	*new;
+	t_env	*end;
+
+	new = env_lstnew(key, value);
+	if (env == NULL)
+		return ;
+	while (*env == NULL)
+	{
+		*env = new;
+		return ;
+	}
+	end = env_lstlast(*env);
+	end->next = new;
+}
+

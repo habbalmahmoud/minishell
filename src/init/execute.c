@@ -1,6 +1,6 @@
 #include "../../includes/execute.h"
 
-int	init_execute(t_syntax_tree *tree, char **env)
+int	init_execute(t_syntax_tree *tree, t_env *env)
 {
 	t_exec_utils *util;
 

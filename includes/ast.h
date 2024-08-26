@@ -147,8 +147,6 @@ t_ast_node	*p_build_separator(t_ast_node *left, t_ast_node *right, int type);
 }	u_ast_unions;
 */
 
-// DO MORE RESEARCH ON HOW UNIONS WORK IN C AND HOW WE CAN UTILIZE IT WHILE PARSING
-
 
 /* BNF GRAMMAR FOR THE SHELL
 <letter> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z| 

@@ -36,3 +36,14 @@ t_lex_ll	*l_lstnew(int id)
 	node->lexer = NULL;
 	return (node);
 }
+
+t_env	*env_lstnew(char *key, char *value)
+{
+	t_env	*new;
+
+	new = (t_env *)ft_calloc(1, sizeof(t_env));
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	return (new);
+}

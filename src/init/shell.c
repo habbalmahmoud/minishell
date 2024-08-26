@@ -15,6 +15,7 @@
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
 
+
 void print_lex(t_lexer **lexer, int id)
 {
 	if (!(*lexer))
@@ -31,7 +32,7 @@ void print_lex(t_lexer **lexer, int id)
 	}
 }
 
-void	init_shell(char **env)
+void	init_shell(t_env *env)
 {
 	char	*input;
 	t_lexer	*lex;
@@ -48,14 +49,11 @@ void	init_shell(char **env)
 		input = readline("\033[1;31mmhabbal&nkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
-		init_lexer(input, 0, &lex, &token);
+		init_lexer(input, &lex, &token, env);
 		close_values(input, &lex);
-		print_lex(&lex, 0);
-		//l_recursive_print(lex, 0);
-		(void)env;
-		(void)tree;
-		// init_parser(&lex, &tree);
-		// init_execute(tree, env);
+		//print_lex(&lex, 0);
+		init_parser(&lex, &tree);
+		init_execute(tree, env);
 		free(input);
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;

@@ -1,10 +1,21 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+# include <stdbool.h>
+
 struct s_lex_ll;
 struct s_lexer;
 struct s_token;
 struct s_lex_util;
+
+typedef struct	s_env
+{
+	char	**og;
+	char	*key;
+	char	*value;
+	struct s_env	*next;
+}	t_env;
+
 
 typedef struct s_lex_ll
 {
@@ -31,6 +42,8 @@ typedef struct	s_lex_utils
 	char	*input_ptr;
 	int	rec_count;
 	int	clock;
+	bool	expand;
+	t_env	*env;
 }	t_lex_utils;
 
 typedef struct s_lexer

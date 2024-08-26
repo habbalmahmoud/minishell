@@ -39,3 +39,19 @@ t_lex_ll	*l_lstlast(t_lex_ll *lst)
 	}
 	return (temp);
 }
+
+t_env	*env_lstlast(t_env *lst)
+{
+	t_env	*temp;
+	
+	temp = lst;
+	if (!temp)
+		return (NULL);
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+	}
+	return (temp);
+}
+
+

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/execute.h"
+#include "../../includes/builtins.h"
 
 void	e_traverse_tree(t_ast_node *node, t_exec_utils *util)
 {
@@ -93,6 +94,21 @@ void	e_simple_command(t_ast_node *node, t_exec_utils *util)
 	pid_t	pid;
 	int	status;
 
+	if (!ft_strcmp(node->args[0], "env"))
+	{
+		exec_env(&util->env, node->args);
+		return ;
+	}
+	if (!ft_strcmp(node->args[0], "unset"))
+	{
+		exec_unset(&util->env, node->args);
+		return ;
+	}
+	if (!ft_strcmp(node->args[0], "export"))
+	{
+		exec_export(&util->env, node->args[1]);
+		return ;
+	}
 	if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
 		path = ft_strdup(node->args[0]);
 	else
@@ -101,7 +117,7 @@ void	e_simple_command(t_ast_node *node, t_exec_utils *util)
 	if (pid == 0)
 	{
 		e_redirection(node, util);
-		execve(path, node->args, util->env);
+		execve(path, node->args, util->env->og);
 		printf("%s: command not found\n", node->args[0]);
 		exit(EXIT_FAILURE);
 	}
@@ -153,7 +169,7 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 		if (node->append)
 		{
 			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT , 0644);
-		}
+    }
 		else
 			fd_out = open(node->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_out < 0)

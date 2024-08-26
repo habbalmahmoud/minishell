@@ -13,7 +13,7 @@
 
 #include "../../includes/lexer.h"
 
-t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
+t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
 {
 	lex->token_list = malloc(sizeof(t_token));
 	lex->token_list = token;
@@ -21,6 +21,8 @@ t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->input_ptr = input;
+	lex->util->expand = true;
+	lex->util->env = env;
 	lex->child = ft_calloc(1, sizeof(t_lex_ll));
 	return (token);
 }
@@ -34,7 +36,7 @@ void	init_token(t_token *token, int n, int id)
 	token->next = NULL;
 }
 
-int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
+int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env)
 {
 	int	state;
 	int	type;
@@ -42,8 +44,8 @@ int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 
 	len = ft_strlen(input);
 	state = STATE_ANY;
-	(*token) = l_vars_init(input, (*lex), (*token));
-	init_token((*token), len, id);
+	(*token) = l_vars_init(input, (*lex), (*token), env);
+	init_token((*token), len, 0);
 	while (*(*lex)->util->input_ptr) 
 	{
 		(*lex)->util->c = *(*lex)->util->input_ptr;
@@ -53,7 +55,7 @@ int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 			if ((*lex)->util->j > 0)
 				(*token)->value[(*lex)->util->j] = '\0';
 			(*lex)->util->rec_count -= 1;
-			return (l_token_count((*lex), (*token), type));
+			return (l_token_count((*lex), (*token), type, env));
 		}
 		(*lex)->util->i++;
 		(*lex)->util->input_ptr++;
@@ -61,5 +63,5 @@ int	init_lexer(char *input, int id, t_lexer **lex, t_token **token)
 	if ((*lex)->util->j > 0)
 		(*token)->value[(*lex)->util->j] = '\0';
 	(*token) = (*lex)->token_list;
-	return (l_token_count((*lex), (*token), type));
+	return (l_token_count((*lex), (*token), type, env));
 }
