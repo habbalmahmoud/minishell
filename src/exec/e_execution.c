@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/22 20:16:18 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/26 12:21:28 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,9 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 	if (node->out)
 	{
 		if (node->append)
-			fd_out = open(node->out, O_WRONLY| O_CREAT | O_APPEND , 0644);
+		{
+			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT , 0644);
+		}
 		else
 			fd_out = open(node->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_out < 0)

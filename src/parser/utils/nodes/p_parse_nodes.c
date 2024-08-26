@@ -6,7 +6,7 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 	if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_APPEND)
 	{
 		if ((*token)->type == TYPE_APPEND)
-			(*util)->append = true;
+			(*util)->append = 1;
 		if ((*token)->next && (*token)->next->type == TOKEN)
 			(*util)->files[0] = ft_strdup((*token)->next->value);
 		if ((*token)->next && (*token)->next->next)
@@ -20,7 +20,7 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 	else if ((*token)->type == TYPE_LSHIFT || (*token)->type == TYPE_HEREDOC)
 	{
 		if ((*token)->type == TYPE_HEREDOC)
-			(*util)->here_doc = true;
+			(*util)->here_doc = 1;
 		if ((*token)->next && (*token)->next->type == TOKEN)
 			(*util)->files[1] = ft_strdup((*token)->next->value);
 		if ((*token)->next && (*token)->next->next)
