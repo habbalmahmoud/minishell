@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/22 12:15:26 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/26 12:50:22 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,22 @@
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
 
-void	print_lex(t_lexer **lexer, int id)
+
+void print_lex(t_lexer **lexer, int id)
 {
 	if (!(*lexer))
-		return ;
+		return;
 	while ((*lexer)->token_list)
 	{
 		if (id == 0)
-			printf("Main level %d: %s\n", id, (*lexer)->token_list->value);
+			printf("Main Level %d: %s\n", id, (*lexer)->token_list->value);
 		else
-			printf("Sub level %d: %s\n", id, (*lexer)->token_list->value);
+			printf("Sub Level %d: %s\n", id, (*lexer)->token_list->value);
 		if ((*lexer)->token_list->sub_lexer)
 			print_lex(&(*lexer)->token_list->sub_lexer, id + 1);
 		(*lexer)->token_list = (*lexer)->token_list->next;
 	}
 }
-
 
 void	init_shell(t_env *env)
 {
@@ -46,7 +46,7 @@ void	init_shell(t_env *env)
 	token = malloc(sizeof(t_token));
 	while (1)
 	{
-		input = readline("\033[1;31mnkanaan@minishell=> \033[0;0m");
+		input = readline("\033[1;31mmhabbal&nkanaan@minishell=> \033[0;0m");
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);

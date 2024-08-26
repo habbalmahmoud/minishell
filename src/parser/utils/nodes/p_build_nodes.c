@@ -14,6 +14,7 @@ t_ast_node	*p_build_simple_command(t_ast_utils *util)
 		node->in = util->files[1];
 		node->out = util->files[0];
 		node->append = util->append;
+		node->here_doc = util->here_doc;
 		node->right = NULL;
 		node->left = NULL;
 		if (util->sub)

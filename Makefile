@@ -21,7 +21,7 @@ utils/parens/l_parens utils/parens/l_paren_utils utils/expand/l_expand
 
 PARSER_SRCS = p_build_tree p_build_pipeline utils/p_utils utils/nodes/p_build_nodes utils/nodes/p_parse_nodes
 
-EXEC_SRCS = e_execution utils/e_utils utils/pipeline/e_pipeline
+EXEC_SRCS = e_execution utils/e_utils utils/pipeline/e_pipeline utils/get_next_line utils/get_next_line_utils
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 

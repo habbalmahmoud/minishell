@@ -26,7 +26,8 @@ t_ast_node	*p_build_tree(t_token *token)
 		if (token->type == TOKEN || token->type == TYPE_LPAREN)
 			p_parse_simple_command(&util, token);
 		else if (token->type == TYPE_RSHIFT 
-				|| token->type == TYPE_LSHIFT || token->type == TYPE_APPEND)
+				|| token->type == TYPE_LSHIFT || token->type == TYPE_APPEND
+				|| token->type == TYPE_HEREDOC)
 		{
 			if (p_parse_redirect(&util, &token) == 0)
 				flag2 = 1;
