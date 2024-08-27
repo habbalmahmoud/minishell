@@ -42,7 +42,7 @@ typedef struct	s_lex_utils
 	char	*input_ptr;
 	int	rec_count;
 	int	clock;
-	bool	expand;
+	int	expand;
 	t_env	*env;
 }	t_lex_utils;
 

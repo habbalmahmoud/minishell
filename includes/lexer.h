@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/15 16:48:26 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/27 13:32:36 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 # include "./minishell.h"
 # include "./token.h"
 
-char	*l_expand(char *str, t_env *env);
-void	l_handler_expand(t_token *token, char *expanded);
+char	**l_expand(char *str, t_env *env);
+char	*l_handler_expand(char *value, char **expanded);
 /*/////////////////////////////////////////////////////////////
 ////////////		TYPES			    //////////
 ////////////////////////////////////////////////////////////*/

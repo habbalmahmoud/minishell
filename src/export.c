@@ -56,11 +56,12 @@ int	split_env_h(char *str, char **key, char **value)
 {
 	char	*temp;
 	char	*delim;
+	int	i;
 
 	temp = ft_strdup(str);
 	delim = ft_strchr(temp, '=');
+	i = 0;
 	//printf("delim: %s\ntemp: %s\n", delim, temp);
-	int	i = 0;
 	if (!temp[1])
 		return (1);
 	while (temp[i])
@@ -119,12 +120,13 @@ void	exec_export(t_env **env, t_exec_utils *util, char **args)
 
 	cpy = ft_lstcpy(env);
 	bubble_sort(&cpy);
+	t_env	*head = cpy;
 	if (!args[1])
 	{
-		while (cpy)
+		while (head)
 		{
-			printf("declare -x %s=%s\n", cpy->key, cpy->value);
-			cpy = cpy->next;
+			printf("declare -x %s=%s\n", head->key, head->value);
+			head = head->next;
 		}
 		return ;
 	}

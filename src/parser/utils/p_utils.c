@@ -35,7 +35,7 @@ void	p_expand_tree(t_ast_node *node)
 {
 	if (!node)
 		return ;
-	else if (!(ft_strcmp(node->args[0], "()")))
+	else if (node->args[0] && !(ft_strcmp(node->args[0], "()")))
 	{
 		node->tree_link = ft_calloc(1, sizeof(t_syntax_tree));
 		init_parser(node->lexer, &node->tree_link);

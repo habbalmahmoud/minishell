@@ -16,6 +16,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <stdbool.h>
 # include "../lib/includes/libft.h"
 # include "./structs.h"
 

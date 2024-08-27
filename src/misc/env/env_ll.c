@@ -15,6 +15,7 @@ void	copy_env(t_env	**env_ll, char **env)
 		free(value);
 		i++;
 	}
+	env_lstadd_back(env_ll, "?", "0");
 	(*env_ll)->og = env;
 }
 

@@ -20,13 +20,14 @@ void	l_state_handler_quote_in(t_lexer *lex, t_token **token, int type, int *stat
 	if (type == TYPE_QUOTE)
 	{
 		(*state) = IN_QUOTES;
-		lex->util->expand = false;
+		lex->util->expand = 0;
 		(*token)->value[lex->util->j++] = TYPE_QUOTE;
 		(*token)->type = TOKEN;
 	}
 	if (type == TYPE_DQUOTE)
 	{
 		(*state) = IN_DQUOTES;
+		lex->util->expand = 1;
 		(*token)->value[lex->util->j++] = TYPE_DQUOTE;
 		(*token)->type = TOKEN;
 	}

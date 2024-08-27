@@ -12,13 +12,18 @@
 
 #include "../../includes/execute.h"
 #include "../../includes/builtins.h"
+# include <sys/stat.h>
+#include <errno.h>
 
 void	e_traverse_tree(t_ast_node *node, t_exec_utils *util)
 {
 	if (!node)
 		return;
 	if (node->type == AST_COMMAND)
-		e_simple_command(node, util);
+	{
+		if (node && node->args && node->args[0])
+			e_simple_command(node, util);
+	}
 	else if (node->type == AST_PIPE)
 		e_pipeline(node, util);
 	else if (node->type == AST_AND)
@@ -141,6 +146,7 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     char *path;
     pid_t pid;
     int status;
+    struct stat statbuf;
 
     if (!ft_strcmp(node->args[0], "env"))
     {
@@ -149,7 +155,7 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
-        exec_unset(&util->env, util, node->args);
+        exec_unset(&util, node->args);
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
@@ -159,15 +165,31 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "exit"))
     {
-		if (handle_exit(util, node->args))
-			return ;
+	if (handle_exit(util, node->args))
+		return ;
+    }
+    if (!ft_strcmp(node->args[0], "cd"))
+    {
+	change_dir(util, node->args);
+	return ;
     }
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
         path = ft_strdup(node->args[0]);
     else
         path = get_path(node->args, util->env);
+ 
+if (stat(path, &statbuf) == 0) {
+		if (S_ISDIR(statbuf.st_mode))
+		{
+			ft_putendl_fd(" Is a directory", 2);
+			util->code = 126;
+			util->exit_code = 126;
+			free(path);
+			return;
+		}
+}
 
-    pid = fork();
+	pid = fork();
     if (pid == 0)
     {
         e_redirection(node, util);
@@ -237,7 +259,8 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 			fd_out = open(node->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_out < 0)
 		{
-			perror("open output");
+			ft_putendl_fd(" permission denied", 2);
+			util->code = 1;
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd_out, STDOUT_FILENO);

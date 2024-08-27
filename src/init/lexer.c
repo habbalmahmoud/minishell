@@ -21,7 +21,7 @@ t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->input_ptr = input;
-	lex->util->expand = true;
+	lex->util->expand = 1;
 	lex->util->env = env;
 	lex->child = ft_calloc(1, sizeof(t_lex_ll));
 	return (token);

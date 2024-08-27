@@ -13,6 +13,11 @@
 #include "../includes/minishell.h"
 #include "../includes/ast.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
+
+
 int	main(int ac, char **av, char **env)
 {
 	t_env	*env_ll;
@@ -25,3 +30,4 @@ int	main(int ac, char **av, char **env)
 	else
 		init_shell(env_ll);
 }
+

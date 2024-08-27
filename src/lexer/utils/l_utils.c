@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:38 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/15 16:01:58 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/27 13:33:17 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 {
 	int	hits;
 	char	**matches;
-	char	*expanded;
+	char	**expanded;
 	
 	token = lex->token_list;
 	expanded = NULL;
@@ -29,15 +29,38 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 			matches = l_glob(token->value, &hits);
 			if (hits > 0)
 				l_handler_wildcards(token, hits, matches);			
-			if (lex->util->expand)
-				expanded = l_expand(token->value, env);
-			if (expanded)
-				l_handler_expand(token, expanded);
-			else if (ft_strchr(token->value, '$') && lex->util->expand)
+			if (ft_strchr(token->value, '$') && lex->util->expand)
 			{
-				free(token->value);
-				token->value = ft_strdup("");
+				char	**test;
+				test = ft_split(token->value, '$');
+				int	i = 0;
+				if (test)
+				{
+					while (test[i])
+				{
+					expanded = l_expand(test[i], env);
+					if (expanded)
+					{
+						if (i == 0)
+						{
+							free(token->value);
+							token->value = ft_strdup("");
+						}
+						char *exp = l_handler_expand(test[i], expanded);
+						token->value = ft_strjoin(token->value, exp);
+					}
+					else if (ft_strchr(token->value, '$') && lex->util->expand)
+					{
+						free(token->value);
+						token->value = ft_strdup("");
+					}
+					i++;
+				}
+
+				}
+				
 			}
+			
 		}
 		token = token->next;
 	}
