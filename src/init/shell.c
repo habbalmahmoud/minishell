@@ -73,6 +73,7 @@ void	init_shell(t_env *env)
 		if (!flag1)
 			env_lstadd_back(&env, "?", test);
 		free(input);
+		env->code = util->code;
 		lex->util->clock = 0;
 		lex->util->rec_count = 0;
 	}

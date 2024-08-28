@@ -14,8 +14,9 @@
 # define LEXER_H
 # include "./minishell.h"
 # include "./token.h"
+# include "./execute.h"
 
-char	**l_expand(char *str, t_env *env);
+char	**l_expand(char *str, t_env *env, int num);
 char	*l_handler_expand(char *value, char **expanded);
 /*/////////////////////////////////////////////////////////////
 ////////////		TYPES			    //////////

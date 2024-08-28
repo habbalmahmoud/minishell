@@ -6,21 +6,22 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:38 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/27 13:33:17 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/28 13:16:22 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/lexer.h"
+#include "../../../includes/execute.h"
 
-int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
+int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 {
 	int	hits;
 	char	**matches;
 	char	**expanded;
+	char	*exp = NULL;
 	
 	token = lex->token_list;
 	expanded = NULL;
-	(void)type;
 	while (token)
 	{
 		if (token->type == TOKEN)
@@ -32,13 +33,24 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 			if (ft_strchr(token->value, '$') && lex->util->expand)
 			{
 				char	**test;
+				int flag = 0;
+				if (token->value[0] != '$')
+					flag = 1;
 				test = ft_split(token->value, '$');
 				int	i = 0;
 				if (test)
 				{
 					while (test[i])
 				{
-					expanded = l_expand(test[i], env);
+					if (test[i][0] == '?')
+					{
+						// char *temp = ft_substr(test[i], 0, 1);
+						// temp = ft_strjoin(temp, " ");
+						// test[i] = ft_substr(test[i], 1, ft_strlen(test[i]));
+						// test[i] = ft_strjoin(temp, test[i]);
+						flag = 2;	
+					}
+					expanded = l_expand(test[i], env, flag);
 					if (expanded)
 					{
 						if (i == 0)
@@ -46,8 +58,17 @@ int	l_token_count(t_lexer *lex, t_token *token, int type, t_env *env)
 							free(token->value);
 							token->value = ft_strdup("");
 						}
-						char *exp = l_handler_expand(test[i], expanded);
-						token->value = ft_strjoin(token->value, exp);
+						if (flag)
+							{
+								token->value = ft_strjoin(token->value, expanded[0]);
+								flag = 0;	
+							}
+							else
+						{
+								exp = l_handler_expand(test[i], expanded);
+							token->value = ft_strjoin(token->value, exp);
+
+							}
 					}
 					else if (ft_strchr(token->value, '$') && lex->util->expand)
 					{

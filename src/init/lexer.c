@@ -55,7 +55,7 @@ int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env)
 			if ((*lex)->util->j > 0)
 				(*token)->value[(*lex)->util->j] = '\0';
 			(*lex)->util->rec_count -= 1;
-			return (l_token_count((*lex), (*token), type, env));
+			return (l_token_count((*lex), (*token), env));
 		}
 		(*lex)->util->i++;
 		(*lex)->util->input_ptr++;
@@ -63,5 +63,5 @@ int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env)
 	if ((*lex)->util->j > 0)
 		(*token)->value[(*lex)->util->j] = '\0';
 	(*token) = (*lex)->token_list;
-	return (l_token_count((*lex), (*token), type, env));
+	return (l_token_count((*lex), (*token), env));
 }

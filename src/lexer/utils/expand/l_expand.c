@@ -1,9 +1,9 @@
 #include "../../../../includes/minishell.h"
 #include "../../../../includes/lexer.h"
 #include "../../../../includes/token.h"
+#include "../../../../includes/execute.h"
 
-
-char	**l_expand(char *str, t_env *env)
+char	**l_expand(char *str, t_env *env, int num)
 {
 	t_env	*head;
 	char	**split;
@@ -21,13 +21,31 @@ char	**l_expand(char *str, t_env *env)
 			i = 0;
 			if (split)
 			{
-					if (!ft_strcmp(split[i], head->key))
+				if (num == 1)
+				{
+					returned[0] = ft_strdup(split[0]);
+					returned[1] = NULL;
+					returned[2] = NULL;
+					return (returned);
+				}
+				if (num == 2)
+				{
+					if (!ft_strcmp(ft_substr(str, 0 , 1), head->key))
 					{
 						returned[0] = ft_strdup(head->value);
+						returned[0] = ft_strjoin(returned[0], ft_substr(str, 1, ft_strlen(str)));
 						returned[1] = ft_strdup(split[0]);
 						returned[2] = NULL;
 						return (returned);
 					}
+				}
+				if (!ft_strcmp(split[i], head->key))
+				{
+					returned[0] = ft_strdup(head->value);
+					returned[1] = ft_strdup(split[0]);
+					returned[2] = NULL;
+					return (returned);
+				}
 			}
 		}
 		head = head->next;
