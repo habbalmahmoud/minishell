@@ -33,9 +33,13 @@ char	*get_path(char **s_cmd, t_env *env_ll)
 	char	*exec;
 	char	**allpath;
 	char	*path_part;
+	char	*path;
 
 	i = -1;
-	allpath = ft_split(my_getenv("PATH", env_ll), ':');
+	path = my_getenv("PATH", env_ll);
+	if (!path)
+		return (NULL);
+	allpath = ft_split(path, ':');
 	if (!allpath)
 		return NULL;
 	while (allpath[++i])

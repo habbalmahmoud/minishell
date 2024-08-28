@@ -1,12 +1,30 @@
 #include "../includes/minishell.h"
 #include "../includes/execute.h"
+/*
+void	exec_unset(t_exec_utils **util, char **args)
+{
+	t_env	**env;
+	t_env	*store;
+	t_env	*head;
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>  // For debugging purposes
+	env = &(*util)->env;
+	head = (*env);
+	store = head->next;
+		while (head)
+		{
+			if (!ft_strcmp(args[1], head->key))
+			{
+				free(head->key);
+				free(head->value);
+				free(head);
+			}
+			head->next = store;
+			head = head->next;
+		}
+} */
 
-// Function to free a single environment node
-void free_env_node(t_env *node) {
+// Function to free a single node
+void free_node(t_env *node) {
     if (node) {
         free(node->key);
         free(node->value);
@@ -14,57 +32,45 @@ void free_env_node(t_env *node) {
     }
 }
 
-void exec_unset(t_exec_utils **util, char **args) {
-	t_env **env = &(*util)->env;
-    t_env *current;
-    t_env *prev;
-    int i;
-    int found;
 
-    // Assume success initially
-    (*util)->code = 1;
+void exec_unset(t_exec_utils **util, char **keys_to_delete) {
+    if (!util || !*util || !(*util)->env || !keys_to_delete) {
+        return;
+    }
 
-    // Iterate over each argument in args
-    for (i = 1; args[i] != NULL; i++) {
-        found = 0;
-        current = *env;
-        prev = NULL;
+    t_env *current = (*util)->env;
+    t_env *prev = NULL;
 
-        // Debugging output
+    while (current != NULL) {
+        int match_found = 0;
 
-        // Search for the environment variable to remove
-        while (current != NULL) {
-            // Debugging output
-
-            if (!ft_strcmp(current->key, args[i])) {
-                // Found the variable to unset
-                found = 1;
-                if (prev == NULL) {
-                    // Removing the head of the list
-                    *env = current->next;
-                } else {
-                    // Removing a non-head node
-                    prev->next = current->next;
-                }
-
-                // Free the memory associated with the node
-                free_env_node(current);
-
-                // Debugging output
-
-                // Break out of the while loop after deletion
+        // Check if the current node's key matches any key in the array
+        for (size_t i = 0; keys_to_delete[i]; i++) {
+            if (strcmp(current->key, keys_to_delete[i]) == 0) {
+                match_found = 1;
                 break;
             }
-            prev = current;
-            current = current->next;
         }
 
-        // If variable was found and removed
-        if (found) {
-            (*util)->code = 0; // Set exit code to 0 to indicate success
+        if (match_found) {
+            // Node to delete
+            if (prev) {
+                // Node to delete is not the head
+                prev->next = current->next;
+            } else {
+                // Deleting the head node
+                (*util)->env = current->next;
+            }
+            t_env *node_to_delete = current;
+            current = current->next;  // Move to next node before freeing the current one
+            free_node(node_to_delete);
+        } else {
+            prev = current;
+            current = current->next;
         }
     }
 }
 
-// Function to free a single environment node
+
+// Function to delete nodes with matching keys
 

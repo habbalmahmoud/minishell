@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:38 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/28 13:16:22 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/28 15:30:17 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 	{
 		if (token->type == TOKEN)
 		{
-			token->value = l_remove_quotes(token);
 			matches = l_glob(token->value, &hits);
 			if (hits > 0)
 				l_handler_wildcards(token, hits, matches);			
+			else
+				token->value = l_remove_quotes(token);
 			if (ft_strchr(token->value, '$') && lex->util->expand)
 			{
 				char	**test;
@@ -79,7 +80,6 @@ int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 				}
 
 				}
-				
 			}
 			
 		}

@@ -156,6 +156,7 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     if (!ft_strcmp(node->args[0], "unset"))
     {
         exec_unset(&util, node->args);
+	util->code = 0;
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
@@ -173,12 +174,14 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
 	change_dir(util, node->args);
 	return ;
     }
+  
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
         path = ft_strdup(node->args[0]);
     else
         path = get_path(node->args, util->env);
  
-if (stat(path, &statbuf) == 0) {
+    if (stat(path, &statbuf) == 0)
+	{
 		if (S_ISDIR(statbuf.st_mode))
 		{
 			ft_putendl_fd(" Is a directory", 2);
@@ -187,13 +190,14 @@ if (stat(path, &statbuf) == 0) {
 			free(path);
 			return;
 		}
-}
-
-	pid = fork();
+	}  
+	
+    pid = fork();
     if (pid == 0)
     {
         e_redirection(node, util);
-	execve(path, node->args, util->env->og);
+	if (path)
+		execve(path, node->args, util->env->og);
 	ft_putstr_fd("command not found: ", 2);
 	ft_putendl_fd(node->args[0], 2);
 	exit(127);

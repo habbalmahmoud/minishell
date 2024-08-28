@@ -49,7 +49,7 @@ void	change_dir(t_exec_utils *util, char **args)
 			path = ft_strjoin(home, ft_substr(path, 1, ft_strlen(path)- 1));
 		if (chdir(path) != 0)
 		{
-			util->code = 127;	
+			util->code = 1;	
 			perror("cd");
 			return ;
 		}

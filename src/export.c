@@ -66,7 +66,9 @@ int	split_env_h(char *str, char **key, char **value)
 		return (1);
 	while (temp[i])
 	{
-		if (temp[i] == '-')
+		if (temp[i] == '-' && temp[i + 1] == '=')
+			return (1);
+		if (temp[i] == '-' && !delim)
 			return (1);
 		i++;
 	}
