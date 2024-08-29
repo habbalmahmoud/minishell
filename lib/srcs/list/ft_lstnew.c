@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:26:33 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/03 18:00:17 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 20:34:31 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,9 @@ t_env	*env_lstnew(char *key, char *value)
 {
 	t_env	*new;
 
-	new = (t_env *)ft_calloc(1, sizeof(t_env));
+	new = malloc(sizeof(t_env));
 	new->key = ft_strdup(key);
-	if (value)
-		new->value = ft_strdup(value);
-	else
-		new->value = ft_strdup(" ");
+	new->value = ft_strdup(value);
 	new->next = NULL;
 	return (new);
 }

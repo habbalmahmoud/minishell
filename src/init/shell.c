@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 15:23:02 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:42:29 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,10 @@ void	init_shell(t_env *env)
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);
-		close_values(input, &lex);
+		close_values(input, &lex, &util);
 		//print_lex(&lex, 0);
 		init_parser(&lex, &tree);
 		init_execute(tree, env, &util);
-		char *test = ft_itoa(util->code);
-		t_env	*temp;
-		temp = env;
-		int	flag1 = 0;
-		while (temp)
-		{
-			if (!ft_strcmp(temp->key, "?"))
-			{
-				temp->value = ft_strdup(test);
-				flag1 = 1;
-			}
-			temp = temp->next;
-		}
-		if (!flag1)
-			env_lstadd_back(&env, "?", test);
 		free(input);
 		env->code = util->code;
 		lex->util->clock = 0;

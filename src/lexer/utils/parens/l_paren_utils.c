@@ -79,7 +79,7 @@ void special_fill(int num, t_lexer *lexer)
     l_recursive_fill(lexer, 0);
 }
 
-void close_values(char *input, t_lexer **lexer)
+void close_values(char *input, t_lexer **lexer, t_exec_utils **util)
 {
     int l_paran_num;
     int r_paran_num;
@@ -91,5 +91,8 @@ void close_values(char *input, t_lexer **lexer)
         l_recursive_fill((*lexer), 0);
     }
     else if (l_paran_num < r_paran_num)
-        printf("Syntax Error\n");
+	{
+		ft_putendl_fd(" syntax error", 2);
+		(*util)->code = 2;
+	}
 }

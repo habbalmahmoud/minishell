@@ -47,7 +47,13 @@ void	print_env(t_env *head)
 	current = head;
 	while (current != NULL)
 	{
-		printf("%s=%s\n", current->key, current->value);
+		if (ft_isascii(current->key[1]))
+		{
+			ft_putstr_fd(current->key, 1);
+		}
+			ft_putchar_fd('=', 1);
+		if (ft_isascii(current->value[1]))
+			ft_putendl_fd(current->value, 1);
 		current = current->next;
 	}
 }

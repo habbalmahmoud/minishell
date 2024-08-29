@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 12:21:28 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/29 20:02:01 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,8 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
-        exec_unset(&util, node->args);
-	util->code = 0;
+        exec_unset(util, node->args);
+		util->code = 0;
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
