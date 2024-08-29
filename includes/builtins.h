@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:41:09 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/27 09:57:00 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:06:49 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_env(void);
 void	change_dir(t_exec_utils *util, char **args);
 void    handle_builtins(char *input, char **env);
 void	exec_env(t_env **env, char **args);
-void	exec_unset(t_exec_utils **util, char **args);
+void	exec_unset(t_env **env, char **args);
 void	exec_export(t_env **env, t_exec_utils *util, char **args);
 
 #endif

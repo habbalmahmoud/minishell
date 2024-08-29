@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 15:23:02 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:16:23 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,14 @@ void	init_shell(t_env *env)
 		add_history(input);
 		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);
-		close_values(input, &lex);
-		//print_lex(&lex, 0);
-		init_parser(&lex, &tree);
-		init_execute(tree, env, &util);
+		if (close_values(input, &lex, &util))
+		{
+			if (validate_lexer(&lex, &util) == 1)
+			{
+				init_parser(&lex, &tree);
+				init_execute(tree, env, &util);
+			}	
+		}
 		char *test = ft_itoa(util->code);
 		t_env	*temp;
 		temp = env;

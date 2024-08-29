@@ -14,20 +14,17 @@ void free_env_node(t_env *node) {
     }
 }
 
-void exec_unset(t_exec_utils **util, char **args) {
-	t_env **env = &(*util)->env;
+void exec_unset(t_env **env, char **args) {
     t_env *current;
     t_env *prev;
     int i;
-    int found;
+    
 
     // Assume success initially
-    (*util)->code = 1;
 
     // Iterate over each argument in args
     for (i = 1; args[i] != NULL; i++) {
-        found = 0;
-        current = *env;
+        current = (*env);
         prev = NULL;
 
         // Debugging output
@@ -38,17 +35,16 @@ void exec_unset(t_exec_utils **util, char **args) {
 
             if (!ft_strcmp(current->key, args[i])) {
                 // Found the variable to unset
-                found = 1;
                 if (prev == NULL) {
                     // Removing the head of the list
-                    *env = current->next;
+                    env = &current->next;
                 } else {
                     // Removing a non-head node
                     prev->next = current->next;
                 }
 
                 // Free the memory associated with the node
-                free_env_node(current);
+                    free_env_node(current);
 
                 // Debugging output
 
@@ -60,9 +56,6 @@ void exec_unset(t_exec_utils **util, char **args) {
         }
 
         // If variable was found and removed
-        if (found) {
-            (*util)->code = 0; // Set exit code to 0 to indicate success
-        }
     }
 }
 

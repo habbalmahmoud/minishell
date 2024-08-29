@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_paren_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:42:25 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/12 14:16:03 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:36:21 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void special_fill(int num, t_lexer *lexer)
     l_recursive_fill(lexer, 0);
 }
 
-void close_values(char *input, t_lexer **lexer)
+int close_values(char *input, t_lexer **lexer, t_exec_utils **utils)
 {
     int l_paran_num;
     int r_paran_num;
@@ -91,5 +91,10 @@ void close_values(char *input, t_lexer **lexer)
         l_recursive_fill((*lexer), 0);
     }
     else if (l_paran_num < r_paran_num)
-        printf("Syntax Error\n");
+    {
+        ft_putendl_fd("Syntax Error", 2);
+        (*utils)->code = 2;
+        return (0);
+    }
+    return (1);
 }

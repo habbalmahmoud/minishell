@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 12:21:28 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:19:37 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
-        exec_unset(&util, node->args);
+        exec_unset(&util->env, node->args);
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
@@ -193,10 +193,10 @@ if (stat(path, &statbuf) == 0) {
     if (pid == 0)
     {
         e_redirection(node, util);
-	execve(path, node->args, util->env->og);
-	ft_putstr_fd("command not found: ", 2);
-	ft_putendl_fd(node->args[0], 2);
-	exit(127);
+		execve(path, node->args, util->env->og);
+		ft_putstr_fd("command not found: ", 2);
+		ft_putendl_fd(node->args[0], 2);
+		exit(127);
     }
     else if (pid > 0)
     {

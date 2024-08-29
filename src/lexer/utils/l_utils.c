@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:38 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/28 13:16:22 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:31:00 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,74 @@ void	l_tokenize_next(t_lexer *lex, t_token **token, int type, int len)
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
 	}
+}
+
+int	validate_lexer(t_lexer **lex, t_exec_utils **utils)
+{
+	t_token	*temp;
+
+	temp = (*lex)->token_list;
+	if (!ft_strcmp(temp->value, "|") || !ft_strcmp(temp->value, "||")
+		|| !ft_strcmp(temp->value, "&&") || !ft_strcmp(temp->value, ">>")
+		|| !ft_strcmp(temp->value, ">") || !ft_strcmp(temp->value, ";"))
+	{
+		ft_putendl_fd("Syntax Error", 2);
+		(*utils)->code = 2;
+		return (0);
+	}
+	if (!ft_strcmp(temp->value, "<") || !ft_strcmp(temp->value, "<<"))
+	{
+		if (!temp->next || temp->next->type != TYPE_WORD)
+		{
+			ft_putendl_fd("Syntax Error", 2);
+			(*utils)->code = 2;
+			return (0);
+		}
+	}
+	while (temp)
+	{
+		if (!ft_strcmp(temp->value, "()"))
+		{
+			if (!temp->sub_lexer || !temp->sub_lexer->token_list->value[0])
+			{
+				ft_putendl_fd("Syntax Error", 2);
+				(*utils)->code = 2;
+				return (0);	
+			}
+			if (!validate_lexer(&temp->sub_lexer, utils))
+				return (0);
+		}
+		if (temp->next)
+		{
+			if (!ft_strcmp(temp->next->value, ";"))
+			{
+				if (temp->type != TYPE_WORD)
+				{
+					ft_putendl_fd("Syntax Error", 2);
+					(*utils)->code = 2;
+					return (0);
+				}
+			}
+			if (!ft_strcmp(temp->next->value, "|") || !ft_strcmp(temp->next->value, "||")
+				|| !ft_strcmp(temp->next->value, "&&") || !ft_strcmp(temp->next->value, ">>")
+				|| !ft_strcmp(temp->next->value, ">") || !ft_strcmp(temp->next->value, "<")
+				|| !ft_strcmp(temp->next->value, "<<"))
+			{
+				if (!temp->next->next)
+				{
+					ft_putendl_fd("Syntax Error", 2);
+					(*utils)->code = 2;
+					return (0);
+				}
+				if (temp->type != TYPE_WORD && temp->next->next->type != TYPE_WORD)
+				{
+					ft_putendl_fd("Syntax Error", 2);
+					(*utils)->code = 2;
+					return (0);
+				}
+			} 
+		}
+		temp = temp->next;
+	}
+	return (1);
 }
