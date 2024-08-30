@@ -37,13 +37,17 @@ t_lex_ll	*l_lstnew(int id)
 	return (node);
 }
 
-t_env	*env_lstnew(char *key, char *value)
-{
-	t_env	*new;
-
-	new = malloc(sizeof(t_env));
-	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	return (new);
+t_env *env_lstnew(const char *key, const char *value) {
+    t_env *new = malloc(sizeof(t_env));
+    if (new == NULL) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    new->key = strdup(key); // Duplicate key
+	if (!value)
+		new->value = ft_strdup("");
+	else
+		new->value = strdup(value); // Duplicate value
+    new->next = NULL;
+    return new;
 }

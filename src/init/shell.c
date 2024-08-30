@@ -32,6 +32,20 @@ void print_lex(t_lexer **lexer, int id)
 	}
 }
 
+char	*get_pro(t_env *env)
+{
+	t_env	*head;
+
+	head = env;
+	while (head)
+	{
+		if (!(ft_strcmp(head->key, "USER")))
+			return (NULL);
+		head = head->next;
+	}
+	return (NULL);
+}
+
 void	init_shell(t_env *env)
 {
 	char	*input;
@@ -56,7 +70,25 @@ void	init_shell(t_env *env)
 		close_values(input, &lex, &util);
 		//print_lex(&lex, 0);
 		init_parser(&lex, &tree);
-		init_execute(tree, env, &util);
+		init_execute(tree, &env, &util);
+		char *test = ft_itoa(util->code);
+		t_env	*temp;
+		temp = env;
+		int	flag1 = 0;
+		while (temp)
+		{
+			if (!ft_strcmp(temp->key, "?"))
+			{
+				temp->value = ft_strdup(test);
+				flag1 = 1;
+			}
+			temp = temp->next;
+		}
+		if (!flag1)
+		{
+			t_env *new = env_lstnew("?", test);
+			env_lstadd_back(&env, new);
+		}
 		free(input);
 		env->code = util->code;
 		lex->util->clock = 0;

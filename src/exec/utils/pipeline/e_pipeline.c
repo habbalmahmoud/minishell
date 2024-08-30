@@ -21,9 +21,9 @@ void	e_pipeline_parent(t_ast_node *node, t_exec_utils *util, int *pid, int fd[2]
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		if (!ft_strcmp(node->left->args[0], "()"))
-			e_traverse_tree(node->left->tree_link->branch, util);
+			e_traverse_tree(node->left->tree_link->branch, util, &util->env);
 		else
-			e_traverse_tree(node->left, util);
+			e_traverse_tree(node->left, util, &util->env);
 		exit(EXIT_SUCCESS);
 	}
 	else if ((*pid) < 0)
@@ -44,9 +44,9 @@ void	e_pipeline_child(t_ast_node *node, t_exec_utils *util, int *pid, int fd[2])
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		if (!ft_strcmp(node->right->args[0], "()"))
-			e_traverse_tree(node->right->tree_link->branch, util);
+			e_traverse_tree(node->right->tree_link->branch, util, &util->env);
 		else
-			e_traverse_tree(node->right, util);
+			e_traverse_tree(node->right, util, &util->env);
 		exit(EXIT_SUCCESS);
 	}
 	else if ((*pid) < 0)

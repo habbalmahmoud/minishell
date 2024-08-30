@@ -27,16 +27,17 @@ char	*my_getenv(char *name, t_env *env_ll)
 }
 
 
-char	*get_path(char **s_cmd, t_env *env_ll)
+char	*get_path(char **s_cmd, t_env **env_ll)
 {
 	int	i;
 	char	*exec;
 	char	**allpath;
 	char	*path_part;
 	char	*path;
+	t_env	*head = (*env_ll);
 
 	i = -1;
-	path = my_getenv("PATH", env_ll);
+	path = my_getenv("PATH", head);
 	if (!path)
 		return (NULL);
 	allpath = ft_split(path, ':');

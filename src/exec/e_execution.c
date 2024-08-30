@@ -15,66 +15,67 @@
 # include <sys/stat.h>
 #include <errno.h>
 
-void	e_traverse_tree(t_ast_node *node, t_exec_utils *util)
+void	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	if (!node)
 		return;
 	if (node->type == AST_COMMAND)
 	{
 		if (node && node->args && node->args[0])
-			e_simple_command(node, util);
+			e_simple_command(node, util, env);
 	}
 	else if (node->type == AST_PIPE)
-		e_pipeline(node, util);
+		e_pipeline(node, util, env);
 	else if (node->type == AST_AND)
-		e_operator_and(node, util);
+		e_operator_and(node, util, env);
 	else if (node->type == AST_OR)
-		e_operator_or(node, util);
+		e_operator_or(node, util, env);
 	else
 		printf("node type error");
 }
 
-void	e_operator_and(t_ast_node *node, t_exec_utils *util)
+void	e_operator_and(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	if (!ft_strcmp(node->left->args[0], "()"))
-		e_traverse_tree(node->left->tree_link->branch, util);
+		e_traverse_tree(node->left->tree_link->branch, util, env);
 	else
-		e_traverse_tree(node->left, util);
+		e_traverse_tree(node->left, util, env);
 	if (util->code == EXIT_SUCCESS)
 	{
 		if (!ft_strcmp(node->right->args[0], "()"))
-			e_traverse_tree(node->right->tree_link->branch, util);
+			e_traverse_tree(node->right->tree_link->branch, util, env);
 		else
-			e_traverse_tree(node->right, util);
+			e_traverse_tree(node->right, util, env);
 	}
 	else if (util->code == EXIT_FAILURE)
 		return ;
 }
 
-void	e_operator_or(t_ast_node *node, t_exec_utils *util)
+void	e_operator_or(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	if (!ft_strcmp(node->left->args[0], "()"))
-		e_traverse_tree(node->left->tree_link->branch, util);
+		e_traverse_tree(node->left->tree_link->branch, util, env);
 	else
-		e_traverse_tree(node->left, util);
+		e_traverse_tree(node->left, util, env);
 	if (util->code == EXIT_SUCCESS)
 		return ;
 	else if (util->code == EXIT_FAILURE)
 	{
 		if (!ft_strcmp(node->right->args[0], "()"))
-			e_traverse_tree(node->right->tree_link->branch, util);
+			e_traverse_tree(node->right->tree_link->branch, util, env);
 		else
-			e_traverse_tree(node->right, util);
+			e_traverse_tree(node->right, util, env);
 	}
 }	
 
-void e_pipeline(t_ast_node *node, t_exec_utils *util)
+void e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	int	fd[2];
 	int	status;
 	pid_t	pid1;
 	pid_t	pid2;
 
+	(void)env;
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
@@ -139,29 +140,74 @@ int	handle_exit(t_exec_utils *util, char **args)
 	}
 	return (1);
 }
+int count_nodes(t_env *head) {
+    int count = 0;
+    while (head) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
 
+// Function to copy linked list to array of strings
+char **copy_list_to_array(t_env *head) {
+    int length = count_nodes(head);
+    char **array = malloc((length + 1) * sizeof(char *)); // +1 for NULL terminator
+    if (!array) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
 
-void e_simple_command(t_ast_node *node, t_exec_utils *util)
+    int i = 0;
+    while (head) {
+        // Calculate the length needed for the new string
+        size_t key_len = strlen(head->key);
+        size_t value_len = strlen(head->value);
+        size_t str_len = key_len + value_len + 2; // +2 for '=' and '\0'
+
+        // Allocate memory for the formatted string
+        array[i] = malloc(str_len * sizeof(char));
+        if (!array[i]) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+
+        // Format and copy the string into the array
+        snprintf(array[i], str_len, "%s=%s", head->key, head->value);
+
+        // Move to the next element
+        head = head->next;
+        i++;
+    }
+
+    // NULL-terminate the array
+    array[i] = NULL;
+
+    return array;
+}
+
+void e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
     char *path;
     pid_t pid;
     int status;
     struct stat statbuf;
+	char **array;
 
     if (!ft_strcmp(node->args[0], "env"))
     {
-        exec_env(&util->env, node->args);
+        exec_env(env, node->args);
         return;
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
-        exec_unset(util, node->args);
+        exec_unset(env, node->args);
 		util->code = 0;
         return;
     }
     if (!ft_strcmp(node->args[0], "export"))
     {
-        exec_export(&util->env, util, node->args);
+        exec_export(env, util, node->args);
         return;
     }
     if (!ft_strcmp(node->args[0], "exit"))
@@ -178,7 +224,7 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
         path = ft_strdup(node->args[0]);
     else
-        path = get_path(node->args, util->env);
+        path = get_path(node->args, env);
  
     if (stat(path, &statbuf) == 0)
 	{
@@ -197,7 +243,10 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     {
         e_redirection(node, util);
 	if (path)
-		execve(path, node->args, util->env->og);
+		{
+		array = copy_list_to_array((*env));
+		execve(path, node->args, array);
+		}
 	ft_putstr_fd("command not found: ", 2);
 	ft_putendl_fd(node->args[0], 2);
 	exit(127);

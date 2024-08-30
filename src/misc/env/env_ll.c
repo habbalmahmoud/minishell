@@ -1,59 +1,65 @@
 # include "../../../includes/minishell.h"
 
-void	copy_env(t_env	**env_ll, char **env)
-{
-	int	i;
-	char	*key;
-	char	*value;
 
-	i = 0;
-	while (env[i])
-	{
-		split_env(env[i], &key, &value);
-		env_lstadd_back(env_ll, key, value);
-		free(key);
-		free(value);
-		i++;
-	}
-	env_lstadd_back(env_ll, "?", "0");
-	(*env_ll)->og = env;
+char *get_key(const char *str) {
+    char *temp = strdup(str);
+    char *delim = strchr(temp, '=');
+    char *key;
+
+    if (delim != NULL) {
+        *delim = '\0';
+        key = strdup(temp); // Duplicate key
+    } else {
+        key = strdup(temp); // Duplicate whole string if no '='
+    }
+    free(temp);
+    return key;
 }
 
-void	split_env(char *str, char **key, char **value)
-{
-	char	*temp;
-	char	*delim;
+char *get_value(const char *str) {
+    char *temp = strdup(str);
+    char *delim = strchr(temp, '=');
+    char *value;
 
-	temp = ft_strdup(str);
-	delim = ft_strchr(temp, '=');
-	if (delim != NULL)
-	{
-		*delim = '\0';
-		*key = ft_strdup(temp);
-		*value = ft_strdup(delim + 1);
-	}
-	else
-	{
-		*key = ft_strdup(temp);
-		*value = NULL;
-	}
-	free(temp);
+    if (delim != NULL) {
+        value = strdup(delim + 1); // Duplicate value part
+    } else {
+        value = NULL;
+    }
+    free(temp);
+    return value;
 }
 
-void	print_env(t_env *head)
-{
-	t_env *current;
+void copy_env(t_env **env_ll, char **env) {
+    int i;
+    char *key;
+    char *value;
+    t_env *new;
 
-	current = head;
+    i = 0;
+    while (env[i]) {
+        key = get_key(env[i]);
+        value = get_value(env[i]);
+        new = env_lstnew(key, value);
+        env_lstadd_back(env_ll, new);
+        free(key);  // Free the duplicated key after adding to the list
+        free(value); // Free the duplicated value after adding to the list
+        i++;
+    }
+    new = env_lstnew("?", "0");
+    env_lstadd_back(env_ll, new);
+    (*env_ll)->og = env;
+}
+void	print_env(t_env **head)
+{
+	t_env	*current;
+
+	current = (*head);
 	while (current != NULL)
 	{
-		if (ft_isascii(current->key[1]))
-		{
-			ft_putstr_fd(current->key, 1);
-		}
-			ft_putchar_fd('=', 1);
-		if (ft_isascii(current->value[1]))
-			ft_putendl_fd(current->value, 1);
+		ft_putstr_fd(current->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(current->value, 1);
 		current = current->next;
 	}
 }

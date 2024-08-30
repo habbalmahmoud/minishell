@@ -1,46 +1,56 @@
 #include "../includes/minishell.h"
 #include "../includes/execute.h"
 
-void remove_nodes(t_exec_utils *utils, const char *key) {
-    
-    t_env *current = utils->env;
-    if (!current || !key) {
+void print_env_list(t_env *list) {
+    while (list) {
+        printf("%s=%s\n", list->key, list->value);
+        list = list->next;
+    }
+}
+void free_env_node(t_env *node) {
+    if (node) {
+        free(node->key);
+        free(node->value);
+        free(node);
+    }
+}
+
+void delete_env_node(t_env **env_list, const char *key) {
+    if (env_list == NULL || *env_list == NULL) return;
+
+    t_env *current = *env_list;
+    t_env *prev = NULL;
+
+    // If the node to be deleted is the first node
+    if (current != NULL && strcmp(current->key, key) == 0) {
+        *env_list = current->next; // Change head
+        free_env_node(current); // Free old head
         return;
     }
 
-    t_env *prev = NULL;
-    if (current && strcmp(current->key, key) == 0) {
-        utils->env = current->next;
-        free(current->key);
-        free(current->value);
-       
-        
-        return;
-    }
-    while (current && strcmp(current->key, key) != 0) {
+    // Search for the key to be deleted
+    while (current != NULL && strcmp(current->key, key) != 0) {
         prev = current;
         current = current->next;
     }
 
-    if (!current) {
-        return;
-    }
-    if (prev) {
-        prev->next = current->next;
-    }
-    free(current->key);
-    free(current->value);
-    free(current);
+    // If the key was not found
+    if (current == NULL) return;
+
+    // Unlink the node from the list
+    prev->next = current->next;
+
+    // Free memory
+    free_env_node(current);
 }
 
-void    exec_unset(t_exec_utils *utils, char **keys)
-{
-    int i;
+void	exec_unset(t_env **env_list, char **keys) {
+    if (env_list == NULL || keys == NULL) return;
 
-    i = 1;
-    while(keys[i])
-    {
-        remove_nodes(utils, keys[i]);
-        i++;
+    for (int i = 0; keys[i] != NULL; i++) {
+        delete_env_node(env_list, keys[i]);
     }
+	//printf("POST UNSET:\n");
+	//print_env_list((*env_list));
 }
+

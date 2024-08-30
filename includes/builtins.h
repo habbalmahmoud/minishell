@@ -26,7 +26,7 @@ char	*get_env(void);
 void	change_dir(t_exec_utils *util, char **args);
 void    handle_builtins(char *input, char **env);
 void	exec_env(t_env **env, char **args);
-void	exec_unset(t_exec_utils *utils, char **args);
+void	exec_unset(t_env **env, char **args);
 void	exec_export(t_env **env, t_exec_utils *util, char **args);
 
 #endif

@@ -1,5 +1,6 @@
 #include "../../../../includes/ast.h"
 #include "../../../../includes/token.h"
+#include <fcntl.h>
 
 int	p_parse_redirect(t_ast_utils **util, t_token **token)
 {
@@ -42,7 +43,7 @@ int	p_parse_simple_command(t_ast_utils **util, t_token *token)
 		(*util)->sub = &token->sub_lexer;
 		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
 	}
-	if (token->type == TOKEN || token->type == TYPE_EQUAL)
+	else
 		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
 	return (0);
 }
