@@ -25,12 +25,6 @@ void	change_dir(t_exec_utils *util, char **args)
 	char 	*path;
 
 	home = get_home_path(&util->env);
-	if (args[2])
-	{
-		ft_putendl_fd(" too many arguments", 2);
-		util->code = 1;
-		return ;
-	}
 	if (args[1] == NULL)
 	{
 		if (chdir(home) != 0)
@@ -40,6 +34,12 @@ void	change_dir(t_exec_utils *util, char **args)
 			return ;	
 		}
 		util->code = 0;
+		return ;
+	}
+	if (args[2])
+	{
+		ft_putendl_fd(" too many arguments", 2);
+		util->code = 1;
 		return ;
 	}
 	path = ft_strdup(args[1]);

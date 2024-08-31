@@ -15,7 +15,9 @@
 # include <sys/stat.h>
 #include <errno.h>
 
-void	e_traverse_tree(t_ast_node *node, t_exec_utils *util)
+// int e_redirection_special(t_ast_node *node, t_exec_utils *util);
+
+void e_traverse_tree(t_ast_node *node, t_exec_utils *util)
 {
 	if (!node)
 		return;
@@ -148,6 +150,31 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     int status;
     struct stat statbuf;
 
+	if (!ft_strcmp(node->args[0], "echo"))
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			e_redirection(node, util);
+			exec_echo(node, &util);
+			exit(0);
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+			{
+				util->code = WEXITSTATUS(status);	   // General exit code
+				util->exit_code = WEXITSTATUS(status); // Specific exit code from execve
+			}
+			else
+			{
+				util->code = EXIT_FAILURE;
+				util->exit_code = EXIT_FAILURE;
+			}
+			return ;
+		}
+	}
     if (!ft_strcmp(node->args[0], "env"))
     {
         exec_env(&util->env, node->args);
@@ -170,8 +197,8 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util)
     }
     if (!ft_strcmp(node->args[0], "cd"))
     {
-	change_dir(util, node->args);
-	return ;
+		change_dir(util, node->args);
+		return ;
     }
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
         path = ft_strdup(node->args[0]);
@@ -267,3 +294,4 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 		close(fd_out);
 	}
 }
+

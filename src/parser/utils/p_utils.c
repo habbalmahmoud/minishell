@@ -7,6 +7,7 @@ char	*p_create_cmd_args(char *value, char *args)
 	char	*whitespace;
 	char	*temp;
 
+	// printf("%s\n", value);
 	if (!args)
 		args = ft_strdup(value);
 	else
@@ -28,6 +29,7 @@ t_ast_utils	*p_init_vars(t_ast_utils **util)
 	(*util)->sub = NULL;
 	(*util)->node = NULL;
 	(*util)->right = NULL;
+	(*util)->echo_flag = 0;
 	return ((*util));
 }
 

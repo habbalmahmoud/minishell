@@ -50,6 +50,7 @@ typedef struct s_ast_utils
 	int	flag;
 	int		append;
 	int		here_doc;
+	int		echo_flag;
 	t_ast_node	*node;
 	t_ast_node	*right;
 	t_lexer		**sub;

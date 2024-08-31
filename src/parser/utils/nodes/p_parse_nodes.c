@@ -43,7 +43,14 @@ int	p_parse_simple_command(t_ast_utils **util, t_token *token)
 		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
 	}
 	if (token->type == TOKEN)
+	{
+		if (!ft_strncmp(token->value, "-n", 2))
+		{
+			if (count_dash(token->value))
+				(*util)->echo_flag = 1;
+		}
 		(*util)->args = p_create_cmd_args(token->value, (*util)->args);
+	}
 	return (0);
 }
 
