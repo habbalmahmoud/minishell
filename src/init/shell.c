@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/29 16:42:29 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:11:16 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	init_shell(t_env *env)
 			t_env *new = env_lstnew("?", test);
 			env_lstadd_back(&env, new);
 		}
+		if (!input)
+			break ;
 		free(input);
 		env->code = util->code;
 		lex->util->clock = 0;
