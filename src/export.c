@@ -127,6 +127,17 @@ int	exec_export_2(t_env **env, char **args)
 			return (1);
 		if (args[2] == NULL)
 			key = ft_strdup(args[1]);
+		else if (args[2] && ft_isalpha(args[2][0]))
+		{
+			int i = 1;
+			while (args[i])
+			{
+				new = env_lstnew(args[i], NULL);
+				env_lstadd_back(env, new);
+				i++;
+			}
+			return (0);
+		}
 		else
 		{
 			key = ft_strdup(args[1]);

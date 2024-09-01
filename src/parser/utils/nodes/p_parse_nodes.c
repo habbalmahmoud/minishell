@@ -1,15 +1,30 @@
 #include "../../../../includes/ast.h"
 #include "../../../../includes/token.h"
 #include <fcntl.h>
+#include <errno.h>
 
 int	p_parse_redirect(t_ast_utils **util, t_token **token)
 {
+	int	fd;
 	if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_APPEND)
 	{
 		if ((*token)->type == TYPE_APPEND)
 			(*util)->append = 1;
 		if ((*token)->next && (*token)->next->type == TOKEN)
+		{
 			(*util)->files[0] = ft_strdup((*token)->next->value);
+			if ((*util)->exit == 0)
+				fd = open((*util)->files[0], O_WRONLY | O_CREAT, 0644);
+			else
+				fd = open((*util)->files[0], O_WRONLY);
+			if (fd < 0 && errno == 13)
+			{
+				perror("open");
+				(*util)->exit = 1;
+				close(fd);
+			}
+			close(fd);
+		}
 		if ((*token)->next && (*token)->next->next)
 			(*token) = (*token)->next->next;
 		else
@@ -23,7 +38,18 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 		if ((*token)->type == TYPE_HEREDOC)
 			(*util)->here_doc = 1;
 		if ((*token)->next && (*token)->next->type == TOKEN)
+		{
 			(*util)->files[1] = ft_strdup((*token)->next->value);
+			fd = open((*util)->files[1], O_RDONLY);
+			if (fd < 0)
+			{
+				perror("open");
+				(*util)->exit = 1;
+				close(fd);
+			}
+			close(fd);
+
+		}
 		if ((*token)->next && (*token)->next->next)
 			(*token) = (*token)->next->next;
 		else

@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/29 20:02:01 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:32:43 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 # include <sys/stat.h>
 #include <errno.h>
 
-void	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
+int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	if (!node)
-		return;
+		return (1);
 	if (node->type == AST_COMMAND)
 	{
 		if (node && node->args && node->args[0])
-			e_simple_command(node, util, env);
+			return (e_simple_command(node, util, env));
 	}
 	else if (node->type == AST_PIPE)
 		e_pipeline(node, util, env);
@@ -32,6 +32,7 @@ void	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 		e_operator_or(node, util, env);
 	else
 		printf("node type error");
+	return (util->code);
 }
 
 void	e_operator_and(t_ast_node *node, t_exec_utils *util, t_env **env)
@@ -71,9 +72,9 @@ void	e_operator_or(t_ast_node *node, t_exec_utils *util, t_env **env)
 void e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
 	int	fd[2];
-	int	status;
 	pid_t	pid1;
 	pid_t	pid2;
+	int status;
 
 	(void)env;
 	if (pipe(fd) == -1)
@@ -84,10 +85,9 @@ void e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env)
 	}
 	e_pipeline_parent(node, util, &pid1, fd);
 	e_pipeline_child(node, util, &pid2, fd);
-	
+		
 	close(fd[0]);
 	close(fd[1]);
-
 	e_pipeline_status(pid1, pid2, &status, util);
 }
 
@@ -186,39 +186,39 @@ char **copy_list_to_array(t_env *head) {
     return array;
 }
 
-void e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
+int	e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
 {
-    char *path;
-    pid_t pid;
-    int status;
-    struct stat statbuf;
+	char *path;
+	pid_t pid;
+	int status;
+	struct stat statbuf;
 	char **array;
 
     if (!ft_strcmp(node->args[0], "env"))
     {
         exec_env(env, node->args);
-        return;
+        return (0);
     }
     if (!ft_strcmp(node->args[0], "unset"))
     {
         exec_unset(env, node->args);
-		util->code = 0;
-        return;
+	util->code = 0;
+        return (0);
     }
     if (!ft_strcmp(node->args[0], "export"))
     {
         exec_export(env, util, node->args);
-        return;
+        return(0);
     }
     if (!ft_strcmp(node->args[0], "exit"))
     {
 	if (handle_exit(util, node->args))
-		return ;
+		return (0);
     }
     if (!ft_strcmp(node->args[0], "cd"))
     {
 	change_dir(util, node->args);
-	return ;
+	return (0);
     }
   
     if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
@@ -234,34 +234,43 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
 			util->code = 126;
 			util->exit_code = 126;
 			free(path);
-			return;
+			return(126);
 		}
-	}  
-	
+	}
+	int fd = access(path, X_OK);
+	if (fd < 0 && errno == 13)
+	{
+		ft_putendl_fd(" invalid permissions", 2);
+		util->code = 126;
+		util->exit_code = 126;
+		free(path);
+		return(126);
+	}
     pid = fork();
     if (pid == 0)
     {
-        e_redirection(node, util);
-	if (path)
+		e_redirection(node, util);
+		if (path)
 		{
-		array = copy_list_to_array((*env));
-		execve(path, node->args, array);
-		}
-	ft_putstr_fd("command not found: ", 2);
-	ft_putendl_fd(node->args[0], 2);
-	exit(127);
+			array = copy_list_to_array((*env));
+			execve(path, node->args, array);
+		}	
+		ft_putstr_fd("command not found: ", 2);
+		ft_putendl_fd(node->args[0], 2);
+		util->code = 127;
+		exit(127);
     }
     else if (pid > 0)
     {
         waitpid(pid, &status, 0);
         if (WIFEXITED(status))
         {
-            util->code = WEXITSTATUS(status); // General exit code
-            util->exit_code = WEXITSTATUS(status); // Specific exit code from execve
+            util->code = WEXITSTATUS(status);
+            util->exit_code = WEXITSTATUS(status);// Specific exit code from execve
         }
         else
         {
-            util->code = EXIT_FAILURE;
+	    util->code = EXIT_FAILURE;
             util->exit_code = EXIT_FAILURE;
         }
     }
@@ -270,8 +279,8 @@ void e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
         perror("fork");
         exit(EXIT_FAILURE);
     }
-
     free(path);
+    return (util->code);
 }
 
 void	e_redirection(t_ast_node *node, t_exec_utils *util)
@@ -283,6 +292,8 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 	(void)util;
 	if (node->in)
 	{
+		if (node->exit)
+			exit(node->exit);
 		if (node->here_doc)
 		{
 			pipe(pipefd);
@@ -304,6 +315,8 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 	}
 	if (node->out)
 	{
+		if (node->exit)
+			exit(node->exit);
 		if (node->append)
 		{
 			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT , 0644);

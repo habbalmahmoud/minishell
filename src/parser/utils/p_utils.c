@@ -25,6 +25,7 @@ t_ast_utils	*p_init_vars(t_ast_utils **util)
 	(*util) = ft_calloc(1, sizeof(t_ast_utils));
 	(*util)->files = (char **)ft_calloc(2, sizeof(char *));
 	(*util)->in_pipe = 0;
+	(*util)->exit = 0;
 	(*util)->sub = NULL;
 	(*util)->node = NULL;
 	(*util)->right = NULL;
