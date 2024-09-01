@@ -5,6 +5,8 @@
 
 typedef enum e_token_type
 {
+	TYPE_MINUS = '-',
+	TYPE_PLUS = '+',
 	TYPE_SPACE = 32,
 	TYPE_WORD = -42,
 	TYPE_SEMI = ';',

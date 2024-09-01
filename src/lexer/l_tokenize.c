@@ -24,7 +24,8 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 			l_state_handler_quote_in(lex, token, type, state);
 		if (type == TYPE_ESC || type == TYPE_WORD)
 			l_tokenize_words(lex, (*token), type);
-		else if (type == TYPE_SPACE || type == TYPE_SEMI)
+		else if (type == TYPE_SPACE || type == TYPE_SEMI || type == TYPE_EQUAL
+				|| type == TYPE_PLUS)
 			l_tokenize_next(lex, token, type, len);
 		else if (type == TYPE_LSHIFT || type == TYPE_RSHIFT)
 			l_tokenize_heredoc(lex, token, state, type);

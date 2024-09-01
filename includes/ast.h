@@ -35,6 +35,7 @@ typedef struct s_ast_node
 	t_token			*sub;
 	int			append;
 	int			here_doc;
+	int	exit;
 }	t_ast_node;
 
 typedef struct s_syntax_tree
@@ -54,6 +55,7 @@ typedef struct s_ast_utils
 	t_ast_node	*node;
 	t_ast_node	*right;
 	t_lexer		**sub;
+	int	exit;
 }	t_ast_utils;
 
 void	init_parser(t_lexer **lexer, t_syntax_tree **tree);

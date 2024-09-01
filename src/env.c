@@ -12,6 +12,26 @@
 
 #include "../includes/minishell.h"
 
+void	printf_list(t_env *env)
+{
+	t_env	*head;
+
+	head = env;
+	if (!head)
+		return ;
+	while (head)
+	{
+		printf("%s\n", head->key);
+		head = head->next;
+	}
+}
+
+void print_env2_list(t_env *list) {
+    while (list) {
+        printf("%s=%s\n", list->key, list->value);
+        list = list->next;
+    }
+}
 
 void	exec_env(t_env **env, char **args)
 {
@@ -19,7 +39,7 @@ void	exec_env(t_env **env, char **args)
 
 	head = (*env);
 	if (!args[1])
-		print_env(head);
+		print_env2_list((*env));
 	if (args[1])
 	{
 		char *delim;

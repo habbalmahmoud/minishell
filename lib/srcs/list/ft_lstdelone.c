@@ -19,3 +19,12 @@ void	ft_lstdelone(t_list *lst)
 	free(lst->content);
 	free(lst);
 }
+
+void	env_lstdelone(t_env *env)
+{
+	if (!env)
+		return ;
+	free(env->value);
+	free(env->value);
+	free(env);
+}

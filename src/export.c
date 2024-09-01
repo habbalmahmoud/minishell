@@ -28,6 +28,7 @@ void	bubble_sort(t_env **stack)
 {
 	int		swapped;
 	char	*temp_content;
+	char	*temp_key;
 	t_env	*current;
 	t_env	*last;
 
@@ -41,9 +42,12 @@ void	bubble_sort(t_env **stack)
 		{
 			if (current->key[0] > current->next->key[0])
 			{
-				temp_content = current->key;
+				temp_content = current->value;
+				temp_key = current->key;
 				current->key = current->next->key;
-				current->next->key = temp_content;
+				current->value = current->next->value;
+				current->next->key = temp_key;
+				current->next->value = temp_content;
 				swapped = 1;
 			}
 			current = current->next;
@@ -52,52 +56,92 @@ void	bubble_sort(t_env **stack)
 	}
 }
 
-int	split_env_h(char *str, char **key, char **value)
-{
-	char	*temp;
-	char	*delim;
-	int	i;
+char *get_key_1(const char *str) {
+    char *temp = strdup(str);
+    char *delim = strchr(temp, '=');
+    char *key;
 
-	temp = ft_strdup(str);
-	delim = ft_strchr(temp, '=');
-	i = 0;
-	//printf("delim: %s\ntemp: %s\n", delim, temp);
-	if (!temp[1])
+    if (delim != NULL) {
+        *delim = '\0';
+        key = strdup(temp); // Duplicate key
+    } else {
+        key = strdup(temp); // Duplicate whole string if no '='
+    }
+    free(temp);
+    return key;
+}
+
+char *get_value_1(const char *str) {
+    char *temp = strdup(str);
+    char *delim = strchr(temp, '=');
+    char *value;
+
+    if (delim != NULL) {
+        value = strdup(delim + 1); // Duplicate value part
+    } else {
+        value = NULL;
+    }
+    free(temp);
+    return value;
+}
+
+
+int	valid_export(char **args)
+{
+	if (!ft_isalpha(args[1][0]))
+	{
+		ft_putendl_fd(" not a valid identfier", 2);
 		return (1);
-	while (temp[i])
+	}
+	if (ft_strchr(args[1], '-') || ft_strchr(args[1], '+'))
 	{
-		if (temp[i] == '-')
+		ft_putendl_fd(" not a valid identfier", 2);
+		return (1);
+	}
+	if (args[1] && args[2] && args[3])
+	{
+		if (args[2][0] != '=')
+		{
+			ft_putendl_fd(" not a valid identfier", 2);
 			return (1);
-		i++;
+		}
 	}
-	if (delim != NULL)
-	{
-		*delim = '\0';
-		*key = ft_strdup(temp);
-		*value = ft_strdup(delim + 1);
-	}
-	else
-	{
-		*key = ft_strdup(temp);
-		*value = NULL;
-	}
-	free(temp);
 	return (0);
 }
 
-int	exec_export_2(t_env **env, char *cmd)
+int	exec_export_2(t_env **env, char **args)
 {
 	t_env	*head;
-	int	flag = 0;
-	char	*value;
 	char	*key;
+	char	*value;
+	t_env	*new;
+	int	flag;
 
-	if (cmd)
-	{	
-		if (split_env_h(cmd, &key, &value))
-		{
-			ft_putendl_fd(" not a valid identifier", 2);
+	flag = 0;
+	head = (*env);
+	value = NULL;
+	key = NULL;
+	if (args)
+	{
+		if (valid_export(args))
 			return (1);
+		if (args[2] == NULL)
+			key = ft_strdup(args[1]);
+		else if (args[2] && ft_isalpha(args[2][0]))
+		{
+			int i = 1;
+			while (args[i])
+			{
+				new = env_lstnew(args[i], NULL);
+				env_lstadd_back(env, new);
+				i++;
+			}
+			return (0);
+		}
+		else
+		{
+			key = ft_strdup(args[1]);
+			value = ft_strdup(args[3]);
 		}
 		head = (*env);
 		while (head)
@@ -109,7 +153,10 @@ int	exec_export_2(t_env **env, char *cmd)
 			head = head->next;
 		}
 		if (flag)
-			env_lstadd_back(env, key, value);
+		{
+			new = env_lstnew(key, value);
+			env_lstadd_back(env, new);
+		}
 	}
 	return (0);
 }
@@ -117,24 +164,20 @@ int	exec_export_2(t_env **env, char *cmd)
 void	exec_export(t_env **env, t_exec_utils *util, char **args)
 {
 	t_env	*cpy;
+	t_env	*head;
 
 	cpy = ft_lstcpy(env);
 	bubble_sort(&cpy);
-	t_env	*head = cpy;
+	head = cpy;
 	if (!args[1])
 	{
 		while (head)
 		{
-			printf("declare -x %s=%s\n", head->key, head->value);
+			printf("declare -x %s=\"%s\"\n", head->key, head->value);
 			head = head->next;
 		}
 		return ;
 	}
-	int	i = 1;
-	while (args[i])
-	{
-		if (args[i])
-			util->code = exec_export_2(env, args[i]);
-		i++;
-	}
+	else
+		util->code = exec_export_2(env, args);
 }

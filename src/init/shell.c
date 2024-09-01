@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/29 16:16:23 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:11:16 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ void print_lex(t_lexer **lexer, int id)
 			print_lex(&(*lexer)->token_list->sub_lexer, id + 1);
 		(*lexer)->token_list = (*lexer)->token_list->next;
 	}
+}
+
+char	*get_pro(t_env *env)
+{
+	t_env	*head;
+
+	head = env;
+	while (head)
+	{
+		if (!(ft_strcmp(head->key, "USER")))
+			return (NULL);
+		head = head->next;
+	}
+	return (NULL);
 }
 
 void	init_shell(t_env *env)
@@ -75,7 +89,12 @@ void	init_shell(t_env *env)
 			temp = temp->next;
 		}
 		if (!flag1)
-			env_lstadd_back(&env, "?", test);
+		{
+			t_env *new = env_lstnew("?", test);
+			env_lstadd_back(&env, new);
+		}
+		if (!input)
+			break ;
 		free(input);
 		env->code = util->code;
 		lex->util->clock = 0;

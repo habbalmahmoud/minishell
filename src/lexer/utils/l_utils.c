@@ -19,17 +19,25 @@ int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 	char	**matches;
 	char	**expanded;
 	char	*exp = NULL;
+	char	**spp;
 	
 	token = lex->token_list;
 	expanded = NULL;
+	spp = NULL;
 	while (token)
 	{
 		if (token->type == TOKEN)
 		{
-			token->value = l_remove_quotes(token);
 			matches = l_glob(token->value, &hits);
 			if (hits > 0)
 				l_handler_wildcards(token, hits, matches);			
+			else
+				token->value = l_remove_quotes(token);
+			if (ft_strchr(token->value, '$') != NULL)
+				spp = ft_split(ft_strchr(token->value, '$'), ' ');
+			if (spp && spp[0])
+				if (lex->util->expand && ft_strlen(spp[0]) == 1)
+					lex->util->expand = 0;
 			if (ft_strchr(token->value, '$') && lex->util->expand)
 			{
 				char	**test;
@@ -43,13 +51,7 @@ int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 					while (test[i])
 				{
 					if (test[i][0] == '?')
-					{
-						// char *temp = ft_substr(test[i], 0, 1);
-						// temp = ft_strjoin(temp, " ");
-						// test[i] = ft_substr(test[i], 1, ft_strlen(test[i]));
-						// test[i] = ft_strjoin(temp, test[i]);
 						flag = 2;	
-					}
 					expanded = l_expand(test[i], env, flag);
 					if (expanded)
 					{
@@ -79,7 +81,6 @@ int	l_token_count(t_lexer *lex, t_token *token, t_env *env)
 				}
 
 				}
-				
 			}
 			
 		}

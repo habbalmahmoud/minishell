@@ -23,7 +23,8 @@ t_ast_node	*p_build_tree(t_token *token)
 	while (token)
 	{
 		flag2 = 0;
-		if (token->type == TOKEN || token->type == TYPE_LPAREN)
+		if (token->type == TYPE_MINUS || token->type == TYPE_PLUS || token->type == TYPE_EQUAL 
+			|| token->type == TOKEN || token->type == TYPE_LPAREN)
 			p_parse_simple_command(&util, token);
 		else if (token->type == TYPE_RSHIFT 
 				|| token->type == TYPE_LSHIFT || token->type == TYPE_APPEND
