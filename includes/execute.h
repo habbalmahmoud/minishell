@@ -29,7 +29,8 @@ void 	handle_doc(char *lim, int pipefd[2]);
 
 int	e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env);
 
-void	e_operator_and(t_ast_node *node, t_exec_utils *util, t_env **env);
-void	e_operator_or(t_ast_node *node, t_exec_utils *util, t_env **env);
+void	e_operator_and(t_ast_node *node, t_exec_utils *util);
+void	e_operator_or(t_ast_node *node, t_exec_utils *util);
+int	    validate_lexer(t_lexer **lex, t_exec_utils **utils);
 
 #endif

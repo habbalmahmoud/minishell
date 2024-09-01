@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:59 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/04 09:32:58 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/08/29 12:18:10 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ void	l_recursive_print(t_lexer *lex, int id);
 void	print_env(t_env **head);
 void	split_env(char *env_str, char **key, char **value);
 void	copy_env(t_env	**env_ll, char **env);
-
 
 #endif

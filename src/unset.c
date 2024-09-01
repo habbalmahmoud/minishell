@@ -33,7 +33,6 @@ void delete_env_node(t_env **env_list, const char *key) {
         prev = current;
         current = current->next;
     }
-
     // If the key was not found
     if (current == NULL) return;
 
@@ -50,7 +49,5 @@ void	exec_unset(t_env **env_list, char **keys) {
     for (int i = 0; keys[i] != NULL; i++) {
         delete_env_node(env_list, keys[i]);
     }
-	//printf("POST UNSET:\n");
-	//print_env_list((*env_list));
 }
 

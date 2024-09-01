@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/27 13:32:36 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:35:36 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ size_t	l_glob_count(const char *pattern);
 /*/////////////////////////////////////////////////////////////
 ////////////		LEXER_UTILS		    //////////
 ////////////////////////////////////////////////////////////*/
-void    close_values(char *input, t_lexer **lexer, t_exec_utils **util);
+
+int    close_values(char *input, t_lexer **lexer, t_exec_utils **utils);
 
 #endif

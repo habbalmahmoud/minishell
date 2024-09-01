@@ -84,7 +84,7 @@ char	**ft_split(char const *s, char c)
 
 	count = ft_word_count(s, c);
 	res = (char **)malloc(sizeof(char *) * (count + 1));
-	res[count] = 0;
+	res[count] = NULL;
 	ft_print_split(res, s, c);
 	return (res);
 }
