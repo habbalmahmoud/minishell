@@ -23,7 +23,7 @@ void	l_tokenize_heredoc(t_lexer *lex, t_token **token, int *state, int type)
 		(*state) = IN_APPEND;
 }
 
-void	l_handler_heredoc(t_lexer *lex, t_token **token, int type)
+void	l_handler_heredoc(t_lexer *lex, t_token **token, int type, int *state)
 {
 	size_t	len;
 
@@ -39,6 +39,7 @@ void	l_handler_heredoc(t_lexer *lex, t_token **token, int type)
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
 		lex->util->j = 0;
+		*state = STATE_ANY;
 	}
 	else if (type != TYPE_LSHIFT)
 	{
@@ -49,12 +50,12 @@ void	l_handler_heredoc(t_lexer *lex, t_token **token, int type)
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
 		lex->util->j = 0;
-		if (type != TYPE_SPACE)
-			(*token)->value[lex->util->j++] = lex->util->c;
+		*state = STATE_ANY;
+		l_tokenize(lex, token, type, state);
 	}
 }
 
-void	l_handler_append(t_lexer *lex, t_token **token, int type)
+void	l_handler_append(t_lexer *lex, t_token **token, int type, int *state)
 {
 	size_t	len;
 
@@ -70,6 +71,7 @@ void	l_handler_append(t_lexer *lex, t_token **token, int type)
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
 		lex->util->j = 0;
+		*state = STATE_ANY;
 	}
 	else if (type != TYPE_RSHIFT)
 	{
@@ -80,8 +82,8 @@ void	l_handler_append(t_lexer *lex, t_token **token, int type)
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
 		lex->util->j = 0;
-		if (type != TYPE_SPACE)
-			(*token)->value[lex->util->j++] = lex->util->c;
+		*state = STATE_ANY;
+		l_tokenize(lex, token, type, state);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/27 13:32:36 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/02 12:34:37 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	l_tokenize_ampersand(t_lexer *lex, t_token **token, int *state, int type);
 void	l_handler_ampersand(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_pipe(t_lexer *lex, t_token **token, int *state, int type);
 void	l_tokenize_heredoc(t_lexer *lex, t_token **token, int *state, int type);
-void	l_handler_heredoc(t_lexer *lex, t_token **token, int type);
-void	l_handler_append(t_lexer *lex, t_token **token, int type);
+void	l_handler_heredoc(t_lexer *lex, t_token **token, int type, int *state);
+void	l_handler_append(t_lexer *lex, t_token **token, int type, int *state);
 void	l_handler_pipe(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_next(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_words(t_lexer *lex, t_token *token, int type);

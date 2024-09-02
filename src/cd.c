@@ -1,5 +1,24 @@
 #include "../includes/builtins.h"
 
+void	modify_oldpwd(t_env **env, char *oldpwd)
+{
+	t_env	*head;
+	t_env	*new;
+
+	head = (*env);
+	while (head)
+	{
+		if (!ft_strcmp(head->key, "OLDPWD"))
+		{
+			head->value = ft_strdup(oldpwd);
+			return ;
+		}
+		head = head->next;
+	}
+	new = env_lstnew("OLDPWD", oldpwd);
+	env_lstadd_back(env, new);
+}
+
 char	*get_home_path(t_env **env)
 {
 	t_env	*temp;
@@ -23,8 +42,11 @@ void	change_dir(t_exec_utils *util, char **args)
 {
 	char	*home;
 	char 	*path;
+	char	*oldpwd;
 
 	home = get_home_path(&util->env);
+	oldpwd = getcwd(NULL, 0);
+	modify_oldpwd(&util->env, oldpwd);
 	if (args[2])
 	{
 		ft_putendl_fd(" too many arguments", 2);

@@ -13,12 +13,15 @@
 #include "../includes/minishell.h"
 #include "../includes/ast.h"
 
+
+
 int	main(int ac, char **av, char **env)
 {
 	t_env	*env_ll;
 	
 	env_ll = NULL;
 	copy_env(&env_ll, env);
+	modify_shell_lvl(env_ll);
 	(void)av;
 	if (ac != 1)
 		exit(printf("Invalid args\n"));

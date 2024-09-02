@@ -226,7 +226,7 @@ int	e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
     else
         path = get_path(node->args, env);
  
-    if (stat(path, &statbuf) == 0)
+if (stat(path, &statbuf) == 0)
 	{
 		if (S_ISDIR(statbuf.st_mode))
 		{
@@ -255,8 +255,8 @@ int	e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env)
 			array = copy_list_to_array((*env));
 			execve(path, node->args, array);
 		}	
-		ft_putstr_fd("command not found: ", 2);
-		ft_putendl_fd(node->args[0], 2);
+		ft_putstr_fd(node->args[0], 2);
+		ft_putendl_fd(":command not found", 2);
 		util->code = 127;
 		exit(127);
     }

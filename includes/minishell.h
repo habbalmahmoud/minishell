@@ -34,6 +34,7 @@ void	l_recursive_print(t_lexer *lex, int id);
 void	print_env(t_env **head);
 void	split_env(char *env_str, char **key, char **value);
 void	copy_env(t_env	**env_ll, char **env);
+void	modify_shell_lvl(t_env *env);
 
 
 #endif

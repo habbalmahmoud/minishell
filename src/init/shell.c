@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/31 11:11:16 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/02 12:38:43 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	init_shell(t_env *env)
 		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);
 		close_values(input, &lex, &util);
-		//print_lex(&lex, 0);
+		// print_lex(&lex, 0);
 		init_parser(&lex, &tree);
 		init_execute(tree, &env, &util);
 		char *test = ft_itoa(util->code);

@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/08 12:13:47 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/02 12:36:40 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	}
 	else if ((*state) == IN_HEREDOC)
 	{
-		l_handler_heredoc(lex, token, type);
-		(*state) = STATE_ANY;
+		l_handler_heredoc(lex, token, type, state);
+		// (*state) = IN_DQUOTES;
 	}
 	else if ((*state) == IN_APPEND)
 	{
-		l_handler_append(lex, token, type);
-		(*state) = STATE_ANY;
+		l_handler_append(lex, token, type, state);
 	}
 	else if ((*state) == IN_OR)
 	{

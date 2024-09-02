@@ -1,10 +1,36 @@
 # include "../../../includes/minishell.h"
 
+void	modify_shell_lvl(t_env *env)
+{
+	t_env	*head;
+	char	*level;
+	int	nbr;
+	t_env	*new;
 
-char *get_key(const char *str) {
-    char *temp = strdup(str);
-    char *delim = strchr(temp, '=');
-    char *key;
+	head = env;
+	while (head)
+	{
+		if (!ft_strcmp(head->key, "SHLVL"))
+		{
+			nbr = ft_atoi(head->value);
+			nbr += 1;
+			level = ft_itoa(nbr);
+			head->value = ft_strdup(level);
+		}
+		else
+		{
+			new = env_lstnew("SHLVL", "0");
+			env_lstadd_back(&env, new);
+		}
+		head = head->next;
+	}
+}
+
+char *get_key(const char *str)
+{
+	char *temp = strdup(str);
+	char *delim = strchr(temp, '=');
+	char *key;
 
     if (delim != NULL) {
         *delim = '\0';
