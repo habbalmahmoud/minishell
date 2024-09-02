@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_build_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:52:20 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 12:47:24 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/02 15:00:02 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_ast_node	*p_build_pipeline(t_token **token)
 	while ((*token))
 	{
 		flag2 = 0;
-		if ((*token)->type == TOKEN || (*token)->type == TYPE_LPAREN)
+		if ((*token)->type == TOKEN || (*token)->type == TYPE_LPAREN
+				|| (*token)->type == TYPE_EQUAL)
 			p_parse_simple_command(&util, (*token));
 		else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT
 				|| (*token)->type == TYPE_APPEND || (*token)->type == TYPE_HEREDOC)

@@ -90,19 +90,19 @@ int	valid_export(char **args)
 {
 	if (!ft_isalpha(args[1][0]))
 	{
-		ft_putendl_fd(" not a valid identfier", 2);
+		ft_putendl_fd(" not a valid identifier", 2);
 		return (1);
 	}
 	if (ft_strchr(args[1], '-') || ft_strchr(args[1], '+'))
 	{
-		ft_putendl_fd(" not a valid identfier", 2);
+		ft_putendl_fd(" not a valid identifier", 2);
 		return (1);
 	}
 	if (args[1] && args[2] && args[3])
 	{
 		if (args[2][0] != '=')
 		{
-			ft_putendl_fd(" not a valid identfier", 2);
+			ft_putendl_fd(" not a valid identifier", 2);
 			return (1);
 		}
 	}

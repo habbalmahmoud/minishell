@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:52 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/07/30 16:29:53 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/02 13:52:12 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ void	printf_list(t_env *env)
 	}
 }
 
-void print_env2_list(t_env *list) {
-    while (list) {
-        printf("%s=%s\n", list->key, list->value);
+void print_env2_list(t_env *list) 
+{
+    while (list) 
+	{
+		if (ft_strcmp(list->key, "?"))
+        	printf("%s=%s\n", list->key, list->value);
         list = list->next;
     }
 }

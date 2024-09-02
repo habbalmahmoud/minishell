@@ -16,14 +16,12 @@ void	modify_shell_lvl(t_env *env)
 			nbr += 1;
 			level = ft_itoa(nbr);
 			head->value = ft_strdup(level);
-		}
-		else
-		{
-			new = env_lstnew("SHLVL", "0");
-			env_lstadd_back(&env, new);
+            return ;
 		}
 		head = head->next;
 	}
+    new = env_lstnew("SHLVL", "0");
+	env_lstadd_back(&env, new);
 }
 
 char *get_key(const char *str)
@@ -74,6 +72,8 @@ void copy_env(t_env **env_ll, char **env) {
     }
     new = env_lstnew("?", "0");
     env_lstadd_back(env_ll, new);
+    // new = env_lstnew("$", "123");
+    // env_lstadd_back(env_ll, new);
     (*env_ll)->og = env;
 }
 void	print_env(t_env **head)

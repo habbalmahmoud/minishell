@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:41:09 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/29 20:03:29 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/02 14:23:40 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 // CHECK FOR OTHER ODD BEHAVOIRS IN BASH.
 // CAT | CAT | ls -> fully functional now.
 
-char	*get_dir(void);
-char	*get_env(void);
+void	exec_pwd(char **args, t_exec_utils **util);
 void	change_dir(t_exec_utils *util, char **args);
 void    handle_builtins(char *input, char **env);
 void	exec_env(t_env **env, char **args);

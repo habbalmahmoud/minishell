@@ -46,6 +46,7 @@ void	free_token_ll(t_token *token);
 int	l_assign_type(char c);
 int	return_whitespaces(char c);
 int	return_operators(char c);
+int count_dash(char *args);
 int	return_literals(char c);
 void	l_terminate_token(t_lexer *lex, t_token **token);
 void	init_token(t_token *token, int n, int id);

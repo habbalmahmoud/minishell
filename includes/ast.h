@@ -54,6 +54,7 @@ typedef struct s_ast_utils
 	t_ast_node	*node;
 	t_ast_node	*right;
 	t_lexer		**sub;
+	int			echo_flag;
 	int	exit;
 }	t_ast_utils;
 

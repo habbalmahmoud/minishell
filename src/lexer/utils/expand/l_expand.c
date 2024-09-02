@@ -14,6 +14,7 @@ char	**l_expand(char *str, t_env *env, int num)
 	returned = (char **)ft_calloc(3, sizeof(char *));
 	head = env;
 	split = ft_split(str, ' ');
+	// printf("%s\n", str);
 	while (head)
 	{
 		if (split)
@@ -26,6 +27,7 @@ char	**l_expand(char *str, t_env *env, int num)
 					returned[0] = ft_strdup(split[0]);
 					returned[1] = NULL;
 					returned[2] = NULL;
+					// printf("IT: %s\n", returned[0]);
 					return (returned);
 				}
 				if (num == 2)
@@ -33,9 +35,11 @@ char	**l_expand(char *str, t_env *env, int num)
 					if (!ft_strcmp(ft_substr(str, 0 , 1), head->key))
 					{
 						returned[0] = ft_strdup(head->value);
+					// printf("SHE: %s\n", returned[0]);			// printf("HE: %s\n", returned[0]);
 						returned[0] = ft_strjoin(returned[0], ft_substr(str, 1, ft_strlen(str)));
 						returned[1] = ft_strdup(split[0]);
 						returned[2] = NULL;
+						// printf("HE: %s\n", returned[1]);
 						return (returned);
 					}
 				}
@@ -44,6 +48,7 @@ char	**l_expand(char *str, t_env *env, int num)
 					returned[0] = ft_strdup(head->value);
 					returned[1] = ft_strdup(split[0]);
 					returned[2] = NULL;
+					// printf("SHE: %s\n", returned[0]);
 					return (returned);
 				}
 			}

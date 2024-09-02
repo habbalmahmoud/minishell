@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_types.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:16 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/08/26 12:47:41 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/02 13:56:30 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	return_whitespaces(char c)
 		return (TYPE_SPACE);
 	if (c == '\t')
 		return (TYPE_TAB);
-	if (c == '\\')
+	if (c == 47)
 		return (TYPE_ESC);
 	if (c == '\n')
 		return (TYPE_NEWLINE);
