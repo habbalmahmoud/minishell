@@ -30,8 +30,8 @@ void print_env2_list(t_env *list)
 {
     while (list) 
 	{
-		if (ft_strcmp(list->key, "?"))
-        	printf("%s=%s\n", list->key, list->value);
+		if (list->hidden == 0)
+			printf("%s=%s\n", list->key, list->value);
         list = list->next;
     }
 }

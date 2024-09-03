@@ -20,7 +20,7 @@ void	modify_shell_lvl(t_env *env)
 		}
 		head = head->next;
 	}
-    new = env_lstnew("SHLVL", "0");
+	new = env_lstnew("SHLVL", "0", 0);
 	env_lstadd_back(&env, new);
 }
 
@@ -53,6 +53,8 @@ char *get_value(const char *str) {
     free(temp);
     return value;
 }
+#include "../../../includes/get_next_line.h"
+#include <fcntl.h>
 
 void copy_env(t_env **env_ll, char **env) {
     int i;
@@ -64,16 +66,22 @@ void copy_env(t_env **env_ll, char **env) {
     while (env[i]) {
         key = get_key(env[i]);
         value = get_value(env[i]);
-        new = env_lstnew(key, value);
+        new = env_lstnew(key, value, 0);
         env_lstadd_back(env_ll, new);
         free(key);  // Free the duplicated key after adding to the list
         free(value); // Free the duplicated value after adding to the list
         i++;
     }
-    new = env_lstnew("?", "0");
+    new = env_lstnew("?", "0", 2);
     env_lstadd_back(env_ll, new);
-    // new = env_lstnew("$", "123");
-    // env_lstadd_back(env_ll, new);
+    int	fd = open("/proc/self/stat", O_RDONLY);
+    char *line;
+    char **split;
+    line = get_next_line(fd);
+	split = ft_split(line, ' ');
+	
+    new = env_lstnew("$", split[3], 2);
+    env_lstadd_back(env_ll, new);
     (*env_ll)->og = env;
 }
 void	print_env(t_env **head)

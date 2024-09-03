@@ -19,7 +19,11 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 				fd = open((*util)->files[0], O_WRONLY);
 			if (fd < 0 && errno == 13)
 			{
-				perror("open");
+				if ((*util)->exit == 0)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					perror((*util)->files[0]);
+				}
 				(*util)->exit = 1;
 				close(fd);
 			}
@@ -43,7 +47,11 @@ int	p_parse_redirect(t_ast_utils **util, t_token **token)
 			fd = open((*util)->files[1], O_RDONLY);
 			if (fd < 0)
 			{
-				perror("open");
+				if ((*util)->exit == 0)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					perror((*util)->files[1]);
+				}
 				(*util)->exit = 1;
 				close(fd);
 			}

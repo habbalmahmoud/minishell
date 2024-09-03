@@ -15,6 +15,7 @@ typedef struct	s_env
 	char	*value;
 	struct s_env	*next;
 	int		code;
+	int	hidden;
 }	t_env;
 
 

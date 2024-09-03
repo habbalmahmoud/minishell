@@ -65,11 +65,8 @@ void	init_shell(t_env *env)
 	{
 		input = readline("\033[1;31mmhabbal&nkanaan@minishell=> \033[0;0m");
 		add_history(input);
-		//handle_builtins(input, env);
 		init_lexer(input, &lex, &token, env);
 		close_values(input, &lex, &util);
-		// print_lex(&lex, 0);
-	
 		init_parser(&lex, &tree);
 		init_execute(tree, &env, &util);
 		char *test = ft_itoa(util->code);
@@ -87,7 +84,7 @@ void	init_shell(t_env *env)
 		}
 		if (!flag1)
 		{
-			t_env *new = env_lstnew("?", test);
+			t_env *new = env_lstnew("?", test, 2);
 			env_lstadd_back(&env, new);
 		}
 		if (!input)

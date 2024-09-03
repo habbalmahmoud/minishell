@@ -44,6 +44,13 @@ void delete_env_node(t_env **env_list, const char *key) {
     free_env_node(current);
 }
 
+void	internal_unset(t_env **env, char *key)
+{
+	if (env == NULL || key == NULL)
+		return ;
+	delete_env_node(env, key);
+}
+
 void	exec_unset(t_env **env_list, char **keys) {
     if (env_list == NULL || keys == NULL) return;
 

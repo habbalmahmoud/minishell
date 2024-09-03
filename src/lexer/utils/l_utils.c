@@ -67,6 +67,22 @@ char *expand_variables(char *value, t_lex_utils *util, t_env *env) {
     while (*start) {
         if (*start == '$') {
             start++;
+	    if (*start == '\0' || *start == ' ')
+	    {
+			list_head = append_node(list_head, "$");
+			last_node = list_head;
+	    }
+if (*start == '$')
+	    {
+				start++;
+				char *pid = get_env_value("$", env);
+				if (pid)
+				{
+					list_head = append_node(list_head, pid);
+					last_node = list_head;
+				}
+			}
+
             if (*start == '?') {
                 start++;
                 // Extract exit code from environment
@@ -154,12 +170,11 @@ char *get_env_value(const char *key, t_env *env) {
 	head = env;
 	while (head)
 	{
-		if (ft_strcmp(key, head->key) == 0) {
-        	return ft_strdup(head->value);
-    }
+		if (ft_strcmp(key, head->key) == 0)
+			return (ft_strdup(head->value));
 		head = head->next;
 	}
-    return NULL;
+	return NULL;
 }
 
 int	l_token_count(t_lexer *lex, t_token *token, t_env *env)

@@ -97,9 +97,14 @@ int	handle_exit(t_exec_utils *util, char **args)
 	int	nbr;
 
 	if (!args[1])
+	{
+		ft_putendl_fd("exit", 0);
 		exit(util->code);
+	}
 	if (args[2])
 	{
+		ft_putendl_fd("exit", 0);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putendl_fd("too many arguments", 2);
 		exit(1);
 	}
@@ -119,6 +124,7 @@ int	handle_exit(t_exec_utils *util, char **args)
 			{
 				nbr = ft_atoi(delim + 1);
 				util->code = 256 - nbr;
+				ft_putendl_fd("exit", 0);
 				exit(util->code);
 			}
 		}
@@ -129,13 +135,17 @@ int	handle_exit(t_exec_utils *util, char **args)
 				i++;
 			else
 			{
-				ft_putendl_fd("numeric argument required", 2);
-				exit (2);
+				ft_putendl_fd("exit", 0);
+				ft_putstr_fd("minishell: exit: ", 2);
+				ft_putstr_fd(args[1], 2);
+				ft_putendl_fd(": numeric argument required", 2);
+				exit(2);
 			}
 		}
 		nbr = ft_atoi(args[1]);
 		if (nbr > 256)
 			nbr -= 256;
+		ft_putendl_fd("exit", 0);
 		exit(nbr);
 	}
 	return (1);
@@ -237,15 +247,28 @@ if (stat(path, &statbuf) == 0)
 			return(126);
 		}
 	}
-	int fd = access(path, X_OK);
+	if (path)
+	{
+		int fd = access(path, X_OK);
 	if (fd < 0 && errno == 13)
 	{
-		ft_putendl_fd(" invalid permissions", 2);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": Permission denied", 2);
 		util->code = 126;
 		util->exit_code = 126;
 		free(path);
 		return(126);
 	}
+
+
+	}
+ if (!ft_strcmp(node->args[0], "exit"))
+    {
+	if (handle_exit(util, node->args))
+		return (util->code);
+    }
+
     pid = fork();
     if (pid == 0)
     {
@@ -268,14 +291,9 @@ if (stat(path, &statbuf) == 0)
     if (!ft_strcmp(node->args[0], "export"))
     {
         exec_export(env, util, node->args);
-		return (util->code);
-	}
-    if (!ft_strcmp(node->args[0], "exit"))
-    {
-	if (handle_exit(util, node->args))
-		return (0);
-    }
-    if (!ft_strcmp(node->args[0], "cd"))
+	return (util->code);
+}
+       if (!ft_strcmp(node->args[0], "cd"))
     {
 		change_dir(util, node->args);
 		return (0);
@@ -285,9 +303,11 @@ if (stat(path, &statbuf) == 0)
 		{
 			array = copy_list_to_array((*env));
 			execve(path, node->args, array);
-		}	
+		}
+		
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(node->args[0], 2);
-		ft_putendl_fd(":command not found", 2);
+		ft_putendl_fd(": command not found", 2);
 		util->code = 127;
 		exit(127);
     }

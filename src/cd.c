@@ -15,7 +15,7 @@ void	modify_oldpwd(t_env **env, char *oldpwd)
 		}
 		head = head->next;
 	}
-	new = env_lstnew("OLDPWD", oldpwd);
+	new = env_lstnew("OLDPWD", oldpwd, 0);
 	env_lstadd_back(env, new);
 }
 

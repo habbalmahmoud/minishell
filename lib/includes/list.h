@@ -27,6 +27,6 @@ void		l_lstadd_back(t_lex_ll **lst, t_lex_ll *new);
 
 t_env		*env_lstlast(t_env *lst);
 void		env_lstadd_back(t_env **env, t_env *new);
-t_env		*env_lstnew(const char *key, const char *value);
+t_env		*env_lstnew(const char *key, const char *value, int hidden);
 
 #endif
