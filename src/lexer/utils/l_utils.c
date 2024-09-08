@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:38 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 17:14:08 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 13:34:34 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,46 +154,46 @@ int	validate_lexer(t_lexer **lex, t_exec_utils **utils)
 					(*utils)->code = 2;
 					return (0);
 				}
-                if (temp->next->type == TYPE_PIPE)
-                {
-                    if (temp->type != TYPE_WORD && (temp->next->next->type != TYPE_LSHIFT || temp->next->next->type != TYPE_RSHIFT
-                        || temp->next->next->type != TYPE_WORD || temp->next->next->type != TYPE_HEREDOC || temp->next->next->type != TYPE_APPEND))
-                        {
+				if (temp->next->type == TYPE_PIPE)
+				{
+					if (temp->type != TYPE_WORD && (temp->next->next->type != TYPE_LSHIFT || temp->next->next->type != TYPE_RSHIFT
+						|| temp->next->next->type != TYPE_WORD || temp->next->next->type != TYPE_HEREDOC || temp->next->next->type != TYPE_APPEND))
+						{
 						ft_putstr_fd("minishell: syntax error near unexpected token", 2);
 						ft_putstr_fd(" `", 2);
 						ft_putstr_fd(temp->value, 2);
 						ft_putendl_fd("\'", 2);
 						(*utils)->code = 2;
 						return (0);
-                        }
-                }
+						}
+				}
 				else if (!ft_strcmp(temp->next->value, ">>")
 				|| !ft_strcmp(temp->next->value, ">") || !ft_strcmp(temp->next->value, "<")
 				|| !ft_strcmp(temp->next->value, "<<"))
-                {
-                    if ((temp->type != TYPE_WORD || temp->type != TYPE_PIPE) && temp->next->next->type != TYPE_WORD)
-				    {
+				{
+					if ((temp->type != TYPE_WORD || temp->type != TYPE_PIPE) && temp->next->next->type != TYPE_WORD)
+					{
 						ft_putstr_fd("minishell: syntax error near unexpected token", 2);
 						ft_putstr_fd(" `", 2);
 						ft_putstr_fd(temp->value, 2);
 						ft_putendl_fd("\'", 2);
-					    (*utils)->code = 2;
-					    return (0);
-				    } 
-                }
-                else if (!ft_strcmp(temp->next->value, "||")
+						(*utils)->code = 2;
+						return (0);
+					} 
+				}
+				else if (!ft_strcmp(temp->next->value, "||")
 				|| !ft_strcmp(temp->next->value, "&&"))
-                {
-                    if (temp->type != TYPE_WORD && temp->next->next->type != TYPE_WORD)
-				    {
+				{
+					if (temp->type != TYPE_WORD && temp->next->next->type != TYPE_WORD)
+					{
 						ft_putstr_fd("minishell: syntax error near unexpected token", 2);
 						ft_putstr_fd(" `", 2);
 						ft_putstr_fd(temp->value, 2);
 						ft_putendl_fd("\'", 2);
-					    (*utils)->code = 2;
-					    return (0);
-				    } 
-                }
+						(*utils)->code = 2;
+						return (0);
+					} 
+				}
 			} 
 		}
 		temp = temp->next;

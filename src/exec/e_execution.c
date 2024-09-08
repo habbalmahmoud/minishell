@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_execution.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 16:50:37 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:17:57 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 		if (node && node->args && node->args[0])
 		{
 			if (!ft_strncmp(node->args[0], "/", 1)
-                    || !ft_strncmp(node->args[0], "./", 2))
+				|| !ft_strncmp(node->args[0], "./", 2))
 				path = ft_strdup(node->args[0]);
 			else
 				path = get_path(node->args, env);
@@ -41,8 +41,6 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 		e_operator_and(node, util, env);
 	else if (node->type == AST_OR)
 		e_operator_or(node, util, env);
-	else
-		printf("node type error");
 	return (util->code);
 }
 
@@ -101,162 +99,198 @@ void	e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env)
 	e_pipeline_status(pid1, pid2, &status, util);
 }
 
-int e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env, char *path)
+int	check_access(char *path, t_exec_utils *util)
 {
-    struct stat statbuf;
-    char **array;
-    pid_t pid;
-    int status;
-
-    if (path && stat(path, &statbuf) == 0)
-    {
-        if (S_ISDIR(statbuf.st_mode))
-        {
-            ft_putendl_fd(" Is a directory", 2);
-            util->code = 126;
-            util->exit_code = 126;
-            free(path);
-            return (126);
-        }
-    }
-    
-    if (path)
-    {
-        if (access(path, X_OK) != 0)
-        {
-            if (errno == EACCES)
-            {
-                ft_putstr_fd("minishell: ", 2);
-                ft_putstr_fd(path, 2);
-                ft_putendl_fd(": Permission denied", 2);
-                util->code = 126;
-                util->exit_code = 126;
-                free(path);
-                return (126);
-            }
-            else if (errno == ENOENT)
-            {
-                ft_putstr_fd("minishell: ", 2);
-                ft_putstr_fd(path, 2);
-                ft_putendl_fd(": No such file or directory", 2);
-                util->code = 127;
-                free(path);
-                return (127);
-            }
-        }
-    }
-
-    if (!ft_strcmp(node->args[0], "echo"))
-    {
-        pid = fork();
-        if (pid == 0)
-        {
-            e_redirection(node, util);
-            exec_echo(node, &util);
-            exit(0);
-        }
-        else if (pid > 0)
-        {
-            waitpid(pid, &status, 0);
-            util->code = WIFEXITED(status) ? WEXITSTATUS(status) : EXIT_FAILURE;
-            util->exit_code = util->code;
-            free(path);
-            return (util->code);
-        }
-        else
-        {
-            perror("fork");
-            free(path);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    if (!ft_strcmp(node->args[0], "exit"))
-    {
-        if (handle_exit(util, node, (*env)))
-        {
-            free(path);
-            return (util->code);
-        }
-    }
-   if (!ft_strcmp(node->args[0], "cd"))
-    {
-        char *oldpwd = getcwd(NULL, 0);
-        if (oldpwd)
-        {
-            change_dir(util, node->args);
-            modify_oldpwd(&util->env, oldpwd);
-	    free(oldpwd);
-        }
-        free(path);
-        return (util->code);
-    }
-    if (!ft_strcmp(node->args[0], "pwd"))
-    {
-        exec_pwd(node->args, &util);
-        free(path);
-        return (util->code);
-    }
-    if (!ft_strcmp(node->args[0], "unset"))
-    {
-        exec_unset(env, node->args);
-        util->code = 0;
-        free(path);
-        return (0);
-    }
-    if (!ft_strcmp(node->args[0], "export"))
-    {
-        exec_export(env, util, node->args);
-        free(path);
-        return (util->code);
-    }
-    pid = fork();
-    if (pid == 0)
-    {
-	 if (!ft_strcmp(node->args[0], "env"))
-	 {
-        exec_env(env, node->args);
-        free(path);
-        exit (util->code);
-    }
-
-        e_redirection(node, util);
-        if (path)
-        {
-	    array = allocate_array(get_list_length(*env));
-            copy_list_to_array(*env, array);
-            execve(path, node->args, array);
-        }
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(node->args[0], 2);
-        ft_putendl_fd(": command not found", 2);
-        util->code = 127;
-        exit(127);
-    }
-    else if (pid > 0)
-    {
-        waitpid(pid, &status, 0);
-        util->code = WIFEXITED(status) ? WEXITSTATUS(status) : EXIT_FAILURE;
-        util->exit_code = util->code;
-    }
-    else
-    {
-        perror("fork");
-        free(path);
-        exit(EXIT_FAILURE);
-    }
-
-    free(path);
-    return (util->code);
+	if (errno == EACCES)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": Permission denied", 2);
+		util->code = 126;
+		util->exit_code = 126;
+		free(path);
+		return (126);
+	}
+	else if (errno == ENOENT)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		util->code = 127;
+		free(path);
+		return (127);
+	}
+	return (0);
 }
 
-void	e_redirection(t_ast_node *node, t_exec_utils *util)
+int	check_echo(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
 {
-	int	fd_in;
-	int	fd_out;
-	int	pipefd[2];
+	int	status;
+	int	pid;
 
-	(void)util;
+	if (!ft_strcmp(node->args[0], "echo"))
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			e_redirection(node, util);
+			exec_echo(node, &util);
+			exit(0);
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			util->code = WIFEXITED(status) ? WEXITSTATUS(status) : EXIT_FAILURE;
+			util->exit_code = util->code;
+			free(path);
+			return (1);
+		}
+		else
+		{
+			perror("fork");
+			free(path);
+			exit(EXIT_FAILURE);
+		}
+	}
+	return (0);
+}
+
+int	builtins_one(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
+{
+	char	*oldpwd;
+
+	if (!ft_strcmp(node->args[0], "exit"))
+	{
+		if (handle_exit(util, node, (*env)))
+		{
+			free(path);
+			return (1);
+		}
+	}
+	if (!ft_strcmp(node->args[0], "cd"))
+	{
+		oldpwd = getcwd(NULL, 0);
+		if (oldpwd)
+		{
+			change_dir(util, node->args);
+			modify_oldpwd(&util->env, oldpwd);
+			free(oldpwd);
+		}
+		free(path);
+		return (1);
+	}
+	return (0);
+}
+
+int	builtins_two(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
+{
+	if (!ft_strcmp(node->args[0], "pwd"))
+	{
+		exec_pwd(node->args, &util);
+		free(path);
+		return (1);
+	}
+	if (!ft_strcmp(node->args[0], "unset"))
+	{
+		exec_unset(env, node->args);
+		util->code = 0;
+		free(path);
+		return (1);
+	}
+	if (!ft_strcmp(node->args[0], "export"))
+	{
+		exec_export(env, util, node->args);
+		free(path);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_path(char *path, t_exec_utils *util)
+{
+	struct stat	statbuf;
+
+	if (path && stat(path, &statbuf) == 0)
+	{
+		if (S_ISDIR(statbuf.st_mode))
+		{
+			ft_putendl_fd(" Is a directory", 2);
+			util->code = 126;
+			util->exit_code = 126;
+			free(path);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	proccess_one(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
+{
+	char		**array;
+
+	if (!ft_strcmp(node->args[0], "env"))
+	{
+		exec_env(env, node->args);
+		free(path);
+		exit (util->code);
+	}
+	e_redirection(node, util);
+	if (path)
+	{
+		array = allocate_array(get_list_length(*env));
+		copy_list_to_array(*env, array);
+		execve(path, node->args, array);
+	}
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(node->args[0], 2);
+	ft_putendl_fd(": command not found", 2);
+	util->code = 127;
+	exit(127);
+}
+
+int e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
+{
+	pid_t		pid;
+	int			status;
+
+	if (check_path(path, util))
+		return (util->code);
+	if (path)
+		if (access(path, X_OK) != 0)
+			return (check_access(path, util));
+	if (check_echo(node, util, env, path))
+		return (util->code);
+	if (builtins_one(node, util, env, path))
+		return (util->code);
+	if (builtins_two(node, util, env, path))
+		return (util->code);
+	pid = fork();
+	if (pid == 0)
+		proccess_one(node, util, env, path);
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		util->code = WIFEXITED(status) ? WEXITSTATUS(status) : EXIT_FAILURE;
+		util->exit_code = util->code;
+	}
+	else
+	{
+		perror("fork");
+		free(path);
+		exit(EXIT_FAILURE);
+	}
+
+	free(path);
+	return (util->code);
+}
+
+void	check_in(t_ast_node *node, int fd_in, int pipefd[2])
+{
 	if (node->in)
 	{
 		if (node->exit)
@@ -281,14 +315,22 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 			close(fd_in);
 		}
 	}
+}
+
+void	e_redirection(t_ast_node *node, t_exec_utils *util)
+{
+	int	fd_in;
+	int	fd_out;
+	int	pipefd[2];
+
+	(void)util;
+	check_in(node, fd_in, pipefd);
 	if (node->out)
 	{
 		if (node->exit)
 			exit(node->exit);
 		if (node->append)
-		{
-			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT , 0644);
-		}
+			fd_out = open(node->out, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else
 			fd_out = open(node->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_out < 0)
