@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/08 13:33:24 by mhabbal           #+#    #+#             */
+/*   Updated: 2024/09/08 16:01:54 by mhabbal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/token.h"
 #include "../../includes/ast.h"
@@ -13,7 +25,10 @@ void	free_ast(t_ast_node *node)
 	if (node)
 	{
 		if (node->tree_link)
+		{
 			free_tree(node->tree_link);
+			free(node->tree_link);
+		}
 		if (node->left)
 			free_ast(node->left);
 		if (node->right)
@@ -53,10 +68,8 @@ void	free_env_list(t_env **env)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->key)
-			free(curr->key);
-		if (curr->value)
-			free(curr->value);
+		free(curr->key);
+		free(curr->value);
 		free(curr);
 		curr = next;
 	}

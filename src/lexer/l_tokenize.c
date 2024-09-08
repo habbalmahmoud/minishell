@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_tokenize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:30:04 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:21:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:19:53 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 
 void	l_tokenize_state(t_lexer *lex, t_token **token, int type, int **state)
 {
-	size_t	len;
-
-	len = ft_strlen(lex->util->input);
 	if ((**state) == IN_QUOTES || (**state) == IN_DQUOTES)
 		l_state_handler_quote_exit(lex, token, type, *state);
 	else if ((**state) == IN_AND)
 	{
-		l_handler_ampersand(lex, token, type, len);
+		l_handler_ampersand(lex, token, type, *state);
 		(**state) = STATE_ANY;
 	}
 	else if ((**state) == IN_HEREDOC)
@@ -31,7 +28,7 @@ void	l_tokenize_state(t_lexer *lex, t_token **token, int type, int **state)
 		l_handler_append(lex, token, type, *state);
 	else if ((**state) == IN_OR)
 	{
-		l_handler_pipe(lex, token, type, len);
+		l_handler_pipe(lex, token, type, *state);
 		(**state) = STATE_ANY;
 	}
 }
@@ -67,6 +64,7 @@ int	l_tokenize(t_lexer *lex, t_token **token, int type, int *state)
 	}
 	else if ((*state) != STATE_ANY)
 		l_tokenize_state(lex, token, type, &state);
+	l_term(lex, token, type);
 	return (0);
 }
 //////////////////// BRAINSTROM ///////////////////////

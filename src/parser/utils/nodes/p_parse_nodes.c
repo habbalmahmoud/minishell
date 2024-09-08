@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_parse_nodes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:37:03 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:42:51 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:21:44 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	p_parse_in(t_ast_utils **util, t_token **token)
 
 int	p_parse_redirect(t_ast_utils **util, t_token **token)
 {
-	int	fd;
-
 	if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_APPEND)
 	{
 		if ((*token)->type == TYPE_APPEND)
