@@ -15,6 +15,7 @@
 # include "./libft.h"
 
 int		ft_atoi(const char *str);
-void	*ft_calloc(size_t count, size_t size);
+__int128	ft_atoll(const char *str);
+void		*ft_calloc(size_t count, size_t size);
 
 #endif

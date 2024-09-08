@@ -13,11 +13,12 @@
 #include "../includes/minishell.h"
 #include "../includes/builtins.h"
 #include "../includes/execute.h"
+#include <limits.h>
 
 void	exit_operations(char **args, t_exec_utils *util, t_ast_node *node)
 {
-	int		nbr;
 	char	*delim;
+	int		nbr;
 
 	delim = ft_strchr(args[1], '+');
 	if (delim)
@@ -39,26 +40,41 @@ void	exit_operations(char **args, t_exec_utils *util, t_ast_node *node)
 	}
 }
 
+static	void	exit_message(char **args, int flag)
+{
+	if (flag)
+	{
+		ft_putendl_fd("exit", 0);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
+		exit(2);
+	}
+}
+
 void	exit_args(char **args, t_ast_node *node)
 {
-	int	nbr;
-	int	i;
+	__int128	nbr;
+	int			flag;
+	int			i;
 
 	i = 0;
+	flag = 0;
+	nbr = ft_atoll(args[1]);
 	while (args[1][i])
 	{
 		if (ft_isdigit(args[1][i]))
 			i++;
 		else
 		{
-			ft_putendl_fd("exit", 0);
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(args[1], 2);
-			ft_putendl_fd(": numeric argument required", 2);
-			exit(2);
+			flag = 1;
+			break ;
 		}
 	}
-	nbr = ft_atoi(args[1]);
+	if (ft_atoll(args[1]) > LLONG_MAX || (ft_atoll(args[1]) < LLONG_MIN))
+		flag = 1;
+	exit_message(args, flag);
+	nbr = ft_atoll(args[1]);
 	if (nbr > 256)
 		nbr -= 256;
 	ft_putendl_fd("exit", 0);

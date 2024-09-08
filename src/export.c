@@ -78,7 +78,7 @@ int	valid_export(char **args)
 
 int	exec_export_2(t_env **env, char **args)
 {
-	int	flag;
+	int		flag;
 	t_env	*head;
 	t_env	*new;
 

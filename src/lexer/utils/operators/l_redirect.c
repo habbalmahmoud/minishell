@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:27:11 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:04:26 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:17:33 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	l_handler_heredoc(t_lexer *lex, t_token **token, int type, int *state)
 			return ;
 		init_token((*token)->next, len - lex->util->i, (*token)->id);
 		*token = (*token)->next;
+		(*token)->expand = 0;
 		lex->util->j = 0;
 		*state = STATE_ANY;
 	}

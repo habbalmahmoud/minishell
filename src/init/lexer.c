@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:00 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 19:33:23 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:14:31 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->input_ptr = input;
-	lex->util->expand = 1;
 	lex->util->env = env;
 	return (token);
 }
@@ -32,6 +31,7 @@ void	init_token(t_token *token, int n, int id)
 	token->type = TYPE_NULL;
 	token->id = id + 1;
 	token->next = NULL;
+	token->expand = 1;
 }
 
 int	set_type(t_lexer **lex)

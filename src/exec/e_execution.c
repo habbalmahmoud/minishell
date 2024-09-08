@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 17:08:28 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 16:50:37 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 	{
 		if (node && node->args && node->args[0])
 		{
-			if (!ft_strncmp(node->args[0], "/", 1) || !ft_strncmp(node->args[0], "./", 2))
+			if (!ft_strncmp(node->args[0], "/", 1)
+                    || !ft_strncmp(node->args[0], "./", 2))
 				path = ft_strdup(node->args[0]);
 			else
 				path = get_path(node->args, env);
@@ -99,8 +100,6 @@ void	e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env)
 	close(fd[1]);
 	e_pipeline_status(pid1, pid2, &status, util);
 }
-
-
 
 int e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env, char *path)
 {
@@ -266,7 +265,7 @@ void	e_redirection(t_ast_node *node, t_exec_utils *util)
 		{
 			g_mini_code = 10;
 			pipe(pipefd);
-			handle_doc(node->in, pipefd);
+			handle_doc(node->in, pipefd, util->env);
 			dup2(pipefd[0], STDIN_FILENO);
 			close(pipefd[0]);
 		}

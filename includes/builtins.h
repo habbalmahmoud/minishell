@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:41:09 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 16:58:19 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:03:11 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 void	exec_pwd(char **args, t_exec_utils **util);
 void	change_dir(t_exec_utils *util, char **args);
-int	handle_exit(t_exec_utils *util, t_ast_node *node, t_env *env);
+int		handle_exit(t_exec_utils *util, t_ast_node *node, t_env *env);
 void	exec_env(t_env **env, char **args);
 void	exec_unset(t_env **env, char **args);
 void	internal_unset(t_env **env, char *key);
