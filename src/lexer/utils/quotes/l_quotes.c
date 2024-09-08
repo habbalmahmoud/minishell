@@ -21,14 +21,14 @@ void	l_state_handler_quote_in(t_lexer *lex, t_token **token,
 	if (type == TYPE_QUOTE)
 	{
 		(*state) = IN_QUOTES;
-		lex->util->expand = 0;
+		(*token)->expand = 0;
 		(*token)->value[lex->util->j++] = TYPE_QUOTE;
 		(*token)->type = TOKEN;
 	}
 	if (type == TYPE_DQUOTE)
 	{
 		(*state) = IN_DQUOTES;
-		lex->util->expand = 1;
+		(*token)->expand = 1;
 		(*token)->value[lex->util->j++] = TYPE_DQUOTE;
 		(*token)->type = TOKEN;
 	}
@@ -76,7 +76,7 @@ static void	clean_input(char *input, char *res)
 	char	end_literal;
 	size_t	len;
 	size_t	i;
-	int	j;
+	int		j;
 	char	c;
 
 	len = ft_strlen(input);

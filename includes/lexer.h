@@ -6,7 +6,7 @@
 /*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 14:31:20 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/08 16:49:07 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,15 @@
 # include "./token.h"
 # include "./execute.h"
 
+typedef struct s_node
+{
+	char			*data;
+	struct s_node	*next;
+}	t_node;
+
 int		validate_lexer(t_lexer **lex, t_exec_utils **utils);
-char		*l_expand(char *value, t_lex_utils *util, t_env *env);
+// char	*l_expand(char *value, t_lex_utils *util, t_env *env);
+char	*expand_variables(char *value, int exp, t_env *env);
 /*/////////////////////////////////////////////////////////////
 ////////////		TYPES			    //////////
 ////////////////////////////////////////////////////////////*/
@@ -26,11 +33,11 @@ int		l_tokenize(t_lexer *lex, t_token **token, int type, int *state);
 /*/////////////////////////////////////////////////////////////
 ////////////		QUOTES			    //////////
 ////////////////////////////////////////////////////////////*/
-void		l_state_handler_quote_in(t_lexer *lex, t_token **token,
+void	l_state_handler_quote_in(t_lexer *lex, t_token **token,
 			int type, int *state);
-void		l_state_handler_quote_exit(t_lexer *lex, t_token **token,
+void	l_state_handler_quote_exit(t_lexer *lex, t_token **token,
 			int type, int *state);
-char		*l_remove_quotes(t_token *token);
+char	*l_remove_quotes(t_token *token);
 
 /*/////////////////////////////////////////////////////////////
 ////////////		OPERATORS		    //////////

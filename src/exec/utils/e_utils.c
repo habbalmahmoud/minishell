@@ -6,12 +6,13 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:27 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 19:04:15 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 16:59:46 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/execute.h"
 #include "../../../includes/signals.h"
+#include "../../../includes/lexer.h"
 
 char	*my_getenv(char *name, t_env *env_ll)
 {
@@ -27,14 +28,14 @@ char	*my_getenv(char *name, t_env *env_ll)
 	return (NULL);
 }
 
-char *get_path(char **s_cmd, t_env **env_ll)
+char	*get_path(char **s_cmd, t_env **env_ll)
 {
-	int i;
-	char *exec;
-	char **allpath;
-	char *path_part;
-	char *path;
-	char *result;
+	int		i;
+	char	*exec;
+	char	**allpath;
+	char	*path_part;
+	char	*path;
+	char	*result;
 
 	result = NULL;
 	path = my_getenv("PATH", (*env_ll));
@@ -50,7 +51,7 @@ char *get_path(char **s_cmd, t_env **env_ll)
 		if (access(exec, F_OK | X_OK) == 0)
 		{
 			result = exec;
-			break;
+			break ;
 		}
 		free(exec);
 		i++;
@@ -59,10 +60,10 @@ char *get_path(char **s_cmd, t_env **env_ll)
 	return (result);
 }
 
-void	handle_doc(char *lim, int pipefd[2])
+void	handle_doc(char *lim, int pipefd[2], t_env *env)
 {
 	char		*line;
-	int		flag;
+	int			flag;
 
 	flag = 1;
 	while (flag)
@@ -83,6 +84,7 @@ void	handle_doc(char *lim, int pipefd[2])
 			close(pipefd[1]);
 			return ;
 		}
+		line = expand_variables(line, 1, env);
 		write(pipefd[1], line, ft_strlen(line));
 		free(line);
 	}
@@ -90,7 +92,7 @@ void	handle_doc(char *lim, int pipefd[2])
 
 int	get_list_length(t_env *head)
 {
-	int length;
+	int	length;
 
 	length = 0;
 	while (head != NULL)

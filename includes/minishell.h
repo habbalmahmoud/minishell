@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:59 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 17:07:02 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:09:54 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_ast(t_ast_node *node);
 void	free_lexer(t_lexer *lex);
 void	free_token(t_token *token);
 void	prompt_loop(t_env *env);
-int	init_shell(t_lexer *lex, t_exec_utils *util, t_env **env);
+int		init_shell(t_lexer *lex, t_exec_utils *util, t_env **env);
 void	l_recursive_print(t_lexer *lex, int id);
 void	modify_oldpwd(t_env **env, char *oldpwd);
 void	print_env(t_env **head);

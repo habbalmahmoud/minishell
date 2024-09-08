@@ -9,6 +9,7 @@
         "token.h": "c",
         "stdio.h": "c",
         "readline.h": "c",
-        "builtins.h": "c"
+        "builtins.h": "c",
+        "types.h": "c"
     }
 }

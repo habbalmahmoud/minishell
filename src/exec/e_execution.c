@@ -299,7 +299,7 @@ void	check_in(t_ast_node *node, int fd_in, int pipefd[2])
 		{
 			g_mini_code = 10;
 			pipe(pipefd);
-			handle_doc(node->in, pipefd);
+			handle_doc(node->in, pipefd, util->env);
 			dup2(pipefd[0], STDIN_FILENO);
 			close(pipefd[0]);
 		}
