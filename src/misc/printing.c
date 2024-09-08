@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:06:01 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 17:06:27 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 18:23:55 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,21 @@ void	l_recursive_print(t_lexer *lex, int id)
 			}
 			i++;
 		}
+	}
+}
+
+void	free_split(char **array)
+{
+	char	**temp;
+
+	if (array)
+	{
+		temp = array;
+		while (*temp)
+		{
+			free(*temp);
+			temp++;
+		}
+		free(array);
 	}
 }

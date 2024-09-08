@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   e_pipeline.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:24 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/03 15:25:39 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/08 19:14:11 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../../includes/execute.h"
+#include "../../../../includes/builtins.h"
 
 void	e_pipeline_parent(t_ast_node *node, t_exec_utils *util,
 							int *pid, int fd[2])
@@ -76,4 +77,30 @@ void	e_pipeline_status(int pid1, int pid2, int *status, t_exec_utils *util)
 		util->code = WEXITSTATUS((*status));
 	else
 		util->exit_code = EXIT_FAILURE;
+}
+
+void	proccess_one(t_ast_node *node, t_exec_utils *util, t_env **env,
+			char *path)
+{
+	char		**array;
+
+	if (!ft_strcmp(node->args[0], "env"))
+	{
+		exec_env(env, node->args);
+		free(path);
+		exit (util->code);
+	}
+	e_redirection(node, util);
+	if (path)
+	{
+		array = allocate_array(get_list_length(*env));
+		copy_list_to_array(*env, array);
+		execve(path, node->args, array);
+	}
+	free(path);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(node->args[0], 2);
+	ft_putendl_fd(": command not found", 2);
+	util->code = 127;
+	exit(127);
 }

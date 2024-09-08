@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:27 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 16:59:46 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 19:11:38 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,31 @@ char	*my_getenv(char *name, t_env *env_ll)
 	return (NULL);
 }
 
-char	*get_path(char **s_cmd, t_env **env_ll)
+static int	path_helper(char *exec, char *result)
+{
+	if (access(exec, F_OK | X_OK) == 0)
+	{
+		result = exec;
+		return (1);
+	}
+	return (0);
+}
+
+char	*get_path(char **s_cmd, t_env **env_ll, char *result)
 {
 	int		i;
 	char	*exec;
 	char	**allpath;
 	char	*path_part;
 	char	*path;
-	char	*result;
 
 	result = NULL;
 	path = my_getenv("PATH", (*env_ll));
 	if (!path)
 		return (NULL);
 	allpath = ft_split(path, ':');
-	i = 0;
-	while (allpath[i])
+	i = -1;
+	while (allpath[++i])
 	{
 		path_part = ft_strjoin(allpath[i], "/");
 		exec = ft_strjoin(path_part, s_cmd[0]);
@@ -53,11 +62,18 @@ char	*get_path(char **s_cmd, t_env **env_ll)
 			result = exec;
 			break ;
 		}
+		// if (path_helper(exec, result))
+		// 	break ;
 		free(exec);
-		i++;
 	}
 	free_split(allpath);
 	return (result);
+}
+
+static void	doc_expand(char *line, int pipefd[2], t_env *env)
+{
+	line = expand_variables(line, 1, env);
+	write(pipefd[1], line, ft_strlen(line));
 }
 
 void	handle_doc(char *lim, int pipefd[2], t_env *env)
@@ -84,62 +100,7 @@ void	handle_doc(char *lim, int pipefd[2], t_env *env)
 			close(pipefd[1]);
 			return ;
 		}
-		line = expand_variables(line, 1, env);
-		write(pipefd[1], line, ft_strlen(line));
+		doc_expand(line, pipefd, env);
 		free(line);
-	}
-}
-
-int	get_list_length(t_env *head)
-{
-	int	length;
-
-	length = 0;
-	while (head != NULL)
-	{
-		length++;
-		head = head->next;
-	}
-	return (length);
-}
-
-char	**allocate_array(int size)
-{
-	char	**arr;
-
-	arr = malloc((size + 1) * sizeof(char *));
-	arr[size] = NULL;
-	return (arr);
-}
-
-static char	*create_key_value_string(char *key, char *value)
-{
-	size_t	key_len;
-	size_t	value_len;
-	size_t	total_len;
-	char	*str;
-
-	if (key)
-		key_len = ft_strlen(key);
-	if (value)
-		value_len = ft_strlen(value);
-	total_len = key_len + value_len + 2;
-	str = malloc(total_len * sizeof(char));
-	ft_strcpy(str, key);
-	ft_strcat(str, "=");
-	ft_strcat(str, value);
-	return (str);
-}
-
-void	copy_list_to_array(t_env *head, char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (head != NULL)
-	{
-		arr[i] = create_key_value_string(head->key, head->value);
-		head = head->next;
-		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:49 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 17:09:28 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 18:50:21 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ int		finalize_expansion(t_expand *ex, t_env *env)
 	if (!ex->res)
 	{
 		free_list(ex->list_head);
+		free(ex->res);
+		free(ex);
 		return (1);
 	}
 	ex->ptr = ex->res;
@@ -186,6 +188,7 @@ int		finalize_expansion(t_expand *ex, t_env *env)
 char	*expand_variables(char *value, int exp, t_env *env)
 {
 	t_expand	*ex;
+	char		*res;
 
 	ex = ft_calloc(1, sizeof(t_expand));
 	if (!exp)
@@ -209,7 +212,10 @@ char	*expand_variables(char *value, int exp, t_env *env)
 		return (NULL);
 	*ex->ptr = '\0';
 	free_list(ex->list_head);
-	return (ex->res);
+	res = ft_strdup(ex->res);
+	free(ex->res);
+	free(ex);
+	return (res);
 }
 
 char	*get_env_value(const char *key, t_env *env)
@@ -220,7 +226,7 @@ char	*get_env_value(const char *key, t_env *env)
 	while (head)
 	{
 		if (ft_strcmp(key, head->key) == 0)
-			return (ft_strdup(head->value));
+			return (head->value);
 		head = head->next;
 	}
 	return (NULL);

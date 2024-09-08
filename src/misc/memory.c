@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 13:33:24 by mhabbal           #+#    #+#             */
-/*   Updated: 2024/09/08 16:01:54 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/08 18:24:19 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,31 @@ void	free_ast(t_ast_node *node)
 	}
 }
 
-void	free_token(t_token *token)
+void	free_token_list(t_token *token_list)
 {
 	t_token	*current;
-	t_token	*next_token;
+	t_token	*next;
 
-	current = token;
+	current = token_list;
 	while (current != NULL)
 	{
-		next_token = current->next;
+		next = current->next;
 		if (current->value)
 			free(current->value);
+		if (current->sub_lexer)
+			free_lexer(current->sub_lexer);
 		free(current);
-		current = next_token;
+		current = next;
 	}
+}
+
+void	free_lexer(t_lexer *lexer)
+{
+	if (!lexer)
+		return ;
+	free_token_list(lexer->token_list);
+	free(lexer->util);
+	free(lexer);
 }
 
 void	free_env_list(t_env **env)
@@ -72,21 +83,5 @@ void	free_env_list(t_env **env)
 		free(curr->value);
 		free(curr);
 		curr = next;
-	}
-}
-
-void	free_split(char **array)
-{
-	char	**temp;
-
-	if (array)
-	{
-		temp = array;
-		while (*temp)
-		{
-			free(*temp);
-			temp++;
-		}
-		free(array);
 	}
 }

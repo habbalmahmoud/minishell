@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 08:48:31 by mhabbal           #+#    #+#             */
-/*   Updated: 2024/09/04 17:08:15 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 18:05:01 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,23 +100,3 @@ char	*get_next_line(int fd)
 	left = get_after_new_line(line);
 	return (line);
 }
-
-// #include <stdio.h>
-// int main(void)
-// {
-//     int fd;
-//     char *line;
-//     fd = open("test.txt", O_RDONLY);
-//     if (fd < 0)
-//     {
-//         perror("Error opening file");
-//         return 1;
-//     }
-//     while ((line = get_next_line(-42)) != NULL)
-//     {
-//         printf("%s", line);
-//         free(line); 
-//     }
-//     close(fd);
-//     return 0;
-// }
