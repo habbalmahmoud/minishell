@@ -97,7 +97,6 @@ void	proccess_one(t_ast_node *node, t_exec_utils *util, t_env **env,
 		copy_list_to_array(*env, array);
 		execve(path, node->args, array);
 	}
-	free(path);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(node->args[0], 2);
 	ft_putendl_fd(": command not found", 2);

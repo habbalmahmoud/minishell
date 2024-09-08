@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/execute.h"
+#include "../../../includes/execute.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/builtins.h"
 
 void	exec_pwd(char **args, t_exec_utils **util)
 {

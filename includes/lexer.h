@@ -22,6 +22,35 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
+typedef struct s_expand
+{
+	t_node		*list_head;
+	t_node		*last_node;
+	char		*start;
+	char		*pid;
+	char		*exit_code;
+	char		*var_start;
+	size_t		len;
+	char		*var_name;
+	char		*env_value;
+	char		*text_start;
+	size_t		text_len;
+	char		*text;
+	size_t		total_len;
+	t_node		*curr;
+	char		*res;
+	char		*ptr;
+	size_t		data_len;
+}	t_expand;
+
+int		post_and_or(t_token *temp, t_exec_utils **utils);
+int		post_redir(t_token *temp, t_exec_utils **utils);
+int		post_pipe(t_token *temp, t_exec_utils **utils);
+t_node	*append_node(t_node *head, char *data);
+void	free_list(t_node *head);
+void	expand_helper(t_expand *ex, t_env *env);
+char	*get_env_value(const char *key, t_env *env);
+void	free_ex(t_expand *ex);
 int		validate_lexer(t_lexer **lex, t_exec_utils **utils);
 // char	*l_expand(char *value, t_lex_utils *util, t_env *env);
 char	*expand_variables(char *value, int exp, t_env *env);

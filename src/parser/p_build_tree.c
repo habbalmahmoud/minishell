@@ -15,8 +15,8 @@
 
 static void	first_part(t_token **token, t_ast_utils **util, int *flag2)
 {
-	if ((*token)->type == TYPE_MINUS || (*token)->type == TYPE_PLUS ||
-		(*token)->type == TYPE_EQUAL || (*token)->type == TOKEN
+	if ((*token)->type == TYPE_MINUS || (*token)->type == TYPE_PLUS
+		|| (*token)->type == TYPE_EQUAL || (*token)->type == TOKEN
 		|| (*token)->type == TYPE_LPAREN)
 		p_parse_simple_command(util, (*token));
 	else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT

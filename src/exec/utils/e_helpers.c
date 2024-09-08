@@ -62,12 +62,12 @@ int	check_echo(t_ast_node *node, t_exec_utils *util, t_env **env,
 		{
 			e_redirection(node, util);
 			exec_echo(node, &util);
-			free(path);
 			exit(0);
 		}
 		else if (pid > 0)
 		{
 			assign_code(pid, status, util);
+			free(path);
 			return (1);
 		}
 	}

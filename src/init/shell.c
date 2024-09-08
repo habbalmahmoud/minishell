@@ -14,25 +14,39 @@
 #include "../../includes/lexer.h"
 #include "../../includes/ast.h"
 #include "../../includes/execute.h"
+#include "../../includes/signals.h"
+
+static void	exit_code_helper(t_env *env, char *str)
+{
+	t_env	*new;
+
+	internal_unset(&env, "?");
+	return ;
+}
 
 void	modify_exit_code(t_env *env, int code)
 {
-	t_env	*temp;
+	char	*str;
+	t_env	*head;
 	t_env	*new;
-	char	*code_str;
+	int		flag;
 
-	temp = env;
-	code_str = ft_itoa(code);
-	while (temp)
+	head = env;
+	str = ft_itoa(code);
+	flag = 0;
+	while (head)
 	{
-		if (!ft_strcmp(temp->key, "?"))
+		if (!ft_strcmp(head->key, "?"))
 		{
-			temp->value = code_str;
+			if (head->value)
+				free(head->value);
+			head->value = str;
 			return ;
 		}
-		temp = temp->next;
+		head = head->next;
 	}
-	new = env_lstnew("?", code_str, 2);
+	new = env_lstnew("?", str, 2);
+	free(str);
 	env_lstadd_back(&env, new);
 }
 
@@ -43,7 +57,7 @@ int	init_shell(t_lexer *lex, t_exec_utils *util, t_env **env)
 	t_syntax_tree	*tree;
 
 	input = lex->util->input;
-	if (input == NULL)
+	if (!input)
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit(util->code);
@@ -60,7 +74,7 @@ int	init_shell(t_lexer *lex, t_exec_utils *util, t_env **env)
 			modify_exit_code((*env), util->code);
 			free_ast(tree->branch);
 			free(tree);
-		}	
+		}
 	}
 	return (0);
 }

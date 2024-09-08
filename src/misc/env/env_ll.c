@@ -63,7 +63,7 @@ void	add_special_env(t_env **env_ll)
 		split = ft_split(line, ' ');
 	if (split)
 	{
-		pid = ft_strdup(split[3]);
+		pid = split[3];
 		new = env_lstnew("$", pid, 2);
 	}
 	else

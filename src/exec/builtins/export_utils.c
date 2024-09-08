@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/builtins.h"
-#include "../includes/execute.h"
+#include "../../../includes/execute.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/builtins.h"
 
 int	valid_multi_args(char **args)
 {

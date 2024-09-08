@@ -46,7 +46,10 @@ t_env	*env_lstnew(char *key, char *value, int hidden)
 		return (NULL);
 	new->hidden = hidden;
 	new->key = key;
-	new->value = value;
+	if (hidden == 2)
+		new->value = ft_strdup(value);
+	else
+		new->value = value;
 	new->next = NULL;
 	return (new);
 }

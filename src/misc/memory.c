@@ -43,12 +43,12 @@ void	free_ast(t_ast_node *node)
 	}
 }
 
-void	free_token_list(t_token *token_list)
+void	free_token_list(t_token **token_list)
 {
 	t_token	*current;
 	t_token	*next;
 
-	current = token_list;
+	current = (*token_list);
 	while (current != NULL)
 	{
 		next = current->next;
@@ -65,7 +65,7 @@ void	free_lexer(t_lexer *lexer)
 {
 	if (!lexer)
 		return ;
-	free_token_list(lexer->token_list);
+	free_token_list(&lexer->token_list);
 	free(lexer->util);
 	free(lexer);
 }

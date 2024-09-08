@@ -83,3 +83,4 @@ t_env	*ft_lstcpy(t_env **stack)
 	}
 	return (dest);
 }
+

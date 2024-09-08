@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/builtins.h"
+#include "../../../includes/builtins.h"
 
 char	*get_cd_path(t_env **env, char *path)
 {
@@ -89,24 +89,18 @@ int	oldpwd_cd(t_exec_utils *util, char **args)
 			path = ft_strdup(oldpwd);
 		}
 		else
-		{
-			free(path);
-			return (0);
-		}
+			return (free(path), 0);
 		if (chdir(path) != 0)
 		{
 			util->code = 1;
 			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-			free(path);
-			return (1);
+			return (free(path), 1);
 		}
 		util->code = 0;
-		free(path);
-		return (1);
+		return (free(path), 1);
 	}
 	free(oldpwd);
-	free(path);
-	return (0);
+	return (free(path), 0);
 }
 
 void	change_dir(t_exec_utils *util, char **args)

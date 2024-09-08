@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/builtins.h"
-#include "../includes/execute.h"
+#include "../../../includes/execute.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/builtins.h"
 #include <limits.h>
 
 void	exit_operations(char **args, t_exec_utils *util, t_ast_node *node)

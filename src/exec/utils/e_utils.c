@@ -28,11 +28,11 @@ char	*my_getenv(char *name, t_env *env_ll)
 	return (NULL);
 }
 
-static int	path_helper(char *exec, char *result)
+static int	path_helper(char *exec, char **result)
 {
 	if (access(exec, F_OK | X_OK) == 0)
 	{
-		result = exec;
+		*result = exec;
 		return (1);
 	}
 	return (0);
@@ -57,13 +57,8 @@ char	*get_path(char **s_cmd, t_env **env_ll, char *result)
 		path_part = ft_strjoin(allpath[i], "/");
 		exec = ft_strjoin(path_part, s_cmd[0]);
 		free(path_part);
-		if (access(exec, F_OK | X_OK) == 0)
-		{
-			result = exec;
+		if (path_helper(exec, &result))
 			break ;
-		}
-		// if (path_helper(exec, result))
-		// 	break ;
 		free(exec);
 	}
 	free_split(allpath);

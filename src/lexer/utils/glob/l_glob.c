@@ -39,9 +39,6 @@ char	**l_glob(const char *pattern, int *hits)
 	*hits = i;
 	closedir(dir);
 	if (j < 1)
-	{
-		free(matches);
-		return(NULL);
-	}
+		return (free(matches), NULL);
 	return (matches);
 }

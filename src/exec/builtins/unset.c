@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/execute.h"
+#include "../../../includes/execute.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/builtins.h"
 
 void	free_env_node(t_env *node)
 {

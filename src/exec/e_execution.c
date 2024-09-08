@@ -22,7 +22,6 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 
 	if (!node)
 		return (1);
-	path = NULL;
 	if (node->type == AST_COMMAND)
 	{
 		if (node && node->args && node->args[0])
@@ -41,7 +40,6 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 		e_operator_and(node, util, env);
 	else if (node->type == AST_OR)
 		e_operator_or(node, util, env);
-	free(path);
 	return (util->code);
 }
 
@@ -70,7 +68,7 @@ void	e_operator_or(t_ast_node *node, t_exec_utils *util, t_env **env)
 		e_traverse_tree(node->left, util, env);
 	if (util->code == EXIT_SUCCESS)
 		return ;
-	else if (util->code == EXIT_FAILURE)
+	else if (util->code > 0)
 	{
 		if (!ft_strcmp(node->right->args[0], "()"))
 			e_traverse_tree(node->right->tree_link->branch, util, env);

@@ -88,7 +88,7 @@ int	p_parse_pipeline(t_ast_utils **util, t_token **token)
 		(*util)->args = NULL;
 		(*util)->right = p_build_pipeline(&(*token)->next);
 		(*util)->node = p_build_separator((*util)->node,
-				(*util)->right, (*token)->type);
+				(*util)->right, TYPE_PIPE);
 		return (1);
 	}
 	else

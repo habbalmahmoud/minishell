@@ -10,14 +10,15 @@ CC = gcc
 
 CFLAGS = -g #-fsanitize=address
 
-SRCS = main echo exit pwd env cd unset export export_utils init/lexer init/shell init/parser init/execute misc/printing misc/env/env_ll misc/env/env_utils misc/memory signals
+SRCS = main init/lexer init/shell init/parser init/execute misc/printing misc/env/env_ll misc/env/env_utils misc/memory signals
 
-BUILTIN_SRCS = handle_builtins
+BUILTIN_SRCS = exec/builtins/echo exec/builtins/pwd exec/builtins/exit exec/builtins/env exec/builtins/cd \
+exec/builtins/unset exec/builtins/export exec/builtins/export_utils
 
-LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils \
+LEXER_SRCS =  l_tokenize token/l_token_utils token/l_types utils/l_utils utils/l_syntax utils/l_syntax_utils\
 utils/quotes/l_quotes utils/glob/l_glob utils/glob/l_glob_utils \
 utils/operators/l_ampersand utils/operators/l_pipes utils/operators/l_redirect \
-utils/parens/l_parens utils/parens/l_paren_utils utils/expand/l_expand
+utils/parens/l_parens utils/parens/l_paren_utils utils/expand/l_expand utils/expand/l_expand_utils
 
 PARSER_SRCS = p_build_tree p_build_pipeline utils/p_utils utils/nodes/p_build_nodes utils/nodes/p_parse_nodes
 
@@ -25,7 +26,7 @@ EXEC_SRCS = e_execution utils/e_utils utils/pipeline/e_pipeline utils/e_helpers 
 
 SRC = $(addprefix src/, $(addsuffix .c, $(SRCS)))
 
-BUILTIN_SRC = $(addprefix src/builtins/, $(addsuffix .c, $(BUILTIN_SRCS)))
+BUILTIN_SRC = $(addprefix src/, $(addsuffix .c, $(BUILTIN_SRCS)))
 
 LEXER_SRC = $(addprefix src/lexer/, $(addsuffix .c, $(LEXER_SRCS)))
 
@@ -34,7 +35,7 @@ PARSER_SRC = $(addprefix src/parser/, $(addsuffix .c, $(PARSER_SRCS)))
 EXEC_SRC = $(addprefix src/exec/, $(addsuffix .c, $(EXEC_SRCS)))
 
 OBJS = $(addprefix objs/, $(addsuffix .o, $(SRCS)))
-BUILTIN_OBJS = $(addprefix objs/builtins/, $(addsuffix .o, $(BUILTIN_SRCS)))
+BUILTIN_OBJS = $(addprefix objs/, $(addsuffix .o, $(BUILTIN_SRCS)))
 LEXER_OBJS = $(addprefix objs/lexer/, $(addsuffix .o, $(LEXER_SRCS)))
 PARSER_OBJS = $(addprefix objs/parser/, $(addsuffix .o, $(PARSER_SRCS)))
 EXEC_OBJS = $(addprefix objs/exec/, $(addsuffix .o, $(EXEC_SRCS)))
@@ -85,8 +86,8 @@ objs/%.o:	src/%.c
 	@printf "\r$(_MUP)"
 
 
-$(NAME):	$(BUILTINS_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(EXEC_OBJS) $(OBJS) $(LIBFT) $(HEADER)
-	@$(CC) $(CFLAGS)  $(BUILTINS_OBJS) $(PARSER_OBJS) $(LEXER_OBJS) $(EXEC_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+$(NAME):	$(BUILTIN_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(EXEC_OBJS) $(OBJS) $(LIBFT) $(HEADER)
+	@$(CC) $(CFLAGS)  $(BUILTIN_OBJS) $(PARSER_OBJS) $(LEXER_OBJS) $(EXEC_OBJS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
 	@printf "%-53b%b" "$(COM_COLOR)Project Compiled:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 $(LIBFT):

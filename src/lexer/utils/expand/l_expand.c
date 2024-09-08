@@ -15,88 +15,6 @@
 #include "../../../../includes/token.h"
 #include "../../../../includes/execute.h"
 
-typedef struct s_expand
-{
-	t_node		*list_head;
-	t_node		*last_node;
-	char		*start;
-	char		*pid;
-	char		*exit_code;
-	char		*var_start;
-	size_t		len;
-	char		*var_name;
-	char		*env_value;
-	char		*text_start;
-	size_t		text_len;
-	char		*text;
-	size_t		total_len;
-	t_node		*curr;
-	char		*res;
-	char		*ptr;
-	size_t		data_len;
-}	t_expand;
-
-char	*get_env_value(const char *key, t_env *env);
-
-t_node	*append_node(t_node *head, char *data)
-{
-	t_node	*new_node;
-	t_node	*current;
-
-	new_node = malloc(sizeof(t_node));
-	if (!new_node)
-		return (NULL);
-	new_node->data = ft_strdup(data);
-	if (!new_node->data)
-	{
-		free(new_node);
-		return (NULL);
-	}
-	new_node->next = NULL;
-	if (!head)
-		return (new_node);
-	current = head;
-	while (current->next)
-		current = current->next;
-	current->next = new_node;
-	return (head);
-}
-
-void	free_list(t_node *head)
-{
-	t_node	*current;
-	t_node	*next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		free(current->data);
-		free(current);
-		current = next;
-	}
-}
-
-void	expand_helper(t_expand *ex, t_env *env)
-{
-	ex->text_start = ex->start;
-	while (*ex->start && *ex->start != '$')
-		ex->start++;
-	ex->text_len = ex->start - ex->text_start;
-	ex->text = strndup(ex->text_start, ex->text_len);
-	if (ex->text)
-	{
-		if (ex->list_head)
-			ex->last_node = append_node(ex->last_node, ex->text);
-		else
-		{
-			ex->last_node = append_node(NULL, ex->text);
-			ex->list_head = ex->last_node;
-		}
-		free(ex->text);
-	}
-}
-
 void	expand_exit_code(t_expand *ex, t_env *env)
 {
 	ex->start++;
@@ -128,13 +46,13 @@ void	expand_var(t_expand *ex, t_env *env)
 						ex->env_value);
 				ex->last_node = ex->list_head;
 			}
-			free(ex->env_value);
 		}
 	}
 }
 
 void	expand_single(t_expand *ex, t_env *env)
 {
+	ex->start++;
 	if (*ex->start == '\0' || *ex->start == ' ')
 	{
 		ex->list_head = append_node(ex->list_head, "$");
@@ -156,7 +74,7 @@ void	expand_single(t_expand *ex, t_env *env)
 		expand_var(ex, env);
 }
 
-int		finalize_expansion(t_expand *ex, t_env *env)
+int	finalize_expansion(t_expand *ex, t_env *env)
 {
 	ex->total_len = 0;
 	ex->curr = ex->list_head;
@@ -185,6 +103,7 @@ int		finalize_expansion(t_expand *ex, t_env *env)
 	return (0);
 }
 
+
 char	*expand_variables(char *value, int exp, t_env *env)
 {
 	t_expand	*ex;
@@ -193,16 +112,11 @@ char	*expand_variables(char *value, int exp, t_env *env)
 	ex = ft_calloc(1, sizeof(t_expand));
 	if (!exp)
 		return (ft_strdup(value));
-	ex->list_head = NULL;
-	ex->last_node = NULL;
 	ex->start = value;
 	while (*ex->start)
 	{
 		if (*ex->start == '$')
-		{
-			ex->start++;
 			expand_single(ex, env);
-		}
 		else
 			expand_helper(ex, env);
 	}
@@ -211,23 +125,8 @@ char	*expand_variables(char *value, int exp, t_env *env)
 	if (finalize_expansion(ex, env) == 1)
 		return (NULL);
 	*ex->ptr = '\0';
-	free_list(ex->list_head);
 	res = ft_strdup(ex->res);
-	free(ex->res);
+	free_ex(ex);
 	free(ex);
 	return (res);
-}
-
-char	*get_env_value(const char *key, t_env *env)
-{
-	t_env	*head;
-
-	head = env;
-	while (head)
-	{
-		if (ft_strcmp(key, head->key) == 0)
-			return (head->value);
-		head = head->next;
-	}
-	return (NULL);
 }

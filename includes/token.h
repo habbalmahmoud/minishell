@@ -2,7 +2,6 @@
 # define TOKEN_H
 # include "./minishell.h"
 
-
 typedef enum e_token_type
 {
 	TYPE_MINUS = '-',
@@ -41,13 +40,13 @@ typedef enum e_token_type
 	IN_PARAN,
 }	t_token_type;
 
-int	l_token_count(t_lexer *lex, t_token *token, t_env *env);
+int		l_token_count(t_lexer *lex, t_token *token, t_env *env);
 void	free_token_ll(t_token *token);
-int	l_assign_type(char c);
-int	return_whitespaces(char c);
-int	return_operators(char c);
-int count_dash(char *args);
-int	return_literals(char c);
+int		l_assign_type(char c);
+int		return_whitespaces(char c);
+int		return_operators(char c);
+int		count_dash(char *args);
+int		return_literals(char c);
 void	l_terminate_token(t_lexer *lex, t_token **token);
 void	init_token(t_token *token, int n, int id);
 
