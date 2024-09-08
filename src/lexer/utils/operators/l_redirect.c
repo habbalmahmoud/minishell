@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_redirect.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:27:11 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:04:26 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:20:59 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ void	l_tokenize_heredoc(t_lexer *lex, t_token **token, int *state, int type)
 		(*state) = IN_APPEND;
 }
 
-void	l_handler_skip(t_lexer *lex, t_token **token, int type, int **state)
+static void	l_handler_skip(t_lexer *lex, t_token **token, int type, int **state)
 {
 	size_t	len;
 
+	(void)type;
 	len = ft_strlen(lex->util->input);
 	(*token)->value[lex->util->j] = '\0';
 	(*token)->next = ft_calloc(1, sizeof(t_token));

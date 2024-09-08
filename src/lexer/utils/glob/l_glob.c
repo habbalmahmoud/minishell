@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_glob.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:23 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:06:11 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/08 15:45:57 by mhabbal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,10 @@ char	**l_glob(const char *pattern, int *hits)
 	}
 	*hits = i;
 	closedir(dir);
+	if (j < 1)
+	{
+		free(matches);
+		return(NULL);
+	}
 	return (matches);
 }
