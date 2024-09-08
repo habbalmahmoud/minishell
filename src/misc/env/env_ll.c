@@ -45,11 +45,10 @@ char	*get_value(char *str)
 	return (value);
 }
 
-
 void	add_special_env(t_env **env_ll)
 {
 	t_env	*new;
-	int	fd;
+	int		fd;
 	char	*line;
 	char	**split;
 	char	*pid;
@@ -76,7 +75,7 @@ void	add_special_env(t_env **env_ll)
 
 void	copy_env(t_env **env_ll, char **env)
 {
-	int		i;
+	int			i;
 	char		*key;
 	char		*value;
 	t_env		*new;

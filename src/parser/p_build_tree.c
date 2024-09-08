@@ -13,51 +13,50 @@
 #include "../../includes/ast.h"
 #include "../../includes/token.h"
 
-static void	p_parse_one(t_ast_utils *util, t_token **token, int type)
+static void first_part(t_token **token, t_ast_utils **util, int *flag2)
 {
-	if (type == TYPE_MINUS || type == TYPE_PLUS
-		|| type == TYPE_EQUAL
-		|| type == TOKEN || type == TYPE_LPAREN)
-		p_parse_simple_command(&util, (*token));
-}
-
-static void	p_parse_two(t_ast_utils *util, t_token **token, int type, int *flag)
-{
-	if (type == TYPE_RSHIFT || type == TYPE_LSHIFT
-		|| type == TYPE_APPEND || type == TYPE_HEREDOC)
+	if ((*token)->type == TYPE_MINUS || (*token)->type == TYPE_PLUS || (*token)->type == TYPE_EQUAL || (*token)->type == TOKEN || (*token)->type == TYPE_LPAREN)
+		p_parse_simple_command(util, (*token));
+	else if ((*token)->type == TYPE_RSHIFT || (*token)->type == TYPE_LSHIFT || (*token)->type == TYPE_APPEND || (*token)->type == TYPE_HEREDOC)
 	{
-		if (p_parse_redirect(&util, token) == 0)
-			*flag = 1;
+		if (p_parse_redirect(util, token) == 0)
+			*flag2 = *flag2 + 1;
 		else
-			*flag = 2;
+			*flag2 = *flag2 + 2;
 	}
-	else if (type == TYPE_PIPE)
-		if (p_parse_pipeline(&util, token))
-			util->in_pipe = 1;
+	else if ((*token)->type == TYPE_PIPE)
+		if (p_parse_pipeline(util, token))
+			(*util)->in_pipe = 1;
 }
 
-t_ast_node	*p_build_tree(t_token *token)
+static int second_part(t_token **token, t_ast_utils **util, int *flag2)
 {
-	t_ast_utils		*util;
-	t_ast_node		*node;
-	int				flag2;
+	if ((*token)->type == TYPE_AND || (*token)->type == TYPE_OR)
+		if (p_parse_operators(util, token))
+			return (0);
+	if (*flag2 == 0)
+		(*token) = (*token)->next;
+	else if (*flag2 == 2)
+		(*token) = (*token)->next;
+	return (1);
+}
+
+t_ast_node *p_build_tree(t_token *token)
+{
+	t_ast_utils *util;
+	t_ast_node *node;
+	int flag2;
 
 	flag2 = 0;
 	p_init_vars(&util);
 	while (token)
 	{
 		flag2 = 0;
-		p_parse_one(util, &token, token->type);
-		p_parse_two(util, &token, token->type, &flag2);
-		if (token->type == TYPE_AND || token->type == TYPE_OR)
-			if (p_parse_operators(&util, &token))
-				break ;
-		if (flag2 == 0)
-			token = token->next;
-		else if (flag2 == 2)
-			token = token->next;
+		first_part(&token, &util, &flag2);
+		if (!second_part(&token, &util, &flag2))
+			break;
 	}
-	if (!(util->node))
+	if (!util->node)
 		util->node = p_build_simple_command(util);
 	node = util->node;
 	free(util);

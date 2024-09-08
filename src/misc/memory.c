@@ -2,14 +2,11 @@
 #include "../../includes/token.h"
 #include "../../includes/ast.h"
 
-
 static void	free_tree(t_syntax_tree *tree)
 {
 	if (tree->branch)
 		free_ast(tree->branch);
 }
-
-
 
 void	free_ast(t_ast_node *node)
 {
@@ -31,20 +28,22 @@ void	free_ast(t_ast_node *node)
 	}
 }
 
+void	free_token(t_token *token)
+{
+	t_token	*current;
+	t_token	*next_token;
 
-void free_token(t_token *token) {
-    t_token *current = token;
-    t_token *next_token;
-
-    while (current != NULL) {
-        next_token = current->next;
-        if (current->value) {
-            free(current->value);
-        }
-        free(current);
-        current = next_token;
-    }
+	current = token;
+	while (current != NULL)
+	{
+		next_token = current->next;
+		if (current->value)
+			free(current->value);
+		free(current);
+		current = next_token;
+	}
 }
+
 void	free_env_list(t_env **env)
 {
 	t_env	*curr;
@@ -63,17 +62,18 @@ void	free_env_list(t_env **env)
 	}
 }
 
-void free_split(char **array)
+void	free_split(char **array)
 {
-    if (array)
-    {
-        char **temp = array;
-        while (*temp)
-        {
-            free(*temp); // Free each string
-            temp++;
-        }
-        free(array); // Free the array of strings itself
-    }
-}
+	char	**temp;
 
+	if (array)
+	{
+		temp = array;
+		while (*temp)
+		{
+			free(*temp);
+			temp++;
+		}
+		free(array);
+	}
+}
