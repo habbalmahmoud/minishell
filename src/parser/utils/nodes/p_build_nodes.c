@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_build_nodes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:22:28 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/04 18:24:57 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:57:11 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,28 @@ t_ast_node	*p_build_simple_command(t_ast_utils *util)
 	return (node);
 }
 
+static char	*assign_val(int type)
+{
+	if (type == TYPE_PIPE)
+		return ("|");
+	if (type == TYPE_AND)
+		return ("&&");
+	if (type == TYPE_OR)
+		return ("||");
+	return ("");
+}
+
+static t_node_type	assign_type(int type)
+{
+	if (type == TYPE_PIPE)
+		return (AST_PIPE);
+	if (type == TYPE_AND)
+		return (AST_AND);
+	if (type == TYPE_OR)
+		return (AST_OR);
+	return (AST_COMMAND);
+}
+
 t_ast_node	*p_build_separator(t_ast_node *left, t_ast_node *right, int type)
 {
 	t_ast_node	*node;
@@ -60,8 +82,8 @@ t_ast_node	*p_build_separator(t_ast_node *left, t_ast_node *right, int type)
 	node = ft_calloc(1, sizeof(t_ast_node));
 	node->left = left;
 	node->right = right;
-	node->type = ASSIGN_TYPE(type);
-	delim = ASSIGN(type);
+	node->type = assign_type(type);
+	delim = assign_val(type);
 	node->args = ft_split(delim, ' ');
 	return (node);
 }

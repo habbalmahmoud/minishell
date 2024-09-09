@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 18:41:53 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:58:44 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,25 @@
 #include "../../includes/execute.h"
 #include "../../includes/signals.h"
 
-static void	exit_code_helper(t_env *env, char *str)
+void static	exit_helper(t_exec_utils *util)
 {
-	t_env	*new;
-
-	internal_unset(&env, "?");
-	return ;
+	if (g_mini_code)
+	{
+		util->code = g_mini_code;
+		g_mini_code = 0;
+	}
 }
 
-void	modify_exit_code(t_env *env, int code)
+void	modify_exit_code(t_env *env, t_exec_utils *util)
 {
 	char	*str;
 	t_env	*head;
 	t_env	*new;
 	int		flag;
 
+	exit_helper(util);
 	head = env;
-	str = ft_itoa(code);
+	str = ft_itoa(util->code);
 	flag = 0;
 	while (head)
 	{
@@ -71,11 +73,11 @@ int	init_shell(t_lexer *lex, t_exec_utils *util, t_env **env)
 			tree = ft_calloc(1, sizeof(t_syntax_tree));
 			init_parser(&lex, &tree);
 			init_execute(tree, env, &util);
-			modify_exit_code((*env), util->code);
 			free_ast(tree->branch);
 			free(tree);
 		}
 	}
+	modify_exit_code((*env), util);
 	return (0);
 }
 
@@ -103,5 +105,4 @@ void	prompt_loop(t_env *env)
 		free_lexer(lex);
 	}
 	free(util);
-	rl_clear_history();
 }

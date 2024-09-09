@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/09 02:44:47 by nbk               #+#    #+#             */
+/*   Updated: 2024/09/09 02:44:48 by nbk              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 #include <signal.h>
 #include "../includes/signals.h"
@@ -5,7 +17,6 @@
 void	handle_signint(int signum)
 {
 	g_mini_code = 130;
-	rl_replace_line("", 0);
 	ft_putstr_fd("\n", 1);
 	rl_on_new_line();
 	rl_redisplay();

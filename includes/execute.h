@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 17:08:39 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 19:01:39 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 02:58:39 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int		check_access(char *path, t_exec_utils *util);
 int		init_execute(t_syntax_tree *tree, t_env **env, t_exec_utils **util);
 char	*get_path(char **s_cmd, t_env **env, char *path);
 int		e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env);
-
 void	e_pipeline(t_ast_node *node, t_exec_utils *util, t_env **env);
 void	e_pipeline_parent(t_ast_node *node, t_exec_utils *util,
 			int *pid, int fd[2]);

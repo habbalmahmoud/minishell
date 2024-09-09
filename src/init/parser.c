@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:45:23 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 18:21:18 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:56:43 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	init_parser(t_lexer **lex, t_syntax_tree **tree)
 {
-	(*tree)->branch = p_build_tree((*lex)->token_list);
+	(*tree)->branch = p_build_tree(&(*lex)->token_list);
 	if ((*tree)->branch->args)
 		p_expand_tree((*tree)->branch);
 }

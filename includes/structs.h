@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 17:03:29 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 17:09:59 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:36:53 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,5 @@ typedef struct s_lexer
 	t_lex_ll	**child;
 	int			count;
 }	t_lexer;
-
 
 #endif

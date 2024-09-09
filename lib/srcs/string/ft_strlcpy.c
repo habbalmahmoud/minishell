@@ -6,7 +6,7 @@
 /*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:34:05 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/03 15:00:43 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 03:45:57 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	dst[i] = '\0';
 	return (src_len);
 }
-

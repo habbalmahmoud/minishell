@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_expand.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:49 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 18:50:21 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:33:11 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	finalize_expansion(t_expand *ex, t_env *env)
 	}
 	return (0);
 }
-
 
 char	*expand_variables(char *value, int exp, t_env *env)
 {

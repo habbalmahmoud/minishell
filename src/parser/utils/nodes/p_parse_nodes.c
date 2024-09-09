@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_parse_nodes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:37:03 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 17:21:44 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:58:35 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	p_parse_operators(t_ast_utils **util, t_token **token)
 			(*util)->node = p_build_simple_command((*util));
 		free((*util)->args);
 		(*util)->args = NULL;
-		(*util)->right = p_build_tree((*token)->next);
+		(*util)->right = p_build_tree(&(*token)->next);
 		(*util)->node = p_build_separator((*util)->node,
 				(*util)->right, (*token)->type);
 		return (1);

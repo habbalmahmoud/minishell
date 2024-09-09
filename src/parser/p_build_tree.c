@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_build_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:52:25 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 13:48:20 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/09 03:58:28 by nbk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	second_part(t_token **token, t_ast_utils **util, int *flag2)
 	return (1);
 }
 
-t_ast_node	*p_build_tree(t_token *token)
+t_ast_node	*p_build_tree(t_token **token)
 {
 	t_ast_utils	*util;
 	t_ast_node	*node;
@@ -52,11 +52,11 @@ t_ast_node	*p_build_tree(t_token *token)
 
 	flag2 = 0;
 	p_init_vars(&util);
-	while (token)
+	while ((*token))
 	{
 		flag2 = 0;
-		first_part(&token, &util, &flag2);
-		if (!second_part(&token, &util, &flag2))
+		first_part(token, &util, &flag2);
+		if (!second_part(token, &util, &flag2))
 			break ;
 	}
 	if (!util->node)

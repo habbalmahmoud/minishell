@@ -1,17 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/09 02:59:02 by nbk               #+#    #+#             */
+/*   Updated: 2024/09/09 03:41:03 by nbk              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef AST_H
 # define AST_H
 # include "./minishell.h"
 # include "./token.h"
 # include <stdbool.h>
 
-struct s_synatx_tree;
-
-
-#define ASSIGN(x) ((x) == TYPE_PIPE ? "|"  : \
-                          (x) == TYPE_AND ? "&&"   : \
-                          (x) == TYPE_OR ? "||"   : \
-                                     "")
-#define ASSIGN_TYPE(type) (type == TYPE_PIPE) ? AST_PIPE: (type == TYPE_AND) ? AST_AND:  (type == TYPE_OR) ? AST_OR: 0
+struct	s_synatx_tree;
 
 typedef struct s_ast_utils
 {
@@ -30,7 +35,7 @@ typedef struct s_ast_utils
 
 void		init_parser(t_lexer **lexer, t_syntax_tree **tree);
 void		p_expand_tree(t_ast_node *node);
-t_ast_node	*p_build_tree(t_token *token);
+t_ast_node	*p_build_tree(t_token **token);
 t_ast_node	*p_build_pipeline(t_token **token);
 t_ast_utils	*p_init_vars(t_ast_utils **util);
 char		*p_create_cmd_args(char *value, char *args);
@@ -148,6 +153,5 @@ typedef struct s_leaf
 	e_ast_type type;
 }	t_leaf;
 */
-
 
 #endif
