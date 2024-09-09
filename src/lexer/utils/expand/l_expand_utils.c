@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_expand_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 03:10:21 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/09 03:10:22 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 11:36:46 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	free_list(t_node *head)
 
 void	expand_helper(t_expand *ex, t_env *env)
 {
+	(void)env;
 	ex->text_start = ex->start;
 	while (*ex->start && *ex->start != '$')
 		ex->start++;
@@ -92,4 +93,5 @@ void	free_ex(t_expand *ex)
 {
 	free_list(ex->list_head);
 	free(ex->res);
+	free(ex);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 12:40:55 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 16:49:07 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 14:26:46 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	l_handler_pipe(t_lexer *lex, t_token **token, int type, int *state);
 void	l_tokenize_next(t_lexer *lex, t_token **token, int type, int len);
 void	l_tokenize_words(t_lexer *lex, t_token *token, int type);
 int		handle_paren(t_lexer **lex, t_token **token, int *state, int type);
-
+t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token);
 /*/////////////////////////////////////////////////////////////
 ////////////		GLOBBING		    //////////
 ////////////////////////////////////////////////////////////*/

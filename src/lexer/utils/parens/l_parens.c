@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_parens.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabbal <mhabbal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:10:31 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 17:21:18 by mhabbal          ###   ########.fr       */
+/*   Updated: 2024/09/09 14:59:22 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static void	close_token(t_lexer **lex, t_token **token)
 
 static void	apply_recur(t_lexer **lex, t_token **token, int *state, int type)
 {
-	t_token	*c_token;
-
 	(*token)->value[(*lex)->util->j++] = TYPE_LPAREN;
 	(*token)->type = type;
 	(*state) = IN_PARAN;
@@ -40,9 +38,9 @@ static void	apply_recur(t_lexer **lex, t_token **token, int *state, int type)
 	(*token)->sub_lexer = malloc(sizeof(t_lexer));
 	(*token)->sub_lexer->util = malloc(sizeof(t_lex_utils));
 	(*token)->sub_lexer->util->rec_count = (*lex)->util->rec_count + 1;
-	c_token = malloc(sizeof(t_token));
+	(*lex)->c_token = malloc(sizeof(t_token));
 	init_lexer((*lex)->util->input_ptr, &(*token)->sub_lexer,
-		&c_token, (*lex)->util->env);
+		&(*lex)->c_token, (*lex)->util->env);
 	(*lex)->util->i += (*token)->sub_lexer->util->i;
 	(*lex)->util->input_ptr += (*token)->sub_lexer->util->i;
 }

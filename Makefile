@@ -8,7 +8,7 @@ LIBFT = lib/libft.a
 
 CC = gcc
 
-CFLAGS = -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 SRCS = main init/lexer init/shell init/parser init/execute misc/printing misc/env/env_ll misc/env/env_utils misc/memory signals
 

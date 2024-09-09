@@ -6,13 +6,13 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:07:00 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 18:21:15 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 15:00:10 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
-t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
+t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token)
 {
 	lex->token_list = token;
 	lex->token_list->sub_lexer = NULL;
@@ -20,7 +20,7 @@ t_token	*l_vars_init(char *input, t_lexer *lex, t_token *token, t_env *env)
 	lex->util->j = 0;
 	lex->util->input = input;
 	lex->util->input_ptr = input;
-	lex->util->env = env;
+	lex->c_token = NULL;
 	return (token);
 }
 
@@ -51,7 +51,7 @@ int	init_lexer(char *input, t_lexer **lex, t_token **token, t_env *env)
 
 	len = ft_strlen(input);
 	state = STATE_ANY;
-	(*token) = l_vars_init(input, (*lex), (*token), env);
+	(*token) = l_vars_init(input, (*lex), (*token));
 	init_token((*token), len, 0);
 	while (*(*lex)->util->input_ptr)
 	{

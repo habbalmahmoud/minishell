@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:29:51 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/03 15:37:41 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 09:18:42 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	exit_operations(char **args, t_exec_utils *util, t_ast_node *node)
 	char	*delim;
 	int		nbr;
 
+	(void)node;
 	delim = ft_strchr(args[1], '+');
 	if (delim)
 	{
@@ -52,7 +53,7 @@ static	void	exit_message(char **args, int flag)
 	}
 }
 
-void	exit_args(char **args, t_ast_node *node)
+void	exit_args(char **args)
 {
 	__int128	nbr;
 	int			flag;
@@ -81,7 +82,7 @@ void	exit_args(char **args, t_ast_node *node)
 	exit(nbr);
 }
 
-int	handle_exit(t_exec_utils *util, t_ast_node *node, t_env *env)
+int	handle_exit(t_exec_utils *util, t_ast_node *node)
 {
 	char	**args;
 
@@ -105,7 +106,7 @@ int	handle_exit(t_exec_utils *util, t_ast_node *node, t_env *env)
 	else if (args && args[1])
 	{
 		exit_operations(args, util, node);
-		exit_args(args, node);
+		exit_args(args);
 	}
 	return (1);
 }

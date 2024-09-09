@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 19:09:01 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 09:19:24 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-void	assign_code(pid_t pid, int status, t_exec_utils *util)
+void	assign_code(pid_t pid, int *status, t_exec_utils *util)
 {
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		util->code = WEXITSTATUS(status);
+	waitpid(pid, status, 0);
+	if (WIFEXITED(*status))
+		util->code = WEXITSTATUS(*status);
 	else
 		util->code = EXIT_FAILURE;
 }
@@ -55,6 +55,7 @@ int	check_echo(t_ast_node *node, t_exec_utils *util, t_env **env,
 	int		status;
 	pid_t	pid;
 
+	(void)env;
 	if (!ft_strcmp(node->args[0], "echo"))
 	{
 		pid = fork();
@@ -66,7 +67,7 @@ int	check_echo(t_ast_node *node, t_exec_utils *util, t_env **env,
 		}
 		else if (pid > 0)
 		{
-			assign_code(pid, status, util);
+			assign_code(pid, &status, util);
 			free(path);
 			return (1);
 		}
@@ -79,9 +80,10 @@ int	builtins_one(t_ast_node *node, t_exec_utils *util, t_env **env,
 {
 	char	*oldpwd;
 
+	(void)env;
 	if (!ft_strcmp(node->args[0], "exit"))
 	{
-		if (handle_exit(util, node, (*env)))
+		if (handle_exit(util, node))
 		{
 			free(path);
 			return (1);

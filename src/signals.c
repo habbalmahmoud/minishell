@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 02:44:47 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/09 02:44:48 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 09:17:43 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 void	handle_signint(int signum)
 {
+	(void)signum;
 	g_mini_code = 130;
+	rl_replace_line("", 0);
 	ft_putstr_fd("\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
@@ -42,6 +44,7 @@ void	signal_handler(void)
 
 void	sigint_heredoc(int signal_number)
 {
+	(void)signal_number;
 	g_mini_code = 52;
 	exit(130);
 }

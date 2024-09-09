@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:29:24 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/04 16:57:47 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 09:03:31 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,8 @@ void	bubble_sort(t_env **stack)
 
 int	valid_export(char **args)
 {
-	int	i;
-	int	j;
 	int	valid;
 
-	i = 1;
 	valid = valid_multi_args(args);
 	if (ft_strchr(args[1], '-') || ft_strchr(args[1], '+'))
 	{
@@ -78,12 +75,6 @@ int	valid_export(char **args)
 
 int	exec_export_2(t_env **env, char **args)
 {
-	int		flag;
-	t_env	*head;
-	t_env	*new;
-
-	flag = 0;
-	head = (*env);
 	if (args)
 	{
 		if (exec_export_body(env, args) == 1)

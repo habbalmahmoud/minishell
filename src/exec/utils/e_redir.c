@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:02:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 18:17:39 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 09:17:35 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-void	check_in(t_ast_node *node, int fd_in, int pipefd[2], t_exec_utils *util)
+void	check_in(t_ast_node *node, int pipefd[2], t_exec_utils *util)
 {
+	int	fd_in;
+
 	if (node->in)
 	{
 		if (node->exit)
 			exit(node->exit);
 		if (node->here_doc)
 		{
-			g_mini_code = 10;
 			pipe(pipefd);
 			handle_doc(node->in, pipefd, util->env);
 			dup2(pipefd[0], STDIN_FILENO);
@@ -46,11 +47,10 @@ void	check_in(t_ast_node *node, int fd_in, int pipefd[2], t_exec_utils *util)
 
 void	e_redirection(t_ast_node *node, t_exec_utils *util)
 {
-	int	fd_in;
 	int	fd_out;
 	int	pipefd[2];
 
-	check_in(node, fd_in, pipefd, util);
+	check_in(node, pipefd, util);
 	if (node->out)
 	{
 		if (node->exit)

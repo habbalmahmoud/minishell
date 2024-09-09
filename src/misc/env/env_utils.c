@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:51:52 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/08 18:24:17 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 12:10:26 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int	exec_export_body(t_env **env, char **args)
 		return (export_multi_args(env, args));
 	else
 	{
-		key = args[1];
-		value = args[3];
+		key = ft_strdup(args[1]);
+		value = ft_strdup(args[3]);
 	}
 	change_env_values(env, value, key, &flag);
 	if (flag)

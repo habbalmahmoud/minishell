@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 17:08:39 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/09 02:58:39 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 09:09:52 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ typedef struct s_path
 	char	*result;
 }	t_path;
 
-void	assign_code(pid_t pid, int status, t_exec_utils *util);
+void	assign_code(pid_t pid, int *status, t_exec_utils *util);
 int		check_path(char *path, t_exec_utils *util);
-void	check_in(t_ast_node *node, int fd_in, int pipefd[2],
+void	check_in(t_ast_node *node, int pipefd[2],
 			t_exec_utils *util);
 void	proccess_one(t_ast_node *node, t_exec_utils *util, t_env **env,
 			char *path);

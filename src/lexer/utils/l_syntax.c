@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_syntax.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 03:10:02 by nbk               #+#    #+#             */
-/*   Updated: 2024/09/09 03:10:03 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 09:16:13 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,16 @@ static int	validate_helper(t_token *temp, t_exec_utils **utils)
 		(*utils)->code = 2;
 		return (0);
 	}
-	if (temp->next->type == TYPE_PIPE)
-		if (!post_pipe(temp, utils))
-			return (0);
+	if (!post_pipe(temp, utils))
+		return (0);
 	else if (!ft_strcmp(temp->next->value, ">>")
 		|| !ft_strcmp(temp->next->value, ">")
 		|| !ft_strcmp(temp->next->value, "<")
 		|| !ft_strcmp(temp->next->value, "<<"))
+	{
 		if (!post_redir(temp, utils))
 			return (0);
+	}
 	else if (!ft_strcmp(temp->next->value, "||")
 		|| !ft_strcmp(temp->next->value, "&&"))
 		if (!post_and_or(temp, utils))

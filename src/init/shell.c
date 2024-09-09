@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:29:58 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/09 03:58:44 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 15:08:20 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 #include "../../includes/execute.h"
 #include "../../includes/signals.h"
 
-void static	exit_helper(t_exec_utils *util)
+void	exit_helper(t_exec_utils *util)
 {
 	if (g_mini_code)
 	{
 		util->code = g_mini_code;
-		g_mini_code = 0;
 	}
 }
 
@@ -30,12 +29,10 @@ void	modify_exit_code(t_env *env, t_exec_utils *util)
 	char	*str;
 	t_env	*head;
 	t_env	*new;
-	int		flag;
 
 	exit_helper(util);
 	head = env;
 	str = ft_itoa(util->code);
-	flag = 0;
 	while (head)
 	{
 		if (!ft_strcmp(head->key, "?"))
@@ -54,27 +51,28 @@ void	modify_exit_code(t_env *env, t_exec_utils *util)
 
 int	init_shell(t_lexer *lex, t_exec_utils *util, t_env **env)
 {
-	char			*input;
 	t_token			*token;
 	t_syntax_tree	*tree;
 
-	input = lex->util->input;
-	if (!input)
+	if (!lex->util->input)
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit(util->code);
 	}
 	token = malloc(sizeof(t_token));
-	init_lexer(input, &lex, &token, (*env));
-	if (close_values(input, &lex, &util))
+	init_lexer(lex->util->input, &lex, &token, (*env));
+	if (close_values(lex->util->input, &lex, &util))
 	{
 		if (validate_lexer(&lex, &util) == 1)
 		{
 			tree = ft_calloc(1, sizeof(t_syntax_tree));
 			init_parser(&lex, &tree);
+			lex->util->rec_count = 0;
+			free_lexer(lex);
 			init_execute(tree, env, &util);
 			free_ast(tree->branch);
 			free(tree);
+			free_token_ll(token);
 		}
 	}
 	modify_exit_code((*env), util);
@@ -86,7 +84,6 @@ void	prompt_loop(t_env *env)
 	char			*input;
 	t_lexer			*lex;
 	t_exec_utils	*util;
-	char			*code;
 
 	util = malloc(sizeof(t_exec_utils));
 	util->code = 0;
@@ -101,8 +98,6 @@ void	prompt_loop(t_env *env)
 		if (init_shell(lex, util, &env))
 			break ;
 		free(input);
-		lex->util->rec_count = 0;
-		free_lexer(lex);
 	}
 	free(util);
 }

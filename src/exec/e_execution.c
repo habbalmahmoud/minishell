@@ -6,7 +6,7 @@
 /*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:16:17 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/08 19:13:17 by nkanaan          ###   ########.fr       */
+/*   Updated: 2024/09/09 09:07:59 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	e_traverse_tree(t_ast_node *node, t_exec_utils *util, t_env **env)
 
 	if (!node)
 		return (1);
+	path = NULL;
 	if (node->type == AST_COMMAND)
 	{
 		if (node && node->args && node->args[0])
@@ -119,7 +120,7 @@ int	e_simple_command(t_ast_node *node, t_exec_utils *util, t_env **env,
 	if (pid == 0)
 		proccess_one(node, util, env, path);
 	else if (pid > 0)
-		assign_code(pid, status, util);
+		assign_code(pid, &status, util);
 	free(path);
 	return (util->code);
 }

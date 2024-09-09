@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   l_expand.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbk <nbk@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nkanaan <nkanaan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:49 by nkanaan           #+#    #+#             */
-/*   Updated: 2024/09/09 03:33:11 by nbk              ###   ########.fr       */
+/*   Updated: 2024/09/09 11:37:54 by nkanaan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	expand_single(t_expand *ex, t_env *env)
 		expand_var(ex, env);
 }
 
-int	finalize_expansion(t_expand *ex, t_env *env)
+int	finalize_expansion(t_expand *ex)
 {
 	ex->total_len = 0;
 	ex->curr = ex->list_head;
@@ -110,7 +110,10 @@ char	*expand_variables(char *value, int exp, t_env *env)
 
 	ex = ft_calloc(1, sizeof(t_expand));
 	if (!exp)
+	{
+		free(ex);
 		return (ft_strdup(value));
+	}
 	ex->start = value;
 	while (*ex->start)
 	{
@@ -120,12 +123,11 @@ char	*expand_variables(char *value, int exp, t_env *env)
 			expand_helper(ex, env);
 	}
 	if (!ex->list_head)
-		return (ft_strdup(""));
-	if (finalize_expansion(ex, env) == 1)
-		return (NULL);
+		return (free(ex), ft_strdup(""));
+	if (finalize_expansion(ex) == 1)
+		return (free(ex), NULL);
 	*ex->ptr = '\0';
 	res = ft_strdup(ex->res);
 	free_ex(ex);
-	free(ex);
 	return (res);
 }
