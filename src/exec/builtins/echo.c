@@ -25,7 +25,7 @@ int	check_char(char **args)
 	int	flag;
 
 	init_vars(&flag, &i);
-	if (ft_strncmp(args[i], "-n", 2) != 0)
+	if (ft_strncmp(args[1], "-n", 2) != 0)
 		return (0);
 	while (args[++i])
 	{
